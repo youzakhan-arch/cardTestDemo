@@ -8,7 +8,7 @@ Local HTML prototypes for Motive PM design exploration. Each folder is a self-co
 |---|---|---|
 | `card-orders-activate/` | Card activation visibility in the Orders table — Option A: contextual Activate CTA on Shipped & Completed rows, order-scoped activation drawer, pre-configure flow for in-transit cards | [Open](https://youzakhan-arch.github.io/cardTestDemo/card-orders-activate/) |
 | `motive-card/` | Motive Card driver app prototype | [Open](https://youzakhan-arch.github.io/cardTestDemo/motive-card/) |
-| `card-details-activated-count/` | Card Management list → click a card → Card Details drawer with a **per-driver** "X of N cards activated" helper + "Activate more" CTA. Multi-card drivers only. Built from Figma nodes `2078:4295` / `2038:15672`. | run locally — see folder README |
+| `card-details-activated-count/` | Card Management list → click a card → Card Details drawer with a **per-driver** "X of N cards activated" informational helper. Multi-card drivers only. Real PHX icons/tokens sourced from `webapp`. Built from Figma nodes `2078:4295` / `2085:4889`. | [Open](https://youzakhan-arch.github.io/cardTestDemo/card-details-activated-count/) |
 
 ## How to use
 
