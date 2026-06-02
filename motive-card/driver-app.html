@@ -140,12 +140,13 @@
     { id: 5, merchant: 'Walmart',        amount: '$34.20',  status: 'Posted',   cardId: 'subs',   cardName: 'Subscriptions misc',   cardNum: '••••2345', date: 'May 24',    category: 'General Merchandise' },
   ];
 
-  // PHX-token-compliant status styles (--accent/negative/positive/caution-light tokens)
-  const STATUS_STYLE = {
-    Pending:       'background:var(--phx-accent-light);color:var(--phx-accent-light-fg)',
-    Declined:      'background:var(--phx-negative-light);color:var(--phx-negative-light-fg)',
-    Posted:        'background:var(--phx-positive-light);color:var(--phx-positive-light-fg)',
-    RefundPending: 'background:var(--phx-caution-light);color:var(--phx-caution-light-fg)',
+  // Driver App Core (mobile DS): transaction status is COLORED TEXT, not a pill.
+  // Pending = grey-60, Declined = red-60, Posted = green-60.
+  const STATUS_COLOR = {
+    Pending:       '#5E5E5E',  // grey/grey-60
+    Declined:      '#BD0E00',  // red/red-60
+    Posted:        '#1B6C2D',  // green/green-60
+    RefundPending: '#7D5800',  // caution
   };
 
   // Mock spend controls — mirrors GET /fleetcard/driverapp/v3/spend_controls response
@@ -194,6 +195,23 @@
       style={{ display: 'inline-block', flexShrink: 0, verticalAlign: 'middle' }}
     >
       <use href={`#${name}`} />
+    </svg>
+  );
+
+  // ── Motive wordmark — official logo (Figma node 2094:4261, "new-logo") ────────
+  // Vector at viewBox 108×24.9449. preserveAspectRatio="xMidYMid meet" → scales to
+  // fit the container without stretching (the source asset shipped with "none").
+  const MotiveLogo = ({ width = 108, height = 32, color = 'white' }) => (
+    <svg width={width} height={height} viewBox="0 0 108 24.9449" fill="none"
+         preserveAspectRatio="xMidYMid meet" aria-label="Motive"
+         xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+      <path d="M59.1415 10.2776V20.4907L63.3205 20.4822V24.7292H54.3866V10.2742H51.6838V6.136H54.3849V0H59.1415V6.1394H63.3205V10.2776H59.1415Z" fill={color}/>
+      <path d="M70.0884 0V4.23336H70.0866V4.23676H65.3419V0H70.0884Z" fill={color}/>
+      <path d="M18.3349 6.13428H12.6525L4.15861 20.4907H0V24.7376H6.64054L13.5903 12.9804V24.7292H19.1962L26.1137 12.9464V24.7292H30.8703V6.13428H25.1623L18.3349 17.6656V6.13428Z" fill={color}/>
+      <path d="M65.3369 6.13428H70.0935V24.7292H65.3369V6.13428Z" fill={color}/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M41.999 5.91854H42.0346C47.1514 5.91854 51.2216 10.2063 51.2216 15.4317C51.2216 20.6572 47.1514 24.9449 42.0346 24.9449H41.999C36.8839 24.9449 32.7763 20.6979 32.7763 15.4317C32.7763 10.1655 36.8839 5.91854 41.999 5.91854ZM41.999 20.1883H42.0346V20.1849C44.5216 20.1849 46.4668 18.0597 46.4701 15.4317C46.4701 12.836 44.4843 10.6751 42.0346 10.6751H41.999C39.478 10.6751 37.5329 12.8003 37.5329 15.4317C37.5329 18.0631 39.478 20.1883 41.999 20.1883Z" fill={color}/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M99.4857 20.72C101.397 20.72 102.588 19.6039 102.912 18.6288H107.669C107.489 20.1798 105.433 24.9415 99.4823 24.9415C94.1091 24.9415 90.139 20.9018 90.139 15.4181C90.139 10.0449 94.2161 5.89646 99.3362 5.89646C104.205 5.89646 108 10.1519 108 15.3468C108 15.887 107.964 16.3932 107.929 16.7534H95.0179C95.339 19.0263 96.7099 20.72 99.4857 20.72ZM95.1691 13.3626H103.318C102.809 11.494 101.551 10.1162 99.3515 10.1162C97.0463 10.1162 95.7042 11.4515 95.1691 13.3626Z" fill={color}/>
+      <path d="M81.4261 18.301L85.9585 6.13769V6.14788H91.0259L83.7891 24.7292H79.002L71.8076 6.13769H76.8938L81.4261 18.301Z" fill={color}/>
     </svg>
   );
 
@@ -277,61 +295,56 @@
 
   // ── Transaction row ───────────────────────────────────────────────────────────
 
-  function pillStyle(status) {
-    const raw = STATUS_STYLE[status] || STATUS_STYLE['Posted'];
-    return Object.fromEntries(raw.split(';').map(s => s.split(':').map(x => x.trim())).filter(a => a.length === 2).map(([k, v]) => [k, v]));
-  }
-
+  // ── Transaction row — Driver App Core spec (node 2094:4408) ───────────────────
+  // Layout: [merchant · amount] over [meta · colored status]. No pill, no avatar.
+  // Type: Inter — line 1 = 16/24 tracking -0.176px, line 2 = 14/20 tracking -0.0084px.
   function TxRow({ tx, showCard = true }) {
     const [pressed, setPressed] = useState(false);
+    const statusColor = STATUS_COLOR[tx.status] || STATUS_COLOR['Posted'];
     return (
       <div
-        style={{ display: 'flex', alignItems: 'flex-start', padding: '14px 16px', cursor: 'pointer', background: pressed ? C.bgHover : C.bgPrimary, transition: 'background 75ms', userSelect: 'none', gap: 12 }}
+        style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 16px', cursor: 'pointer', background: pressed ? C.bgHover : C.bgPrimary, transition: 'background 75ms', userSelect: 'none' }}
         onPointerDown={() => setPressed(true)}
         onPointerUp={() => setPressed(false)}
         onPointerLeave={() => setPressed(false)}
       >
-        {/* Motive convention: no avatars in transactions — card number is the identifier */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          {/* Row 1: merchant + amount */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
-            <span style={{ fontSize: 15, fontWeight: 600, color: C.textPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginRight: 8 }}>{tx.merchant}</span>
-            <span style={{ fontSize: 15, fontWeight: 600, color: tx.status === 'Declined' ? C.textInactive : C.textPrimary, flexShrink: 0, textDecoration: tx.status === 'Declined' ? 'line-through' : 'none' }}>{tx.amount}</span>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 2, padding: '8px 0' }}>
+          {/* Line 1: merchant + amount */}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 16, lineHeight: '24px', letterSpacing: '-0.176px' }}>
+            <span style={{ flex: 1, minWidth: 0, fontWeight: 400, color: '#000000', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tx.merchant}</span>
+            <span style={{ flexShrink: 0, fontWeight: 600, color: 'rgba(0,0,0,0.82)', textAlign: 'right', whiteSpace: 'nowrap' }}>{tx.amount}</span>
           </div>
-          {/* Row 2: pill + meta */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 999, flexShrink: 0, ...pillStyle(tx.status) }}>{tx.status}</span>
-            <span style={{ fontSize: 12, color: C.textSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {/* Line 2: meta (card number / date) + colored status text */}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 14, fontWeight: 400, lineHeight: '20px', letterSpacing: '-0.0084px' }}>
+            <span style={{ flex: 1, minWidth: 0, color: 'rgba(0,0,0,0.63)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {showCard ? tx.cardNum : tx.date}
             </span>
+            <span style={{ flexShrink: 0, color: statusColor, whiteSpace: 'nowrap' }}>{tx.status}</span>
           </div>
-          {/* Row 3: decline reason */}
-          {tx.status === 'Declined' && tx.declineReason && (
-            <div style={{ fontSize: 12, color: C.textNeg, marginTop: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
-              <span>⚠</span><span>{tx.declineReason}</span>
-            </div>
-          )}
         </div>
+        <Icon name="chevron-right" size={24} color="rgba(0,0,0,0.33)" />
       </div>
     );
   }
 
   // ── Nav Drawer ────────────────────────────────────────────────────────────────
 
+  // Sidebar items mirror Driver App Core "new-sidebar" (node 2094:4263), in order,
+  // with @ds-mo/icons matching the Figma icon set.
   const NAV_ITEMS = [
-    { label: 'Home',                icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
-    { label: 'Logs',                icon: 'M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7' },
-    { label: 'Roadside Inspection', icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z' },
-    { label: 'Performance',         icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
-    { label: 'Savings Finder',      icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
-    { label: 'Motive Card',         icon: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z', active: true },
-    { label: 'Messages',            icon: 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z' },
-    { label: 'Notifications',       icon: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9' },
-    { label: 'Dispatches',          icon: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7' },
-    { label: 'Documents',           icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
-    { label: 'Tire Pressure',       icon: 'M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4' },
-    { label: 'Settings',            icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z' },
-    { label: 'Help Center',         icon: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { label: 'Home',                icon: 'building-home' },
+    { label: 'Logs',                icon: 'chart' },
+    { label: 'Roadside Inspection', icon: 'shield-circle' },
+    { label: 'Performance',         icon: 'trophy' },
+    { label: 'Savings Finder',      icon: 'target-dollar' },
+    { label: 'Motive Card',         icon: 'card', active: true },
+    { label: 'Messages',            icon: 'message-bubble-stack' },
+    { label: 'Notifications',       icon: 'bell' },
+    { label: 'Dispatches',          icon: 'location-pin-arrows' },
+    { label: 'Documents',           icon: 'document' },
+    { label: 'Tire Pressure',       icon: 'tire-pressure' },
+    { label: 'Settings',            icon: 'gear' },
+    { label: 'Help Center',         icon: 'circle-question' },
   ];
 
   function NavDrawer({ onClose }) {
@@ -339,37 +352,37 @@
       <>
         {/* Scrim */}
         <div onClick={onClose} style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.5)', zIndex:40 }} />
-        {/* Drawer panel */}
-        <div style={{ position:'absolute', top:0, left:0, bottom:0, width:300, background:'#1A1A1A', zIndex:50, display:'flex', flexDirection:'column', overflowY:'auto' }}>
-          {/* Logo */}
-          <div style={{ padding:'48px 20px 20px', borderBottom:'1px solid rgba(255,255,255,0.08)' }}>
-            <svg width="90" height="22" viewBox="0 0 90 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <text x="0" y="18" fontFamily="-apple-system,BlinkMacSystemFont,Inter,sans-serif" fontWeight="700" fontSize="20" fill="white">motive</text>
-            </svg>
+        {/* Drawer panel — Driver App Core "new-sidebar": always-dark #171717 */}
+        <div style={{ position:'absolute', top:0, left:0, bottom:0, width:300, background:'#171717', zIndex:50, display:'flex', flexDirection:'column', overflowY:'auto' }}>
+          {/* app-branding — logo 108×32, scaled to fit (not stretched) */}
+          <div style={{ display:'flex', flexDirection:'column', alignItems:'center', padding:'48px 20px 12px 16px' }}>
+            <MotiveLogo width={108} height={32} color="white" />
           </div>
-          {/* Nav items */}
-          <div style={{ flex:1, padding:'8px 0' }}>
+          {/* items — p-8, each row p-16 gap-12 rounded-8 */}
+          <div style={{ flex:1, display:'flex', flexDirection:'column', padding:8 }}>
             {NAV_ITEMS.map(item => (
               <div key={item.label} onClick={onClose} style={{
-                display:'flex', alignItems:'center', gap:14, padding:'13px 20px',
-                background: item.active ? 'rgba(255,255,255,0.08)' : 'transparent',
+                display:'flex', alignItems:'center', gap:12, padding:16, borderRadius:8, width:'100%',
+                background: item.active ? '#2E2E2E' : 'transparent',  // background/on-always-dark/active
                 cursor:'pointer',
               }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={item.active ? 'white' : 'rgba(255,255,255,0.5)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  {item.icon.split(' M').map((d, i) => <path key={i} d={i === 0 ? d : 'M' + d} />)}
-                </svg>
-                <span style={{ fontSize:15, fontWeight: item.active ? 600 : 400, color: item.active ? 'white' : 'rgba(255,255,255,0.6)' }}>{item.label}</span>
+                <Icon name={item.icon} size={24} color="white" />
+                <span style={{ flex:1, fontSize:16, lineHeight:'24px', letterSpacing:'-0.176px', fontWeight: item.active ? 500 : 400, color:'white' }}>{item.label}</span>
               </div>
             ))}
           </div>
-          {/* Footer */}
-          <div style={{ borderTop:'1px solid rgba(255,255,255,0.08)', padding:'16px 20px 32px' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:14 }}>
-              <Icon name="person" size={18} color="rgba(255,255,255,0.4)" />
-              <span style={{ fontSize:13, color:'rgba(255,255,255,0.45)' }}>youza.khan@gomotive.com</span>
+          {/* user-account — border-top rgba(255,255,255,0.09), p-24 */}
+          <div style={{ display:'flex', gap:12, alignItems:'center', padding:24, borderTop:'1px solid rgba(255,255,255,0.09)' }}>
+            <Icon name="avatar" size={24} color="white" />
+            <div style={{ flex:1, minWidth:0, display:'flex', flexDirection:'column', gap:12 }}>
+              <span style={{ fontSize:16, lineHeight:'24px', letterSpacing:'-0.176px', color:'white', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>youza.khan@gomotive.com</span>
+              {/* new-button on dark: neutral #2E2E2E bg, active text #0094FF */}
+              <button style={{ alignSelf:'flex-start', background:'#2E2E2E', border:'none', borderRadius:8, color:'#0094FF', fontSize:16, fontWeight:500, lineHeight:'24px', letterSpacing:'-0.176px', padding:'8px 16px', cursor:'pointer' }}>Log out</button>
             </div>
-            <button style={{ background:'rgba(255,255,255,0.08)', border:'none', borderRadius:8, color: C.textActive, fontSize:14, fontWeight:600, padding:'10px 20px', cursor:'pointer', width:'100%' }}>Log out</button>
-            <div style={{ marginTop:14, fontSize:11, color:'rgba(255,255,255,0.2)', textAlign:'center' }}>vxx.x</div>
+          </div>
+          {/* version — pl-60 */}
+          <div style={{ borderTop:'1px solid rgba(255,255,255,0.09)', padding:'12px 16px 12px 60px' }}>
+            <span style={{ fontSize:12, fontWeight:500, lineHeight:'16px', textTransform:'uppercase', color:'rgba(255,255,255,0.57)' }}>v14.2.0</span>
           </div>
         </div>
       </>
@@ -413,7 +426,7 @@
           <button onClick={() => setShowNavDrawer(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px 8px 8px 0', display: 'flex', alignItems: 'center', color: 'white', zIndex: 1 }}>
             <Icon name="hamburger" size={22} color="white" />
           </button>
-          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 17, fontWeight: 600, color: 'white', pointerEvents: 'none' }}>Motive Card</span>
+          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 20, fontWeight: 600, letterSpacing: '-0.34px', color: 'white', pointerEvents: 'none' }}>Motive Card</span>
         </div>
         {showNavDrawer && <NavDrawer onClose={() => setShowNavDrawer(false)} />}
 
@@ -486,14 +499,11 @@
 
           {/* ── CHANGE 2: Recent Transactions widget ── */}
           {/* TODO: requires new GET /fleetcard/driverapp/v[n]/cards/transactions endpoint — cross-card aggregation not yet available */}
-          <div style={{ background: 'white', marginTop: 10, marginBottom: 16 }}>
-            {/* Section header */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px', height: 52, borderBottom: `1px solid ${C.stroke}` }}>
-              <span style={{ fontSize: 18, fontWeight: 600, color: C.textPrimary }}>Recent Transactions</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }} onClick={onViewTransactions}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: C.textActive }}>All</span>
-                <Icon name="arrow-right" size={16} color={C.textActive} />
-              </div>
+          <div style={{ background: 'white', margin: '10px 16px 16px', borderRadius: 8, overflow: 'hidden', boxShadow: '0px 4px 8px 0px rgba(0,0,0,0.05)' }}>
+            {/* Widget Header — Driver App Core node 2094:4404 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '12px 16px', borderBottom: '1px solid #E3E3E3', cursor: 'pointer' }} onClick={onViewTransactions}>
+              <span style={{ flex: 1, fontSize: 21, fontWeight: 600, lineHeight: '28px', letterSpacing: '-0.357px', color: '#2E2E2E' }}>Recent Transactions</span>
+              <Icon name="arrow-right" size={24} color="#2E2E2E" />
             </div>
 
             {/* Top 3 across all cards */}
@@ -502,7 +512,7 @@
                 <div style={{ cursor: onViewTxDetail ? 'pointer' : 'default' }} onClick={() => onViewTxDetail && onViewTxDetail(tx)}>
                   <TxRow tx={tx} showCard={true} />
                 </div>
-                {i < 2 && <div style={{ height: 1, background: C.stroke, marginLeft: 16 }}/>}
+                {i < 2 && <div style={{ height: 1, background: '#E3E3E3' }}/>}
               </React.Fragment>
             ))}
           </div>
@@ -605,7 +615,7 @@
           <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px 8px 8px 0', display: 'flex', alignItems: 'center', color: C.textActive, zIndex: 1 }} onClick={onBack}>
             <Icon name="arrow-left" size={20} />
           </button>
-          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 17, fontWeight: 600, color: C.textPrimary, pointerEvents: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', padding: '0 56px' }}>{card.name}</span>
+          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 20, fontWeight: 600, letterSpacing: '-0.34px', color: C.textPrimary, pointerEvents: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', padding: '0 56px' }}>{card.name}</span>
         </div>
 
         <div style={{ flex: 1, overflowY: 'auto' }}>
@@ -650,14 +660,11 @@
             })()}
           </div>
 
-          {/* Per-card transactions */}
-          <div style={{ background: C.bgPrimary, margin: '10px 16px 0', borderRadius: 'var(--phx-r-xl)', overflow: 'hidden', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px', height: 52, borderBottom: `1px solid ${C.stroke}` }}>
-              <span style={{ fontSize: 18, fontWeight: 600, color: C.textPrimary }}>Recent Transactions</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }} onClick={() => onViewAllTxs && onViewAllTxs()}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: C.textActive }}>All</span>
-                <Icon name="arrow-right" size={16} color={C.textActive} />
-              </div>
+          {/* Per-card transactions — Driver App Core "Task Widget" (node 2094:4403) */}
+          <div style={{ background: C.bgPrimary, margin: '10px 16px 0', borderRadius: 8, overflow: 'hidden', boxShadow: '0px 4px 8px 0px rgba(0,0,0,0.05)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '12px 16px', borderBottom: '1px solid #E3E3E3', cursor: 'pointer' }} onClick={() => onViewAllTxs && onViewAllTxs()}>
+              <span style={{ flex: 1, fontSize: 21, fontWeight: 600, lineHeight: '28px', letterSpacing: '-0.357px', color: '#2E2E2E' }}>Recent Transactions</span>
+              <Icon name="arrow-right" size={24} color="#2E2E2E" />
             </div>
             {cardTxs.length > 0
               ? cardTxs.map((tx, i) => (
@@ -665,7 +672,7 @@
                   <div onClick={() => onViewTxDetail && onViewTxDetail(tx)}>
                     <TxRow tx={tx} showCard={false} />
                   </div>
-                  {i < cardTxs.length - 1 && <div style={{ height: 1, background: C.stroke, marginLeft: 16 }}/>}
+                  {i < cardTxs.length - 1 && <div style={{ height: 1, background: '#E3E3E3' }}/>}
                 </React.Fragment>
               ))
               : <div style={{ padding: '32px 16px', textAlign: 'center', fontSize: 14, color: C.textSecondary }}>No recent transactions</div>
@@ -712,7 +719,7 @@
           <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px 8px 8px 0', display: 'flex', alignItems: 'center', color: C.textActive, zIndex: 1 }} onClick={onBack}>
             <Icon name="arrow-left" size={20} />
           </button>
-          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 17, fontWeight: 600, color: C.textPrimary, pointerEvents: 'none' }}>Transactions</span>
+          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 20, fontWeight: 600, letterSpacing: '-0.34px', color: C.textPrimary, pointerEvents: 'none' }}>Transactions</span>
         </div>
 
         {/* Filter chips — PHX FilterRow pattern approximated in CDN context */}
@@ -737,7 +744,7 @@
                     <div onClick={() => onViewTxDetail && onViewTxDetail(tx)}>
                       <TxRow tx={tx} showCard={true} />
                     </div>
-                    {i < txs.length - 1 && <div style={{ height: 1, background: C.stroke, marginLeft: 16 }}/>}
+                    {i < txs.length - 1 && <div style={{ height: 1, background: '#E3E3E3' }}/>}
                   </React.Fragment>
                 ))}
               </div>
@@ -797,7 +804,7 @@
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: C.bgTertiary, overflow: 'hidden' }}>
         <div style={{ display: 'flex', alignItems: 'center', height: 56, padding: '0 16px', background: C.bgPrimary, borderBottom: `1px solid ${C.stroke}`, flexShrink: 0, position: 'relative' }}>
           <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px 8px 8px 0', display: 'flex', alignItems: 'center', color: C.textActive, zIndex: 1 }} onClick={onBack}><Icon name="arrow-left" size={20} /></button>
-          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 17, fontWeight: 600, color: C.textPrimary, pointerEvents: 'none' }}>Spend Limits</span>
+          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 20, fontWeight: 600, letterSpacing: '-0.34px', color: C.textPrimary, pointerEvents: 'none' }}>Spend Limits</span>
         </div>
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {/* Period summary card */}
@@ -863,7 +870,7 @@
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: C.bgTertiary, overflow: 'hidden' }}>
         <div style={{ display: 'flex', alignItems: 'center', height: 56, padding: '0 16px', background: C.bgPrimary, borderBottom: `1px solid ${C.stroke}`, flexShrink: 0, position: 'relative' }}>
           <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px 8px 8px 0', display: 'flex', alignItems: 'center', color: C.textActive, zIndex: 1 }} onClick={onBack}><Icon name="arrow-left" size={20} /></button>
-          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 17, fontWeight: 600, color: C.textPrimary, pointerEvents: 'none' }}>Transaction</span>
+          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 20, fontWeight: 600, letterSpacing: '-0.34px', color: C.textPrimary, pointerEvents: 'none' }}>Transaction</span>
         </div>
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {/* Hero */}
@@ -908,7 +915,7 @@
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, background: '#1A1A1A', overflow: 'hidden' }}>
         <div style={{ display: 'flex', alignItems: 'center', height: 56, padding: '0 16px', background: '#2E2E2E', borderBottom: '1px solid rgba(255,255,255,0.08)', flexShrink: 0, position: 'relative' }}>
           <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px 8px 8px 0', display: 'flex', alignItems: 'center', color: 'rgba(255,255,255,0.7)', zIndex: 1 }} onClick={onBack}><Icon name="arrow-left" size={20} /></button>
-          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 17, fontWeight: 600, color: 'white', pointerEvents: 'none' }}>Deactivated Cards</span>
+          <span style={{ position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: 20, fontWeight: 600, letterSpacing: '-0.34px', color: 'white', pointerEvents: 'none' }}>Deactivated Cards</span>
         </div>
         <div style={{ flex: 1, overflowY: 'auto', padding: '16px 16px 0' }}>
           <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>{DEACTIVATED_CARDS.length} deactivated</div>
