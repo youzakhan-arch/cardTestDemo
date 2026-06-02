@@ -70,6 +70,22 @@
     </svg>
   );
 
+  // Official Motive wordmark — same vector as driver app (Figma node 2094:4261).
+  // preserveAspectRatio="xMidYMid meet" prevents stretching.
+  const MotiveLogo = ({ width=108, height=32, color='white' }) => (
+    <svg width={width} height={height} viewBox="0 0 108 24.9449" fill="none"
+         preserveAspectRatio="xMidYMid meet" aria-label="Motive"
+         xmlns="http://www.w3.org/2000/svg" style={{ display:'block' }}>
+      <path d="M59.1415 10.2776V20.4907L63.3205 20.4822V24.7292H54.3866V10.2742H51.6838V6.136H54.3849V0H59.1415V6.1394H63.3205V10.2776H59.1415Z" fill={color}/>
+      <path d="M70.0884 0V4.23336H70.0866V4.23676H65.3419V0H70.0884Z" fill={color}/>
+      <path d="M18.3349 6.13428H12.6525L4.15861 20.4907H0V24.7376H6.64054L13.5903 12.9804V24.7292H19.1962L26.1137 12.9464V24.7292H30.8703V6.13428H25.1623L18.3349 17.6656V6.13428Z" fill={color}/>
+      <path d="M65.3369 6.13428H70.0935V24.7292H65.3369V6.13428Z" fill={color}/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M41.999 5.91854H42.0346C47.1514 5.91854 51.2216 10.2063 51.2216 15.4317C51.2216 20.6572 47.1514 24.9449 42.0346 24.9449H41.999C36.8839 24.9449 32.7763 20.6979 32.7763 15.4317C32.7763 10.1655 36.8839 5.91854 41.999 5.91854ZM41.999 20.1883H42.0346V20.1849C44.5216 20.1849 46.4668 18.0597 46.4701 15.4317C46.4701 12.836 44.4843 10.6751 42.0346 10.6751H41.999C39.478 10.6751 37.5329 12.8003 37.5329 15.4317C37.5329 18.0631 39.478 20.1883 41.999 20.1883Z" fill={color}/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M99.4857 20.72C101.397 20.72 102.588 19.6039 102.912 18.6288H107.669C107.489 20.1798 105.433 24.9415 99.4823 24.9415C94.1091 24.9415 90.139 20.9018 90.139 15.4181C90.139 10.0449 94.2161 5.89646 99.3362 5.89646C104.205 5.89646 108 10.1519 108 15.3468C108 15.887 107.964 16.3932 107.929 16.7534H95.0179C95.339 19.0263 96.7099 20.72 99.4857 20.72ZM95.1691 13.3626H103.318C102.809 11.494 101.551 10.1162 99.3515 10.1162C97.0463 10.1162 95.7042 11.4515 95.1691 13.3626Z" fill={color}/>
+      <path d="M81.4261 18.301L85.9585 6.13769V6.14788H91.0259L83.7891 24.7292H79.002L71.8076 6.13769H76.8938L81.4261 18.301Z" fill={color}/>
+    </svg>
+  );
+
   // ── Shared mock data ──────────────────────────────────────────────────────────
   const CARDS = [
     { id:'c1', name:'Truck #198344', last4:'1234', vehicle:'Truck #198344', driver:'Mike Torres', type:'physical', spent:1240, limit:2000, gradient:['#1e3a5f','#0f1f33'] },
@@ -133,7 +149,7 @@
     return (
       <div style={{ display:'flex', alignItems:'center', height:56, padding:'0 16px', background:'var(--summary)', flexShrink:0, position:'relative' }}>
         <Icon name="hamburger" size={22} color="white" />
-        <span style={{ position:'absolute', left:0, right:0, textAlign:'center', fontSize:17, fontWeight:600, color:'white', pointerEvents:'none' }}>{title}</span>
+        <span style={{ position:'absolute', left:0, right:0, textAlign:'center', fontSize:20, fontWeight:600, letterSpacing:'-0.34px', color:'white', pointerEvents:'none' }}>{title}</span>
       </div>
     );
   }
@@ -161,16 +177,13 @@
     );
   }
 
-  function SectionHeader({ children, action }) {
+  // Driver App Core "Task Widget" header — 21px #2E2E2E title, arrow-right 24px, #E3E3E3 border.
+  function SectionHeader({ children, onClick }) {
     return (
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 16px', height:52, borderBottom:`1px solid ${C.stroke}` }}>
-        <span style={{ fontSize:18, fontWeight:600, color:C.textPrimary }}>{children}</span>
-        {action && (
-          <div style={{ display:'flex', alignItems:'center', gap:4, cursor:'pointer' }}>
-            <span style={{ fontSize:13, fontWeight:500, color:C.textActive }}>{action}</span>
-            <Icon name="arrow-right" size={16} color={C.textActive} />
-          </div>
-        )}
+      <div style={{ display:'flex', alignItems:'center', gap:16, padding:'12px 16px', borderBottom:'1px solid #E3E3E3', cursor: onClick ? 'pointer' : 'default' }}
+           onClick={onClick}>
+        <span style={{ flex:1, fontSize:21, fontWeight:600, lineHeight:'28px', letterSpacing:'-0.357px', color:'#2E2E2E' }}>{children}</span>
+        <Icon name="arrow-right" size={24} color="#2E2E2E" />
       </div>
     );
   }
@@ -229,7 +242,7 @@
           </div>
           {/* Transactions */}
           <div style={{ background:C.bgPrimary, marginTop:10 }}>
-            <SectionHeader action="All">Recent Transactions</SectionHeader>
+            <SectionHeader>Recent Transactions</SectionHeader>
             {TX.filter(t => t.card === card.last4).concat(TX).slice(0,3).map((tx,i) => (
               <React.Fragment key={i}>
                 {i>0 && <div style={{ height:1, background:C.stroke, marginLeft:16 }}/>}
@@ -283,7 +296,7 @@
           </div>
           {/* Transactions */}
           <div style={{ background:C.bgPrimary, marginTop:12 }}>
-            <SectionHeader action="All">Recent Transactions</SectionHeader>
+            <SectionHeader>Recent Transactions</SectionHeader>
             {TX.slice(0,4).map((tx,i) => (
               <React.Fragment key={tx.id}>
                 {i>0 && <div style={{ height:1, background:C.stroke, marginLeft:16 }}/>}
@@ -333,7 +346,7 @@
           </div>
           {/* Transactions card */}
           <div style={{ background:C.bgPrimary, marginTop:16, borderRadius:14, overflow:'hidden', boxShadow:'0 1px 4px rgba(0,0,0,0.06)' }}>
-            <SectionHeader action="All">Recent Transactions</SectionHeader>
+            <SectionHeader>Recent Transactions</SectionHeader>
             {TX.slice(0,3).map((tx,i) => (
               <React.Fragment key={tx.id}>
                 {i>0 && <div style={{ height:1, background:C.stroke, marginLeft:16 }}/>}
@@ -357,7 +370,7 @@
         <div style={{ background:'var(--summary)', flexShrink:0 }}>
           <div style={{ display:'flex', alignItems:'center', height:56, padding:'0 16px', position:'relative' }}>
             <Icon name="hamburger" size={22} color="white" />
-            <span style={{ position:'absolute', left:0, right:0, textAlign:'center', fontSize:17, fontWeight:600, color:'white', pointerEvents:'none' }}>Motive Card</span>
+            <span style={{ position:'absolute', left:0, right:0, textAlign:'center', fontSize:20, fontWeight:600, letterSpacing:'-0.34px', color:'white', pointerEvents:'none' }}>Motive Card</span>
           </div>
           {/* Segmented control */}
           <div style={{ display:'flex', gap:4, padding:'0 16px 12px' }}>
