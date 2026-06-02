@@ -65,7 +65,7 @@
 
   const Icon = ({ name, size=20, color='currentColor' }) => (
     <svg width={size} height={size} viewBox="0 0 16 16" fill={color} aria-hidden="true"
-         style={{ display:'inline-block', flexShrink:0, verticalAlign:'middle' }}>
+         style={{ display:'inline-block', flexShrink:0, verticalAlign:'middle', color:color }}>
       <use href={`#${name}`} />
     </svg>
   );
