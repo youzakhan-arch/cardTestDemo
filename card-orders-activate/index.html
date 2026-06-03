@@ -279,11 +279,12 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 /* card rows */
 .card-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid var(--stroke-inactive)}
 .card-row:last-child{border-bottom:none}
-/* checkbox — hidden by default, shown in edit mode for unactivated cards */
-.cr-cb{display:none;margin-bottom:4px}
-.cards-card.edit-mode .card-row:not(.activated) .cr-cb{display:block}
+/* checkbox — hidden by default; shows inline with driver name in edit mode */
+.cr-cb{display:none;align-items:center;flex-shrink:0}
+.cards-card.edit-mode .card-row:not(.activated) .cr-cb{display:flex}
 .cr-cb input{width:16px;height:16px;accent-color:var(--blue-50);cursor:pointer}
-.cr-info{min-width:0}
+.cr-info{min-width:0;display:flex;flex-direction:column;gap:1px}
+.cr-name-row{display:flex;align-items:center;gap:8px}
 .cr-driver{font:600 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
 .cr-detail{font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px;letter-spacing:.2px}
 .cr-status{font:400 13px/18px 'Inter',system-ui,sans-serif;flex-shrink:0;white-space:nowrap}
@@ -736,8 +737,10 @@ function renderCardsSection(rowId) {
         const checked = _selectedCardIds.has(c.id);
         return `<div class="card-row ${isAct ? 'activated' : ''}">` +
           `<div class="cr-info">` +
-            `<span class="cr-cb"><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleCardSel('${c.id}',this.checked)"/></span>` +
-            `<div class="cr-driver">${c.assignedTo}</div>` +
+            `<div class="cr-name-row">` +
+              `<span class="cr-cb"><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleCardSel('${c.id}',this.checked)"/></span>` +
+              `<div class="cr-driver">${c.assignedTo}</div>` +
+            `</div>` +
             `<div class="cr-detail">••••${c.cardLast4} · ${c.spendProfile}</div>` +
           `</div>` +
           `<div class="cr-status ${isAct ? 'done' : 'ready'}">${isAct ? 'Activated' : 'Ready to activate'}</div>` +
