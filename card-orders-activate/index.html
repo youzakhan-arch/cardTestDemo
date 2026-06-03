@@ -226,6 +226,40 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .btn-secondary{background:var(--bg-primary);color:var(--text-standard);border:1px solid var(--stroke-standard);border-radius:var(--r-sm);padding:6px 16px;font:400 13px/18px 'Inter',system-ui,sans-serif;cursor:pointer}
 .btn-secondary:hover{background:var(--bg-secondary)}
 
+/* ─── ORDER STATUS CARD (Figma: "Order has been placed") ─── */
+.os-card{background:var(--bg-primary);border-radius:var(--r-sm);box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.24);padding:20px;gap:16px;display:flex;flex-direction:column}
+.os-title{font:600 18px/24px 'Inter',system-ui,sans-serif;letter-spacing:-.014em;color:var(--text-standard);margin-bottom:4px}
+.os-sub{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued)}
+.os-steps{display:flex;gap:8px;height:64px;align-items:stretch}
+.os-step{display:flex;flex:1;flex-direction:column;gap:8px;align-items:flex-start;justify-content:center;min-width:0}
+.os-step:last-child{flex:0 0 auto}
+.os-step-top{display:flex;gap:8px;align-items:center;width:100%}
+.os-dot{width:20px;height:20px;flex-shrink:0}
+.os-line{flex:1;height:1px;min-width:4px}
+.os-line.done{background:var(--text-positive)}
+.os-line.current{background:var(--stroke-standard)}
+.os-line.pending{background:var(--stroke-inactive)}
+.os-step-bot{display:flex;flex-direction:column;gap:4px;padding-right:12px;width:100%}
+.os-step:last-child .os-step-bot{padding-right:0}
+.os-label{font:600 12px/16px 'Inter',system-ui,sans-serif}
+.os-label.done{color:var(--text-positive)}
+.os-label.current{color:var(--text-emphasis)}
+.os-label.pending{color:var(--text-subdued);font-weight:400}
+.os-date{font:400 10px/12px 'Inter',system-ui,sans-serif;letter-spacing:.8px;text-transform:uppercase;color:var(--text-subdued)}
+
+/* ─── CARD ORDER DETAILS CARD (Figma: "Card order details") ─── */
+.cod-card{background:var(--bg-primary);border-radius:var(--r-sm);box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.24);overflow:hidden}
+.cod-head{padding:12px 20px;border-bottom:1px solid var(--stroke-inactive)}
+.cod-head-title{font:600 18px/24px 'Inter',system-ui,sans-serif;letter-spacing:-.014em;color:var(--text-emphasis)}
+.cod-body{padding:0 20px 16px}
+.cod-section{padding:12px 0 8px}
+.cod-section-title{font:600 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-emphasis);margin-bottom:6px;letter-spacing:-.006em}
+.cod-addr{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard);display:flex;flex-direction:column;gap:2px}
+.cod-divider{height:1px;background:var(--stroke-inactive);margin:0}
+.cod-field{padding:10px 0 0}
+.cod-field-label{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-bottom:2px}
+.cod-field-val{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard)}
+
 /* ─── CARDS-IN-ORDER SECTION (settings view→edit pattern) ─── */
 .cards-card{background:var(--bg-primary);border:1px solid var(--stroke-inactive);border-radius:var(--r-sm);overflow:hidden}
 .cards-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;background:var(--bg-primary);border-bottom:1px solid var(--stroke-inactive);transition:background .15s}
@@ -242,7 +276,6 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 /* card rows */
 .card-row{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid var(--stroke-inactive)}
 .card-row:last-child{border-bottom:none}
-.card-row.activated{opacity:.6}
 .cr-mark{width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .cr-mark svg{width:20px;height:20px;color:var(--text-positive)}
 .cr-cb{display:none}
@@ -518,12 +551,12 @@ const STATUS_OPTIONS = ['Draft', 'Scheduled', 'Processing', 'Shipped', 'Complete
 // ═══════════════════════════════════════════════════════════
 const ORDERS = {
   tr1: {id:'77340102',mode:'virtual',state:'eligible',cardType:'virtual',orderType:'New',createdBy:'Priya Sharma',date:'05/01/2026',rewardIssued:!0,timeline:['Scheduled:Apr 28','Order placed:Apr 30','Processed:Apr 30','Shipped:—','Completed:May 01'],cards:[{id:'c1',cardLast4:'4521',assignedTo:'Priya Sharma',spendProfile:'Drivers'}]},
-  tr2: {id:'19824719',mode:'standard',state:'eligible',cardType:'physical',orderType:'New',createdBy:'Sarah Mitchell',date:'04/28/2026',shippingAddr:'Motive Internal Testing · 4500 N Oak Trafficway, Kansas City, MO',timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:Apr 28'],cards:[{id:'c1',cardLast4:'9723',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c2',cardLast4:'8104',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c3',cardLast4:'2298',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c4',cardLast4:'7456',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c5',cardLast4:'3911',assignedTo:'Marcus Webb',spendProfile:'Maintenance'}]},
-  tr3: {id:'23094050',mode:'preconfig',state:'eligible',cardType:'physical',orderType:'New',createdBy:'James Ortega',date:'04/25/2026',eta:'Arriving in 3 days',shippingAddr:'100 Main St, Austin, TX 78701',timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:—'],cards:[{id:'c1',cardLast4:'6612',assignedTo:'James Ortega',spendProfile:'Drivers'},{id:'c2',cardLast4:'0048',assignedTo:'James Ortega',spendProfile:'Drivers'},{id:'c3',cardLast4:'8842',assignedTo:'Diego Sanches',spendProfile:'Drivers'}]},
-  tr4: {id:'11420833',mode:'replacement-preconfig',state:'eligible',cardType:'physical',orderType:'Replacement',createdBy:'Marcus Webb',date:'04/27/2026',eta:'Arriving in 5 days',shippingAddr:'Motive Internal Testing · 10799 Wheeler Trace, Hampton, GA 30228',timeline:['Scheduled:Apr 04','Order placed:Apr 26','Processed:Apr 27','Shipped:Apr 28','Completed:—'],cards:[{id:'c1',cardLast4:'2284',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c2',cardLast4:'5519',assignedTo:'Marcus Webb',spendProfile:'Drivers'}]},
-  tr5: {id:'87341022',mode:'standard',state:'eligible',cardType:'physical',orderType:'New',createdBy:'Pradeep Kumar',date:'04/29/2026',shippingAddr:'Motive HQ · 333 W San Carlos St, San Jose, CA 95110',timeline:['Scheduled:Apr 18','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 26','Completed:Apr 29'],cards:[{id:'c1',cardLast4:'1287',assignedTo:'Carlos Mendez',spendProfile:'Drivers'},{id:'c2',cardLast4:'6629',assignedTo:'Carlos Mendez',spendProfile:'Drivers'},{id:'c3',cardLast4:'3344',assignedTo:'Lisa Chen',spendProfile:'Drivers'},{id:'c4',cardLast4:'9088',assignedTo:'Lisa Chen',spendProfile:'Drivers'},{id:'c5',cardLast4:'5511',assignedTo:'Robert Johnson',spendProfile:'Maintenance'},{id:'c6',cardLast4:'2901',assignedTo:'Habibah Shahid Naeem',spendProfile:'Drivers'},{id:'c7',cardLast4:'7842',assignedTo:'Maria Garcia',spendProfile:'Drivers'},{id:'c8',cardLast4:'4400',assignedTo:'Maria Garcia',spendProfile:'Fleet ops'}]},
-  tr_diego: {id:'60042851',mode:'standard',state:'eligible',cardType:'physical',orderType:'New',createdBy:'Diego Sanches',date:'04/30/2026',shippingAddr:'Motive Internal Testing · 2200 Pine Ave, Sacramento, CA 95825',timeline:['Scheduled:Apr 21','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 27','Completed:Apr 30'],cards:[{id:'c1',cardLast4:'3471',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c2',cardLast4:'9024',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c3',cardLast4:'1198',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c4',cardLast4:'6655',assignedTo:'Diego Sanches',spendProfile:'Maintenance'}]},
-  tr6: {id:'55903128',mode:'preconfig',state:'eligible',cardType:'physical',orderType:'New',createdBy:'David Park',date:'04/26/2026',eta:'Arriving in 1 day',shippingAddr:'8910 Commerce Ave, Dallas, TX 75201',timeline:['Scheduled:Apr 22','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 26','Completed:—'],cards:[{id:'c1',cardLast4:'2200',assignedTo:'David Park',spendProfile:'Drivers'}]},
+  tr2: {id:'19824719',mode:'standard',state:'eligible',cardType:'physical',orderType:'New',createdBy:'Sarah Mitchell',date:'04/28/2026',shippingAddr:'4500 N Oak Trafficway, Kansas City, MO 64116',shippingContact:{name:'Sarah Mitchell',phone:'(816) 555-0142'},shippingMethod:'Standard shipping (7–10 business days)',timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:Apr 28'],cards:[{id:'c1',cardLast4:'9723',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c2',cardLast4:'8104',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c3',cardLast4:'2298',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c4',cardLast4:'7456',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c5',cardLast4:'3911',assignedTo:'Marcus Webb',spendProfile:'Maintenance'}]},
+  tr3: {id:'23094050',mode:'preconfig',state:'eligible',cardType:'physical',orderType:'New',createdBy:'James Ortega',date:'04/25/2026',eta:'Arriving in 3 days',shippingAddr:'100 Main St, Austin, TX 78701',shippingContact:{name:'James Ortega',phone:'(512) 555-0189'},shippingMethod:'Standard shipping (7–10 business days)',timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:—'],cards:[{id:'c1',cardLast4:'6612',assignedTo:'James Ortega',spendProfile:'Drivers'},{id:'c2',cardLast4:'0048',assignedTo:'James Ortega',spendProfile:'Drivers'},{id:'c3',cardLast4:'8842',assignedTo:'Diego Sanches',spendProfile:'Drivers'}]},
+  tr4: {id:'11420833',mode:'replacement-preconfig',state:'eligible',cardType:'physical',orderType:'Replacement',createdBy:'Marcus Webb',date:'04/27/2026',eta:'Arriving in 5 days',shippingAddr:'10799 Wheeler Trace, Hampton, GA 30228',shippingContact:{name:'Marcus Webb',phone:'(678) 555-0213'},shippingMethod:'Express shipping (2–3 business days)',timeline:['Scheduled:Apr 04','Order placed:Apr 26','Processed:Apr 27','Shipped:Apr 28','Completed:—'],cards:[{id:'c1',cardLast4:'2284',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c2',cardLast4:'5519',assignedTo:'Marcus Webb',spendProfile:'Drivers'}]},
+  tr5: {id:'87341022',mode:'standard',state:'eligible',cardType:'physical',orderType:'New',createdBy:'Pradeep Kumar',date:'04/29/2026',shippingAddr:'333 W San Carlos St, San Jose, CA 95110',shippingContact:{name:'Pradeep Kumar',phone:'(408) 555-0177'},shippingMethod:'Standard shipping (7–10 business days)',timeline:['Scheduled:Apr 18','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 26','Completed:Apr 29'],cards:[{id:'c1',cardLast4:'1287',assignedTo:'Carlos Mendez',spendProfile:'Drivers'},{id:'c2',cardLast4:'6629',assignedTo:'Carlos Mendez',spendProfile:'Drivers'},{id:'c3',cardLast4:'3344',assignedTo:'Lisa Chen',spendProfile:'Drivers'},{id:'c4',cardLast4:'9088',assignedTo:'Lisa Chen',spendProfile:'Drivers'},{id:'c5',cardLast4:'5511',assignedTo:'Robert Johnson',spendProfile:'Maintenance'},{id:'c6',cardLast4:'2901',assignedTo:'Habibah Shahid Naeem',spendProfile:'Drivers'},{id:'c7',cardLast4:'7842',assignedTo:'Maria Garcia',spendProfile:'Drivers'},{id:'c8',cardLast4:'4400',assignedTo:'Maria Garcia',spendProfile:'Fleet ops'}]},
+  tr_diego: {id:'60042851',mode:'standard',state:'eligible',cardType:'physical',orderType:'New',createdBy:'Diego Sanches',date:'04/30/2026',shippingAddr:'2200 Pine Ave, Sacramento, CA 95825',shippingContact:{name:'Diego Sanches',phone:'(916) 555-0134'},shippingMethod:'Standard shipping (7–10 business days)',timeline:['Scheduled:Apr 21','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 27','Completed:Apr 30'],cards:[{id:'c1',cardLast4:'3471',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c2',cardLast4:'9024',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c3',cardLast4:'1198',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c4',cardLast4:'6655',assignedTo:'Diego Sanches',spendProfile:'Maintenance'}]},
+  tr6: {id:'55903128',mode:'preconfig',state:'eligible',cardType:'physical',orderType:'New',createdBy:'David Park',date:'04/26/2026',eta:'Arriving in 1 day',shippingAddr:'8910 Commerce Ave, Dallas, TX 75201',shippingContact:{name:'David Park',phone:'(214) 555-0198'},shippingMethod:'Standard shipping (7–10 business days)',timeline:['Scheduled:Apr 22','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 26','Completed:—'],cards:[{id:'c1',cardLast4:'2200',assignedTo:'David Park',spendProfile:'Drivers'}]},
   tr7: {id:'67204819',mode:null,state:'scheduled',cardType:'physical',orderType:'New',createdBy:'Habibah Shahid Naeem',date:'05/05/2026',cards:[]},
   tr8: {id:'23056022',mode:null,state:'ineligible',cardType:'physical',orderType:'New',createdBy:'Varun M',date:'04/29/2026',cards:[]},
   tr9: {id:'45821703',mode:null,state:'ineligible',cardType:'physical',orderType:'New',createdBy:'Lisa Chen',date:'04/24/2026',cards:[]},
@@ -598,26 +631,83 @@ function renderOrderDetailsContent(rowId) {
   const o = ORDERS[rowId];
   const m = ROW_META[rowId];
   document.getElementById('odBcId').textContent = '#' + m.id;
-  
-  const timelineHtml = o.timeline ? o.timeline.map((step, i) => {
-    const [label, date] = step.split(':');
-    const done = date !== '—';
-    return `<div class="tl-step ${done ? '' : 'pending'}"><div class="tl-dot">${done ? '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 11l-2-2 1-1 1 1 3-3 1 1-4 4z"/></svg>' : ''}</div><div class="tl-label">${label}</div><div class="tl-date">${date}</div></div>`;
-  }).join('') : '';
-  
-  document.getElementById('odContent').innerHTML = `
-    <div class="od-card">
-      <div class="od-card-title">#${m.id}</div>
-      <div class="od-card-sub">${m.detailsMain} · ${m.detailsSub}</div>
-      ${o.shippingAddr ? `<div class="od-row" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--stroke-inactive)"><div class="od-row-label">Shipping to</div><div class="od-row-val">${o.shippingAddr}</div></div>` : ''}
-      ${timelineHtml ? `<div style="margin-top:16px"><div style="font:600 13px/18px Inter,system-ui,sans-serif;color:var(--text-subdued);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Order timeline</div><div class="timeline">${timelineHtml}</div></div>` : ''}
-      <div class="od-modified">Last modified 05/01/2026 by ${m.by}</div>
-    </div>
-    ${renderCardsSection(rowId)}
-  `;
+  document.getElementById('odContent').innerHTML =
+    renderOrderStatusCard(rowId) +
+    (o.shippingAddr ? renderCardOrderDetails(rowId) : '') +
+    renderCardsSection(rowId);
 }
 
-// Cards-in-order section — settings-page view→edit pattern.
+// ── Order status card (Figma: "Order #X has been placed") ──────────────────
+function renderOrderStatusCard(rowId) {
+  const o = ORDERS[rowId];
+  const m = ROW_META[rowId];
+
+  // Derive 4-step progress from timeline data
+  const tl = o.timeline || [];
+  const getDate = label => { const s = tl.find(x => x.startsWith(label)); return s ? (s.split(':')[1] === '—' ? null : s.split(':')[1]) : null; };
+  const placedDate = getDate('Order placed');
+  const processedDate = getDate('Processed');
+  const shippedDate = getDate('Shipped');
+  const completedDate = getDate('Completed');
+
+  const steps = [
+    { label:'Order placed', date:placedDate, state: placedDate ? 'done' : 'pending' },
+    { label:'Processing',   date:processedDate, state: processedDate ? 'done' : (placedDate ? 'current' : 'pending') },
+    { label:'Shipped',      date:shippedDate, state: shippedDate ? 'done' : (processedDate ? 'current' : 'pending') },
+    { label:'Delivered',    date:completedDate, state: completedDate ? 'done' : (shippedDate ? 'current' : 'pending') },
+  ];
+
+  const stepHtml = steps.map((s, i) => {
+    const isLast = i === steps.length - 1;
+    const dot = s.state === 'done'
+      ? `<svg class="os-dot" viewBox="0 0 20 20" fill="none" style="color:var(--text-positive)"><circle cx="10" cy="10" r="8" fill="var(--bg-positive)" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 10.2l2 2 4.5-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      : s.state === 'current'
+      ? `<svg class="os-dot" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="var(--text-emphasis)" stroke-width="1.5"/><circle cx="10" cy="10" r="3" fill="var(--text-emphasis)"/></svg>`
+      : `<svg class="os-dot" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="var(--stroke-inactive)" stroke-width="1.5"/></svg>`;
+    const line = isLast ? '' : `<div class="os-line ${s.state}"></div>`;
+    return `<div class="os-step"><div class="os-step-top">${dot}${line}</div><div class="os-step-bot"><div class="os-label ${s.state}">${s.label}</div>${s.date ? `<div class="os-date">${s.date}</div>` : ''}</div></div>`;
+  }).join('');
+
+  const subtitles = {
+    'Completed': 'Your order has been delivered. Activate your cards below.',
+    'Shipped':   'Your order is on its way. You\'ll be notified once it\'s delivered.',
+    'Processing':'Your order is being processed. You\'ll be notified once it ships.',
+    'Scheduled': 'Your order is scheduled and will be processed soon.',
+    'Draft':     'This order is saved as a draft and has not been submitted.',
+    'Canceled':  'This order has been canceled.',
+  };
+  const sub = subtitles[m.status] || 'Your order has been placed.';
+
+  return `<div class="os-card"><div><div class="os-title">Order #${m.id} has been placed.</div><div class="os-sub">${sub}</div></div><div class="os-steps">${stepHtml}</div></div>`;
+}
+
+// ── Card order details card (Figma: shipping info + method) ────────────────
+function renderCardOrderDetails(rowId) {
+  const o = ORDERS[rowId];
+  const c = o.shippingContact || {};
+  const method = o.shippingMethod || 'Standard shipping (7–10 business days)';
+  return `<div class="cod-card">
+    <div class="cod-head"><div class="cod-head-title">Card order details</div></div>
+    <div class="cod-body">
+      <div class="cod-section">
+        <div class="cod-section-title">Shipping information</div>
+        <div class="cod-addr">
+          ${c.name ? `<span>${c.name}</span>` : ''}
+          ${c.phone ? `<span>${c.phone}</span>` : ''}
+          <span>${o.shippingAddr}</span>
+        </div>
+      </div>
+      <div class="cod-divider"></div>
+      <div class="cod-field">
+        <div class="cod-field-label">Shipping method</div>
+        <div class="cod-field-val">${method}</div>
+      </div>
+      <div class="cod-divider" style="margin-top:10px"></div>
+    </div>
+  </div>`;
+}
+
+// ── Replacement cards section — settings-page view→edit pattern ────────────
 // View: secondary "Activate" button + status-icon rows (driver = semi-heading, card detail = body, status on the side).
 // Edit: blue header bar, all checkboxes pre-selected, "Confirm activation (N)" + "Cancel".
 function renderCardsSection(rowId) {
@@ -654,7 +744,7 @@ function renderCardsSection(rowId) {
       }).join('');
 
   return `<div class="cards-card ${editing ? 'edit-mode' : ''}">` +
-    `<div class="cards-head"><div class="ch-title">Cards in this order</div><div class="ch-actions">${actions}</div></div>` +
+    `<div class="cards-head"><div class="ch-title">Replacement cards</div><div class="ch-actions">${actions}</div></div>` +
     rows +
   `</div>`;
 }
