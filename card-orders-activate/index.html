@@ -106,8 +106,9 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .td-main{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard)}
 .td-sub{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px}
 .c-id{width:120px}.c-date{width:120px}.c-by{width:180px}.c-type{width:110px}
-.c-details{width:300px}.c-status{width:120px;padding:12px}.c-space{flex:1;min-width:20px}
-.c-action{width:164px;padding:12px 24px 12px 8px;align-items:flex-end;justify-content:center;flex-shrink:0;overflow:visible;cursor:default}
+.c-details{flex:1;min-width:260px}.c-status{width:120px;padding:12px}
+.c-action{width:172px;padding:12px 24px 12px 12px;align-items:flex-end;justify-content:center;flex-shrink:0;overflow:visible;cursor:default;border-left:1px solid var(--stroke-inactive)}
+.thead .c-action{border-left:1px solid var(--stroke-inactive)}
 
 /* TAGS */
 .tag{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:var(--r-xs);font:400 13px/18px 'Inter',system-ui,sans-serif;white-space:nowrap}
@@ -368,13 +369,12 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
         <div class="th c-type">Type</div>
         <div class="th c-details">Order Details</div>
         <div class="th c-status">Status</div>
-        <div class="th c-space"></div>
         <div class="th c-action"></div>
       </div>
       <div id="ordersTbody"></div>
     </div>
   </div>
-  <div class="tf" id="tableFooter">Showing 15 results</div>
+  <div class="tf" id="tableFooter">Showing 16 results</div>
 </div>
 
 <!-- VIEW 2: ORDER DETAILS -->
@@ -546,6 +546,17 @@ const ORDERS = {
     timeline:['Scheduled:Apr 22','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 26','Completed:—'],
     cards:[ {id:'c1',cardLast4:'2200',assignedTo:'David Park',spendProfile:'Drivers'} ],
   },
+  tr_diego: {
+    id:'60042851', mode:'standard', state:'eligible', cardType:'physical', orderType:'New',
+    createdBy:'Diego Sanches', date:'04/30/2026', shippingAddr:'Motive Internal Testing · 2200 Pine Ave, Sacramento, CA 95825',
+    timeline:['Scheduled:Apr 21','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 27','Completed:Apr 30'],
+    cards:[
+      {id:'c1',cardLast4:'3471',assignedTo:'Diego Sanches',spendProfile:'Drivers'},
+      {id:'c2',cardLast4:'9024',assignedTo:'Diego Sanches',spendProfile:'Drivers'},
+      {id:'c3',cardLast4:'1198',assignedTo:'Diego Sanches',spendProfile:'Drivers'},
+      {id:'c4',cardLast4:'6655',assignedTo:'Diego Sanches',spendProfile:'Maintenance'},
+    ],
+  },
   tr7: { id:'67204819', mode:null, state:'scheduled',  cardType:'physical', orderType:'New',
     createdBy:'Habibah Shahid Naeem', date:'05/05/2026', cards:[] },
   tr8: { id:'23056022', mode:null, state:'ineligible', cardType:'physical', orderType:'New',
@@ -583,6 +594,7 @@ const ROW_META = {
   tr4: { id:'11420833', date:'04/27/2026', by:'Marcus Webb',          type:'Replacement', detailsMain:'2 Motive Cards',        detailsSub:'Lost card replacement · Arriving in 5 days',   status:'Shipped',    statusTag:'accent'   },
   tr5: { id:'87341022', date:'04/29/2026', by:'Pradeep Kumar',        type:'New',         detailsMain:'8 Motive Cards',        detailsSub:'Ready to activate · 5 drivers',                status:'Completed',  statusTag:'positive' },
   tr6: { id:'55903128', date:'04/26/2026', by:'David Park',           type:'New',         detailsMain:'1 Motive Card',         detailsSub:'Arriving in 1 day',                            status:'Shipped',    statusTag:'accent'   },
+  tr_diego: { id:'60042851', date:'04/30/2026', by:'Diego Sanches',  type:'New',         detailsMain:'4 Motive Cards',        detailsSub:'All assigned to Diego Sanches',                status:'Completed',  statusTag:'positive' },
   tr7: { id:'67204819', date:'05/05/2026', by:'Habibah Shahid Naeem', type:'New',         detailsMain:'2 Motive Cards',        detailsSub:'Scheduled for 05/05/2026',                     status:'Scheduled',  statusTag:'warning'  },
   tr8: { id:'23056022', date:'04/29/2026', by:'Varun M',              type:'New',         detailsMain:'1 Motive Card',         detailsSub:'3201, Long Beach, CA',                          status:'Processing', statusTag:'neutral'  },
   tr9: { id:'45821703', date:'04/24/2026', by:'Lisa Chen',            type:'New',         detailsMain:'4 Motive Cards',        detailsSub:'1500 Tech Park Dr, Austin, TX',                 status:'Processing', statusTag:'neutral'  },
@@ -650,7 +662,6 @@ function renderOrdersTable() {
       <div class="td c-type"><span class="td-main">${m.type}</span></div>
       <div class="td c-details"><span class="td-main">${m.detailsMain}</span><span class="td-sub">${m.detailsSub}</span></div>
       <div class="td c-status">${statusHtml}</div>
-      <div class="td c-space"></div>
       <div class="td c-action" onclick="event.stopPropagation()">${actionHtml}</div>
     </div>`;
   }).join('');
@@ -837,15 +848,20 @@ function activateFromOrderDetails() {
 // ═══════════════════════════════════════════════════════════
 function renderAcTable() {
   const o = ORDERS[_currentOrderId];
-  document.getElementById('acTbody').innerHTML = o.cards.map(c => {
-    const isActivated = c.activated;
+  const inactiveCards = o.cards.filter(c => !c.activated);
+  const tbody = document.getElementById('acTbody');
+  if (!inactiveCards.length) {
+    tbody.innerHTML = '<div style="padding:48px 24px;text-align:center;color:var(--text-subdued);font:400 14px/20px Inter,sans-serif">All cards in this order have been activated.</div>';
+    return;
+  }
+  tbody.innerHTML = inactiveCards.map(c => {
     const selected = _selectedCardIds.has(c.id);
-    return `<div class="ac-row ${isActivated ? 'activated' : ''} ${selected ? 'selected' : ''}" onclick="${isActivated ? '' : `toggleAcRowSelect('${c.id}')`}" data-card-id="${c.id}" data-driver="${c.assignedTo.toLowerCase()}">
-      <div class="ac-cb">${isActivated ? '' : `<input type="checkbox" ${selected ? 'checked' : ''} onclick="event.stopPropagation();toggleAcRowSelect('${c.id}')"/>`}</div>
-      <div class="ac-num"><span class="ac-num-val">•••• ${c.cardLast4}</span>${isActivated ? '<span class="ac-activated-tag">Activated</span>' : ''}</div>
+    return `<div class="ac-row ${selected ? 'selected' : ''}" onclick="toggleAcRowSelect('${c.id}')" data-card-id="${c.id}" data-driver="${c.assignedTo.toLowerCase()}">
+      <div class="ac-cb"><input type="checkbox" ${selected ? 'checked' : ''} onclick="event.stopPropagation();toggleAcRowSelect('${c.id}')"/></div>
+      <div class="ac-num"><span class="ac-num-val">•••• ${c.cardLast4}</span></div>
       <div class="ac-driver"><span class="ac-driver-val">${c.assignedTo}</span></div>
       <div class="ac-profile"><span class="ac-profile-val">${c.spendProfile}</span></div>
-      <div class="ac-actions">${isActivated ? '' : '<div class="ibtn" onclick="event.stopPropagation()" style="margin-left:auto"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="13" cy="8" r="1.3"/></svg></div>'}</div>
+      <div class="ac-actions"><div class="ibtn" onclick="event.stopPropagation()" style="margin-left:auto"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="13" cy="8" r="1.3"/></svg></div></div>
     </div>`;
   }).join('');
 }
