@@ -26,7 +26,9 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 
 /* SIDEBAR */
 .sb{width:184px;flex-shrink:0;background:#fff;border-right:1px solid var(--stroke-inactive);display:flex;flex-direction:column;overflow:hidden}
-.sb-logo{padding:14px 16px;border-bottom:1px solid var(--stroke-inactive);flex-shrink:0}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid var(--stroke-inactive);flex-shrink:0;display:flex;align-items:center}
+.sb-logo .logo-img{height:22px;display:block}
+.sb-logo .logo-svg{display:none}
 .sb-scroll{flex:1;overflow-y:auto;padding:8px 0}
 .sb-section{padding:8px 16px 2px;font:600 10px/12px 'Inter',system-ui,sans-serif;letter-spacing:.8px;text-transform:uppercase;color:var(--text-subdued);display:flex;align-items:center;justify-content:space-between}
 .sb-section svg{width:14px;height:14px;opacity:.6}
@@ -47,7 +49,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .view{flex:1;display:none;flex-direction:column;overflow:hidden}
 .view.active{display:flex}
 
-/* PAGE HEADER (orders view) */
+/* PAGE HEADER */
 .ph{padding:18px 24px 0;border-bottom:1px solid var(--stroke-inactive);flex-shrink:0}
 .ph-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .ph-title{font:700 20px/28px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
@@ -65,7 +67,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .tab:hover{color:var(--text-standard)}
 .tab.active{color:var(--text-accent);border-bottom-color:var(--text-accent);font-weight:600}
 
-/* SUB-PAGE HEADER (order details + activate cards) */
+/* SUB-PAGE HEADER */
 .sub-head{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--stroke-inactive);flex-shrink:0}
 .bc{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-subdued);display:flex;align-items:center;gap:8px}
 .bc a{color:var(--text-subdued);text-decoration:none;cursor:pointer}
@@ -75,7 +77,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .btn-close{border:1px solid var(--stroke-standard);border-radius:var(--r-xs);padding:6px 16px;font:400 13px/18px 'Inter',system-ui,sans-serif;cursor:pointer;color:var(--text-standard);background:var(--bg-primary)}
 .btn-close:hover{background:var(--bg-secondary)}
 
-/* FILTER ROW (orders view) */
+/* FILTER ROW */
 .fr{display:flex;align-items:center;gap:8px;padding:10px 24px;border-bottom:1px solid var(--stroke-inactive);flex-shrink:0;background:var(--bg-primary);position:relative;z-index:30}
 .search{display:flex;align-items:center;gap:6px;border:1px solid var(--stroke-standard);border-radius:var(--r-xs);padding:5px 10px;width:240px;flex-shrink:0;position:relative}
 .search svg{width:14px;height:14px;flex-shrink:0;color:var(--text-subdued)}
@@ -91,32 +93,21 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .sort:hover{background:var(--bg-secondary)}
 .sort svg{width:14px;height:14px;color:var(--text-subdued)}
 
-/* STATUS BAR */
-.status-bar{display:flex;align-items:center;gap:10px;padding:10px 24px;background:var(--bg-accent);border-bottom:1px solid rgba(0,115,231,.2);flex-shrink:0}
-.status-bar svg.sb-icon{width:16px;height:16px;color:var(--text-accent);flex-shrink:0}
-.status-bar-msg{font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-standard);flex:1}
-.status-bar-msg strong{color:var(--text-accent);font-weight:600}
-.status-bar-link{font:600 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-accent);cursor:pointer;white-space:nowrap;border:1px solid rgba(0,115,231,.3);border-radius:var(--r-xs);padding:3px 10px;background:transparent}
-.status-bar-link:hover{background:rgba(0,115,231,.08)}
-.status-bar-dismiss{width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:.45;flex-shrink:0}
-.status-bar-dismiss:hover{opacity:1}
-.status-bar-dismiss svg{width:12px;height:12px;color:var(--text-accent)}
-
 /* TABLE */
 .ta{flex:1;overflow:auto;position:relative}
 .tw{min-width:960px;width:100%}
 .thead{display:flex;position:sticky;top:0;z-index:20;background:var(--bg-primary);box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.18);height:36px}
 .th{display:flex;align-items:center;padding:0 12px;font:600 10px/12px 'Inter',system-ui,sans-serif;letter-spacing:.8px;text-transform:uppercase;color:var(--text-subdued);white-space:nowrap;flex-shrink:0}
 .th.first{padding-left:24px}
-.tr{display:flex;align-items:stretch;border-bottom:1px solid var(--stroke-inactive);min-height:64px;position:relative;background:var(--bg-primary)}
+.tr{display:flex;align-items:stretch;border-bottom:1px solid var(--stroke-inactive);min-height:64px;position:relative;background:var(--bg-primary);cursor:pointer}
 .tr:hover{background:var(--bg-secondary)}
 .td{display:flex;flex-direction:column;justify-content:center;padding:12px 12px;flex-shrink:0;overflow:hidden}
 .td.first{padding-left:24px}
 .td-main{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard)}
 .td-sub{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px}
-.c-id{width:120px}.c-date{width:120px}.c-by{width:180px}.c-type{width:100px}
-.c-details{width:280px}.c-status{width:120px;padding:12px}.c-space{flex:1;min-width:20px}
-.c-action{width:164px;padding:12px 24px 12px 8px;align-items:flex-end;justify-content:center;flex-shrink:0;overflow:visible}
+.c-id{width:120px}.c-date{width:120px}.c-by{width:180px}.c-type{width:110px}
+.c-details{width:300px}.c-status{width:120px;padding:12px}.c-space{flex:1;min-width:20px}
+.c-action{width:164px;padding:12px 24px 12px 8px;align-items:flex-end;justify-content:center;flex-shrink:0;overflow:visible;cursor:default}
 
 /* TAGS */
 .tag{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:var(--r-xs);font:400 13px/18px 'Inter',system-ui,sans-serif;white-space:nowrap}
@@ -145,8 +136,6 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .dd-item{padding:8px 16px;font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard);cursor:pointer;white-space:nowrap}
 .dd-item:hover{background:var(--bg-secondary)}
 .dd-item.bold{font-weight:600}
-.dd-item.danger{color:var(--text-negative)}
-.dd-item.danger:hover{background:var(--bg-negative)}
 .dd-item.checked{color:var(--text-accent);font-weight:600}
 .dd-sep{height:1px;background:var(--stroke-inactive);margin:3px 0}
 
@@ -170,7 +159,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .tf{padding:12px 24px;border-top:1px solid var(--stroke-inactive);font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-subdued);flex-shrink:0;background:var(--bg-primary)}
 .toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text-positive);color:#fff;padding:10px 20px;border-radius:var(--r-xs);font:600 13px/18px 'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.2);pointer-events:none;white-space:nowrap}
 
-/* ─── ORDER DETAILS VIEW ─── */
+/* ─── ORDER DETAILS ─── */
 .od-body{flex:1;overflow-y:auto;background:var(--bg-tertiary);padding:24px 32px}
 .od-inner{max-width:920px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 .od-card{background:var(--bg-primary);border:1px solid var(--stroke-inactive);border-radius:var(--r-sm);padding:24px 28px}
@@ -193,32 +182,37 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .tl-step.pending .tl-date{color:var(--text-inactive)}
 .tl-label{font:600 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-positive);text-align:center;margin-bottom:2px}
 .tl-date{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);text-align:center}
-.tl-conn{position:absolute;top:11px;left:0;right:0;height:2px;background:var(--text-positive);z-index:1;margin:0 12.5%}
-.tl-conn.partial{background:linear-gradient(to right,var(--text-positive) 0,var(--text-positive) 50%,var(--stroke-standard) 50%,var(--stroke-standard) 100%)}
 
-/* REPLACEMENT CARDS TABLE */
-.rc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+/* GROUPED CARDS (in Order Details) */
+.rc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .rc-title{font:600 16px/22px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
+.rc-sub{font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-bottom:18px}
 .btn-primary{background:var(--blue-60);color:#fff;border:1px solid var(--blue-60);border-radius:var(--r-xs);padding:6px 16px;font:600 13px/18px 'Inter',system-ui,sans-serif;cursor:pointer}
 .btn-primary:hover{background:var(--blue-70)}
 .btn-primary:disabled{background:var(--bg-neutral);border-color:var(--stroke-standard);color:var(--text-inactive);cursor:not-allowed}
 .btn-secondary{background:var(--bg-primary);color:var(--text-standard);border:1px solid var(--stroke-standard);border-radius:var(--r-xs);padding:6px 16px;font:400 13px/18px 'Inter',system-ui,sans-serif;cursor:pointer}
 .btn-secondary:hover{background:var(--bg-secondary)}
-.rc-table{border:1px solid var(--stroke-inactive);border-radius:var(--r-sm);overflow:hidden}
-.rc-thead{display:flex;align-items:center;background:var(--bg-tertiary);border-bottom:1px solid var(--stroke-inactive);padding:10px 16px;font:600 10px/12px 'Inter',system-ui,sans-serif;letter-spacing:.6px;text-transform:uppercase;color:var(--text-subdued)}
-.rc-trow{display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--stroke-inactive);transition:background .1s}
-.rc-trow:last-child{border-bottom:none}
-.rc-trow:hover{background:var(--bg-secondary)}
-.rc-trow.activated{background:var(--bg-tertiary);opacity:.7}
-.rc-cb{width:40px;flex-shrink:0;display:flex;align-items:center}
-.rc-cb input{width:16px;height:16px;accent-color:var(--blue-60);cursor:pointer}
-.rc-idx{width:36px;flex-shrink:0;font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-subdued)}
-.rc-num{flex:1;font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard);display:flex;flex-direction:column}
-.rc-num-sub{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px}
-.rc-assignee{flex:1;font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard)}
-.rc-status{flex:0 0 140px;font:400 13px/18px 'Inter',system-ui,sans-serif}
-.rc-status.done{color:var(--text-positive);font-weight:600}
-.rc-status.pending{color:var(--text-subdued)}
+
+.dg{border:1px solid var(--stroke-inactive);border-radius:var(--r-sm);margin-bottom:12px;overflow:hidden;background:var(--bg-primary)}
+.dg-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg-tertiary);border-bottom:1px solid var(--stroke-inactive)}
+.dg-cb{display:flex;align-items:center;justify-content:center;width:18px;height:18px;flex-shrink:0}
+.dg-cb input{width:16px;height:16px;accent-color:var(--blue-60);cursor:pointer}
+.dg-avatar{width:32px;height:32px;border-radius:50%;background:var(--bg-accent);color:var(--text-accent);font:600 12px/32px 'Inter',system-ui,sans-serif;text-align:center;flex-shrink:0}
+.dg-info{flex:1;min-width:0}
+.dg-name{font:600 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
+.dg-meta{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px}
+.dg-count{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);background:var(--bg-primary);border:1px solid var(--stroke-inactive);padding:2px 10px;border-radius:99px;flex-shrink:0}
+.dg-cards{padding:0}
+.dg-card-row{display:flex;align-items:center;gap:12px;padding:11px 18px 11px 56px;border-top:1px solid var(--stroke-inactive)}
+.dg-card-row:first-child{border-top:none}
+.dg-card-row:hover{background:var(--bg-secondary)}
+.dg-card-row.activated{opacity:.55}
+.dg-card-cb{width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dg-card-cb input{width:16px;height:16px;accent-color:var(--blue-60);cursor:pointer}
+.dg-card-num{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard);flex:1;letter-spacing:.4px}
+.dg-card-status{font:600 12px/16px 'Inter',system-ui,sans-serif;flex:0 0 auto}
+.dg-card-status.done{color:var(--text-positive)}
+.dg-card-status.pending{color:var(--text-subdued);font-weight:400}
 
 /* ─── ACTIVATE CARDS VIEW ─── */
 .ac-table{flex:1;overflow:auto;background:var(--bg-primary)}
@@ -234,14 +228,13 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .ac-row.selected{background:#f0f7ff}
 .ac-row.selected:hover{background:#e8f3ff}
 .ac-row.activated{opacity:.55;cursor:default;background:var(--bg-tertiary)}
-.ac-row.activated:hover{background:var(--bg-tertiary)}
 .ac-num-val{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard)}
 .ac-driver-val{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-accent);cursor:pointer}
 .ac-driver-val:hover{text-decoration:underline}
 .ac-profile-val{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard)}
 .ac-activated-tag{display:inline-block;padding:2px 8px;background:var(--bg-positive);color:var(--text-positive);font:600 11px/16px 'Inter',system-ui,sans-serif;border-radius:var(--r-xs);margin-left:8px}
 
-/* ACTION BAR (replaces filter row when cards selected) */
+/* ACTION BAR */
 .action-bar{display:none;align-items:center;justify-content:space-between;padding:10px 24px;background:var(--blue-60);color:#fff;border-bottom:1px solid var(--blue-70);flex-shrink:0;height:42px}
 .action-bar.visible{display:flex}
 .ab-left{display:flex;align-items:center;gap:8px;font:400 14px/20px 'Inter',system-ui,sans-serif}
@@ -264,7 +257,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .modal-q{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard);margin-bottom:24px;margin-top:14px}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px}
 
-/* GET MORE CARDS FULL MODAL (preserved from before) */
+/* GET MORE CARDS MODAL */
 .fullmodal-overlay{display:none;position:fixed;inset:0;z-index:800;background:var(--bg-primary);flex-direction:column}
 .fullmodal-overlay.open{display:flex}
 .fullmodal-header{background:var(--blue-60);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;flex-shrink:0}
@@ -306,13 +299,16 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
     <span class="banner-badge">Option A</span>
     <span class="banner-text">Cards › Orders — Activate CTA · Functional Prototype</span>
   </div>
-  <span class="banner-text">Click "Activate" → multi-card select page · Click ∨ → instant activate modal</span>
+  <span class="banner-text">Click row → Order Details · Click "Activate" → multi-card select page</span>
 </div>
 
 <div class="app">
 <!-- SIDEBAR -->
 <nav class="sb">
-  <div class="sb-logo"><svg width="100" height="24" viewBox="0 0 100 24"><rect width="24" height="24" rx="5" fill="#0073e7"/><path d="M7 18l5-12 5 12M9 13h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="17" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="rgba(0,0,0,0.75)">motive</text></svg></div>
+  <div class="sb-logo">
+    <img class="logo-img" src="motive-logo.png" alt="motive" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+    <svg class="logo-svg" width="90" height="22" viewBox="0 0 90 22" xmlns="http://www.w3.org/2000/svg"><text x="0" y="19" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="22" font-weight="900" fill="#000" letter-spacing="-1.2">motive</text></svg>
+  </div>
   <div class="sb-scroll">
     <div class="sb-section">Organization <svg viewBox="0 0 14 14" fill="none"><path d="M9 5L7 3 5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="sb-item"><span class="icon"><svg viewBox="0 0 18 18" fill="none"><path d="M2 9a7 7 0 1 0 14 0A7 7 0 0 0 2 9z" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/></svg></span>Fleet Users<span class="badge">26</span></div>
@@ -339,9 +335,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 
 <main class="main">
 
-<!-- ═════════════════════════════════════════
-     VIEW 1: ORDERS TABLE
-═════════════════════════════════════════ -->
+<!-- VIEW 1: ORDERS -->
 <div class="view active" id="viewOrders">
   <div class="ph">
     <div class="ph-row">
@@ -365,13 +359,6 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
     <div class="sort"><svg viewBox="0 0 14 14" fill="none"><path d="M2 4h10M4 7h6M6 10h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Date created (latest) <svg viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   </div>
 
-  <div class="status-bar" id="statusBar">
-    <svg class="sb-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3L10 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span class="status-bar-msg" id="statusBarMsg"><strong>4 orders have cards ready to activate</strong> — assign drivers now so they're ready on arrival.</span>
-    <button class="status-bar-link" onclick="filterToActivatable()">Show only</button>
-    <span class="status-bar-dismiss" onclick="dismissStatusBar()"><svg viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-  </div>
-
   <div class="ta">
     <div class="tw">
       <div class="thead">
@@ -387,19 +374,15 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
       <div id="ordersTbody"></div>
     </div>
   </div>
-  <div class="tf" id="tableFooter">Showing 9 results</div>
+  <div class="tf" id="tableFooter">Showing 15 results</div>
 </div>
 
-<!-- ═════════════════════════════════════════
-     VIEW 2: ORDER DETAILS
-═════════════════════════════════════════ -->
+<!-- VIEW 2: ORDER DETAILS -->
 <div class="view" id="viewOrderDetails">
   <div class="sub-head">
     <div class="bc">
-      <a onclick="goToOrders()">Cards</a>
-      <span class="sep">/</span>
-      <a onclick="goToOrders()">Orders</a>
-      <span class="sep">/</span>
+      <a onclick="goToOrders()">Cards</a><span class="sep">/</span>
+      <a onclick="goToOrders()">Orders</a><span class="sep">/</span>
       <span class="cur" id="odBcId"></span>
     </div>
     <button class="btn-close" onclick="goToOrders()">Close</button>
@@ -409,24 +392,17 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
   </div>
 </div>
 
-<!-- ═════════════════════════════════════════
-     VIEW 3: ACTIVATE CARDS PAGE
-═════════════════════════════════════════ -->
+<!-- VIEW 3: ACTIVATE CARDS PAGE -->
 <div class="view" id="viewActivateCards">
   <div class="sub-head">
     <div class="bc">
-      <a onclick="goToOrders()">Cards</a>
-      <span class="sep">/</span>
-      <a onclick="goToOrders()">Orders</a>
-      <span class="sep">/</span>
-      <a id="acBcOrderId" onclick="goToOrderDetails(_currentOrderId)"></a>
-      <span class="sep">/</span>
+      <a onclick="goToOrders()">Cards</a><span class="sep">/</span>
+      <a onclick="goToOrders()">Orders</a><span class="sep">/</span>
+      <a id="acBcOrderId" onclick="goToOrderDetails(_currentOrderId)"></a><span class="sep">/</span>
       <span class="cur">Activate cards</span>
     </div>
     <button class="btn-close" onclick="goToOrders()">Close</button>
   </div>
-
-  <!-- filter row (default) -->
   <div class="fr" id="acFilterRow">
     <div class="search" style="width:280px">
       <svg viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -436,20 +412,10 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
     <div class="filt">Spend profile <svg viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="fr-spacer"></div>
   </div>
-
-  <!-- action bar (visible when selection > 0) -->
   <div class="action-bar" id="acActionBar">
-    <div class="ab-left">
-      <strong><span id="acSelCount">0</span> card selected</strong>
-      <span class="ab-clear" onclick="clearAcSelection()">Clear</span>
-    </div>
-    <div class="ab-right">
-      <button class="ab-btn">Change spend profile</button>
-      <button class="ab-btn primary" onclick="openActivateModal('selected')">Activate selected</button>
-    </div>
+    <div class="ab-left"><strong id="acSelText">0 cards selected</strong><span class="ab-clear" onclick="clearAcSelection()">Clear</span></div>
+    <div class="ab-right"><button class="ab-btn">Change spend profile</button><button class="ab-btn primary" onclick="openActivateModal('selected')">Activate selected</button></div>
   </div>
-
-  <!-- table -->
   <div class="ac-table">
     <div class="ac-thead">
       <div class="ac-cb"><input type="checkbox" id="acSelectAll" onclick="toggleAcSelectAll(this.checked)"/></div>
@@ -465,10 +431,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 </main>
 </div>
 
-<!-- TYPEAHEAD -->
 <div class="ta-dd" id="taDropdown"></div>
-
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <!-- ACTIVATE CONFIRMATION MODAL -->
@@ -504,7 +467,6 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
           <div class="m-radio-option" onclick="selectRadio(this)"><input type="radio" name="fuel" value="driver"/><div><div class="ro-title">Driver Code + odometer</div><div class="ro-sub">Required at point of sale to purchase fuel.</div></div></div>
         </div>
         <div class="m-field"><div class="m-label">Personalization <span class="req">*</span></div><div class="m-personalization"><div class="m-personalization-info"><div class="title">Standard Card ID</div><div class="sub">Auto-generated, allows easy reassignment.</div></div><button class="m-change-btn">Change</button></div></div>
-        <div class="m-field"><div class="m-label">Reason for ordering</div><div class="m-select-wrap"><select class="m-select"><option value="">Please select</option><option>New hire</option><option>Lost card</option><option>Damaged card</option></select><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
       </div>
       <div class="m-section">
         <div class="m-section-title">Shipping details</div>
@@ -512,7 +474,6 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
           <div><div class="m-label">Recipient name <span class="req">*</span></div><input class="m-input" type="text"/></div>
           <div><div class="m-label">Phone number <span class="req">*</span></div><div style="display:flex;gap:8px"><input class="m-input" style="width:60px" type="text" value="+1" readonly/><input class="m-input" style="flex:1" type="tel" placeholder="(___) ___-____"/></div></div>
         </div>
-        <div class="m-field"><div class="m-label">Shipping address</div><div class="m-select-wrap"><select class="m-select"><option value="">Please select</option><option>3201 Long Beach, CA</option></select><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
       </div>
     </div>
   </div>
@@ -520,92 +481,130 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════
-//  CONSTANTS
-// ═══════════════════════════════════════════════════
 const TYPE_OPTIONS   = ['New', 'Replacement'];
 const STATUS_OPTIONS = ['Draft', 'Scheduled', 'Processing', 'Shipped', 'Completed', 'Canceled'];
 
-// ═══════════════════════════════════════════════════
-//  ORDER STATE — single source of truth
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  ORDERS — realistic fleet data
+// ═══════════════════════════════════════════════════════════
 const ORDERS = {
   tr1: {
     id:'77340102', mode:'virtual', state:'eligible', cardType:'virtual', orderType:'New',
-    createdBy:'Priya Sharma', date:'05/01/2026', rewardIssued:true, shippingAddr:'Virtual card · no shipping',
-    timeline: ['Scheduled:Apr 28','Order placed:Apr 30','Processed:Apr 30','Shipped:—','Completed:May 01'],
-    cards: [
-      {id:'c1', cardLast4:'4521', assignedTo:'Priya Sharma', spendProfile:'Drivers'},
-    ],
+    createdBy:'Priya Sharma', date:'05/01/2026', rewardIssued:true,
+    timeline:['Scheduled:Apr 28','Order placed:Apr 30','Processed:Apr 30','Shipped:—','Completed:May 01'],
+    cards:[ {id:'c1',cardLast4:'4521',assignedTo:'Priya Sharma',spendProfile:'Drivers'} ],
   },
   tr2: {
     id:'19824719', mode:'standard', state:'eligible', cardType:'physical', orderType:'New',
-    createdBy:'Sarah Mitchell', date:'04/28/2026', shippingAddr:'Motive Internal Testing · 4500 N Oak Trafficway, Kansas City',
-    timeline: ['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:Apr 28'],
-    cards: [
-      {id:'c1', cardLast4:'9723', assignedTo:'Tarang Singhal', spendProfile:'Drivers'},
-      {id:'c2', cardLast4:'8104', assignedTo:'Diego Sanches', spendProfile:'Drivers'},
-      {id:'c3', cardLast4:'2298', assignedTo:'Marcus Webb', spendProfile:'Maintenance'},
-      {id:'c4', cardLast4:'7456', assignedTo:'Habibah Shahid Naeem', spendProfile:'Drivers'},
-      {id:'c5', cardLast4:'3911', assignedTo:'Alejandro Gonzalez', spendProfile:'Fleet ops'},
+    createdBy:'Sarah Mitchell', date:'04/28/2026', shippingAddr:'Motive Internal Testing · 4500 N Oak Trafficway, Kansas City, MO',
+    timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:Apr 28'],
+    cards:[
+      {id:'c1',cardLast4:'9723',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},
+      {id:'c2',cardLast4:'8104',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},
+      {id:'c3',cardLast4:'2298',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},
+      {id:'c4',cardLast4:'7456',assignedTo:'Diego Sanches',  spendProfile:'Drivers'},
+      {id:'c5',cardLast4:'3911',assignedTo:'Marcus Webb',    spendProfile:'Maintenance'},
     ],
   },
   tr3: {
     id:'23094050', mode:'preconfig', state:'eligible', cardType:'physical', orderType:'New',
-    createdBy:'James Ortega', date:'04/25/2026', eta:'Arriving in 3 days', shippingAddr:'100 Main St, Austin, TX',
-    timeline: ['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:—'],
-    cards: [
-      {id:'c1', cardLast4:'6612', assignedTo:'James Ortega', spendProfile:'Drivers'},
-      {id:'c2', cardLast4:'0048', assignedTo:'Tarang Singhal', spendProfile:'Drivers'},
-      {id:'c3', cardLast4:'8842', assignedTo:'Diego Sanches', spendProfile:'Maintenance'},
+    createdBy:'James Ortega', date:'04/25/2026', eta:'Arriving in 3 days', shippingAddr:'100 Main St, Austin, TX 78701',
+    timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:—'],
+    cards:[
+      {id:'c1',cardLast4:'6612',assignedTo:'James Ortega',  spendProfile:'Drivers'},
+      {id:'c2',cardLast4:'0048',assignedTo:'James Ortega',  spendProfile:'Drivers'},
+      {id:'c3',cardLast4:'8842',assignedTo:'Diego Sanches', spendProfile:'Drivers'},
     ],
   },
   tr4: {
     id:'11420833', mode:'replacement-preconfig', state:'eligible', cardType:'physical', orderType:'Replacement',
-    createdBy:'Marcus Webb', date:'04/27/2026', eta:'Arriving in 5 days', shippingAddr:'Motive Internal Testing · 10799 wheeler trace, hampton, ga 30228',
-    timeline: ['Scheduled:Apr 04','Order placed:Apr 26','Processed:Apr 27','Shipped:Apr 28','Completed:—'],
-    cards: [
-      {id:'c1', cardLast4:'9723', assignedTo:'Tarang Singhal', spendProfile:'Drivers'},
-      {id:'c2', cardLast4:'2284', assignedTo:'Marcus Webb', spendProfile:'Drivers'},
+    createdBy:'Marcus Webb', date:'04/27/2026', eta:'Arriving in 5 days', shippingAddr:'Motive Internal Testing · 10799 Wheeler Trace, Hampton, GA 30228',
+    timeline:['Scheduled:Apr 04','Order placed:Apr 26','Processed:Apr 27','Shipped:Apr 28','Completed:—'],
+    cards:[
+      {id:'c1',cardLast4:'2284',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},
+      {id:'c2',cardLast4:'5519',assignedTo:'Marcus Webb',   spendProfile:'Drivers'},
     ],
   },
-  tr5: { id:'67204819', mode:null, state:'scheduled',  cardType:'physical', orderType:'New',
+  tr5: {
+    id:'87341022', mode:'standard', state:'eligible', cardType:'physical', orderType:'New',
+    createdBy:'Pradeep Kumar', date:'04/29/2026', shippingAddr:'Motive HQ · 333 W San Carlos St, San Jose, CA 95110',
+    timeline:['Scheduled:Apr 18','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 26','Completed:Apr 29'],
+    cards:[
+      {id:'c1',cardLast4:'1287',assignedTo:'Carlos Mendez',          spendProfile:'Drivers'},
+      {id:'c2',cardLast4:'6629',assignedTo:'Carlos Mendez',          spendProfile:'Drivers'},
+      {id:'c3',cardLast4:'3344',assignedTo:'Lisa Chen',              spendProfile:'Drivers'},
+      {id:'c4',cardLast4:'9088',assignedTo:'Lisa Chen',              spendProfile:'Drivers'},
+      {id:'c5',cardLast4:'5511',assignedTo:'Robert Johnson',         spendProfile:'Maintenance'},
+      {id:'c6',cardLast4:'2901',assignedTo:'Habibah Shahid Naeem',   spendProfile:'Drivers'},
+      {id:'c7',cardLast4:'7842',assignedTo:'Maria Garcia',           spendProfile:'Drivers'},
+      {id:'c8',cardLast4:'4400',assignedTo:'Maria Garcia',           spendProfile:'Fleet ops'},
+    ],
+  },
+  tr6: {
+    id:'55903128', mode:'preconfig', state:'eligible', cardType:'physical', orderType:'New',
+    createdBy:'David Park', date:'04/26/2026', eta:'Arriving in 1 day', shippingAddr:'8910 Commerce Ave, Dallas, TX 75201',
+    timeline:['Scheduled:Apr 22','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 26','Completed:—'],
+    cards:[ {id:'c1',cardLast4:'2200',assignedTo:'David Park',spendProfile:'Drivers'} ],
+  },
+  tr7: { id:'67204819', mode:null, state:'scheduled',  cardType:'physical', orderType:'New',
     createdBy:'Habibah Shahid Naeem', date:'05/05/2026', cards:[] },
-  tr6: { id:'23056022', mode:null, state:'ineligible', cardType:'physical', orderType:'New',
+  tr8: { id:'23056022', mode:null, state:'ineligible', cardType:'physical', orderType:'New',
     createdBy:'Varun M', date:'04/29/2026', cards:[] },
-  tr7: { id:'32180129', mode:null, state:'ineligible', cardType:'virtual',  orderType:'New',
-    createdBy:'Alejandro Gonzalez', date:'04/30/2026', assignedTo:'Diego Sanches', cards:[{id:'c1', cardLast4:'7204', assignedTo:'Diego Sanches', spendProfile:'Drivers', activated:true}] },
-  tr8: { id:'90761634', mode:null, state:'canceled',   cardType:'physical', orderType:'New',
+  tr9: { id:'45821703', mode:null, state:'ineligible', cardType:'physical', orderType:'New',
+    createdBy:'Lisa Chen', date:'04/24/2026', cards:[] },
+  tr10: { id:'32180129', mode:null, state:'activated', cardType:'virtual', orderType:'New',
+    createdBy:'Alejandro Gonzalez', date:'04/30/2026',
+    timeline:['Scheduled:Apr 28','Order placed:Apr 29','Processed:Apr 29','Shipped:—','Completed:Apr 30'],
+    cards:[ {id:'c1',cardLast4:'7204',assignedTo:'Diego Sanches',spendProfile:'Drivers',activated:true} ],
+  },
+  tr11: { id:'66510924', mode:null, state:'activated', cardType:'physical', orderType:'New',
+    createdBy:'Robert Johnson', date:'04/20/2026', shippingAddr:'5500 Cypress Creek Pkwy, Houston, TX',
+    timeline:['Scheduled:Apr 12','Order placed:Apr 14','Processed:Apr 15','Shipped:Apr 18','Completed:Apr 22'],
+    cards:[
+      {id:'c1',cardLast4:'1080',assignedTo:'Robert Johnson',spendProfile:'Maintenance',activated:true},
+      {id:'c2',cardLast4:'4423',assignedTo:'Robert Johnson',spendProfile:'Maintenance',activated:true},
+      {id:'c3',cardLast4:'7791',assignedTo:'Maria Garcia', spendProfile:'Drivers',activated:true},
+    ],
+  },
+  tr12: { id:'90761634', mode:null, state:'canceled',  cardType:'physical', orderType:'New',
     createdBy:'Varun M', date:'04/29/2026', cards:[] },
-  tr9: { id:'43930757', mode:null, state:'draft',      cardType:'physical', orderType:'New',
+  tr13: { id:'11829304', mode:null, state:'canceled',  cardType:'physical', orderType:'New',
+    createdBy:'Maria Garcia', date:'04/15/2026', cards:[] },
+  tr14: { id:'43930757', mode:null, state:'draft',     cardType:'physical', orderType:'New',
     createdBy:'Nadir Ali', date:'04/20/2026', cards:[] },
+  tr15: { id:'78201845', mode:null, state:'draft',     cardType:'physical', orderType:'New',
+    createdBy:"Erin O'Brien", date:'05/02/2026', cards:[] },
 };
 
-// Order-row details (used to render the orders table)
 const ROW_META = {
-  tr1: { id:'77340102', date:'05/01/2026', by:'Priya Sharma',        type:'New',         detailsMain:'1 virtual Motive Card', detailsSub:'Ready to assign',                                  status:'Completed',  statusTag:'positive' },
-  tr2: { id:'19824719', date:'04/28/2026', by:'Sarah Mitchell',      type:'New',         detailsMain:'5 Motive Cards',        detailsSub:'Ready to activate',                                 status:'Completed',  statusTag:'positive' },
-  tr3: { id:'23094050', date:'04/25/2026', by:'James Ortega',        type:'New',         detailsMain:'3 Motive Cards',        detailsSub:'Arriving in 3 days',                                status:'Shipped',    statusTag:'accent'   },
-  tr4: { id:'11420833', date:'04/27/2026', by:'Marcus Webb',         type:'Replacement', detailsMain:'2 Motive Cards',        detailsSub:'Lost card replacement · Arriving in 5 days',         status:'Shipped',    statusTag:'accent'   },
-  tr5: { id:'67204819', date:'05/05/2026', by:'Habibah Shahid Naeem',type:'New',         detailsMain:'2 Motive Cards',        detailsSub:'Scheduled for 05/05/2026',                          status:'Scheduled',  statusTag:'warning'  },
-  tr6: { id:'23056022', date:'04/29/2026', by:'Varun M',             type:'New',         detailsMain:'1 Motive Card',         detailsSub:'3201, Long Beach, CA',                              status:'Processing', statusTag:'neutral'  },
-  tr7: { id:'32180129', date:'04/30/2026', by:'Alejandro Gonzalez',  type:'New',         detailsMain:'1 virtual Motive Card', detailsSub:'Assigned to: Diego Sanches',                        status:'Completed',  statusTag:'positive' },
-  tr8: { id:'90761634', date:'04/29/2026', by:'Varun M',             type:'New',         detailsMain:'1 Motive Card',         detailsSub:'3201, Long Beach, CA',                              status:'Canceled',   statusTag:'negative' },
-  tr9: { id:'43930757', date:'04/20/2026', by:'Nadir Ali',           type:'New',         detailsMain:'1 Motive Card',         detailsSub:'9414 Blackjack Ridge Trail, Mansfield, AR',         status:'Draft',      statusTag:null       },
+  tr1: { id:'77340102', date:'05/01/2026', by:'Priya Sharma',         type:'New',         detailsMain:'1 virtual Motive Card', detailsSub:'Ready to assign',                              status:'Completed',  statusTag:'positive' },
+  tr2: { id:'19824719', date:'04/28/2026', by:'Sarah Mitchell',       type:'New',         detailsMain:'5 Motive Cards',        detailsSub:'Ready to activate · 3 drivers',                status:'Completed',  statusTag:'positive' },
+  tr3: { id:'23094050', date:'04/25/2026', by:'James Ortega',         type:'New',         detailsMain:'3 Motive Cards',        detailsSub:'Arriving in 3 days',                           status:'Shipped',    statusTag:'accent'   },
+  tr4: { id:'11420833', date:'04/27/2026', by:'Marcus Webb',          type:'Replacement', detailsMain:'2 Motive Cards',        detailsSub:'Lost card replacement · Arriving in 5 days',   status:'Shipped',    statusTag:'accent'   },
+  tr5: { id:'87341022', date:'04/29/2026', by:'Pradeep Kumar',        type:'New',         detailsMain:'8 Motive Cards',        detailsSub:'Ready to activate · 5 drivers',                status:'Completed',  statusTag:'positive' },
+  tr6: { id:'55903128', date:'04/26/2026', by:'David Park',           type:'New',         detailsMain:'1 Motive Card',         detailsSub:'Arriving in 1 day',                            status:'Shipped',    statusTag:'accent'   },
+  tr7: { id:'67204819', date:'05/05/2026', by:'Habibah Shahid Naeem', type:'New',         detailsMain:'2 Motive Cards',        detailsSub:'Scheduled for 05/05/2026',                     status:'Scheduled',  statusTag:'warning'  },
+  tr8: { id:'23056022', date:'04/29/2026', by:'Varun M',              type:'New',         detailsMain:'1 Motive Card',         detailsSub:'3201, Long Beach, CA',                          status:'Processing', statusTag:'neutral'  },
+  tr9: { id:'45821703', date:'04/24/2026', by:'Lisa Chen',            type:'New',         detailsMain:'4 Motive Cards',        detailsSub:'1500 Tech Park Dr, Austin, TX',                 status:'Processing', statusTag:'neutral'  },
+  tr10:{ id:'32180129', date:'04/30/2026', by:'Alejandro Gonzalez',   type:'New',         detailsMain:'1 virtual Motive Card', detailsSub:'Activated 04/30/2026',                          status:'Completed',  statusTag:'positive' },
+  tr11:{ id:'66510924', date:'04/20/2026', by:'Robert Johnson',       type:'New',         detailsMain:'3 Motive Cards',        detailsSub:'Activated 04/22/2026',                          status:'Completed',  statusTag:'positive' },
+  tr12:{ id:'90761634', date:'04/29/2026', by:'Varun M',              type:'New',         detailsMain:'1 Motive Card',         detailsSub:'Canceled by support',                           status:'Canceled',   statusTag:'negative' },
+  tr13:{ id:'11829304', date:'04/15/2026', by:'Maria Garcia',         type:'New',         detailsMain:'2 Motive Cards',        detailsSub:'Canceled 04/16/2026',                           status:'Canceled',   statusTag:'negative' },
+  tr14:{ id:'43930757', date:'04/20/2026', by:'Nadir Ali',            type:'New',         detailsMain:'1 Motive Card',         detailsSub:'9414 Blackjack Ridge Trail, AR',                status:'Draft',      statusTag:null       },
+  tr15:{ id:'78201845', date:'05/02/2026', by:"Erin O'Brien",         type:'New',         detailsMain:'3 Motive Cards',        detailsSub:'Draft saved 05/02/2026',                        status:'Draft',      statusTag:null       },
 };
 
-const FILTERS = { type: null, status: null };
+const FILTERS = { type:null, status:null };
 let _currentOrderId = null;
 let _selectedCardIds = new Set();
-let _pendingActivation = null; // { cardIds, orderId }
+let _pendingActivation = null;
 let _openFilterBtn = null;
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  RENDER ORDERS TABLE
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 function renderOrdersTable() {
-  const tbody = document.getElementById('ordersTbody');
-  tbody.innerHTML = Object.entries(ROW_META).map(([rowId, m]) => {
+  document.getElementById('ordersTbody').innerHTML = Object.entries(ROW_META).map(([rowId, m]) => {
     const o = ORDERS[rowId];
     const showSplit = o.state === 'eligible';
     const statusHtml = m.statusTag
@@ -615,39 +614,36 @@ function renderOrdersTable() {
     let actionHtml = '';
     if (showSplit) {
       const tipTxt = {
-        virtual: 'Virtual card is ready to assign to a driver immediately.',
+        virtual: 'Virtual card is ready to assign to a driver.',
         standard: 'Cards delivered. Activate to assign them to drivers.',
         preconfig: 'Cards in transit. Pre-configure now — ready once delivered.',
-        'replacement-preconfig': 'Replacement cards in transit. Pre-configure now — activating replaces the lost cards.',
+        'replacement-preconfig': 'Replacement cards in transit. Activating replaces the lost cards.',
       }[o.mode] || 'Activate cards';
-      const cancelable = (o.mode === 'preconfig' || o.mode === 'replacement-preconfig');
       actionHtml = `
         <div class="tip-wrap" onmouseenter="positionTip(this)">
           <div class="tip">${tipTxt}</div>
           <div class="split">
-            <span class="s-lbl" onclick="goToActivateCards('${rowId}')">Activate</span>
-            <span class="s-chev" onclick="toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="s-lbl" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate</span>
+            <span class="s-chev" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
         </div>
         <div class="dd" id="dd${rowId}">
-          <div class="dd-item bold" onclick="activateAllInOrder('${rowId}')">Activate Cards</div>
-          <div class="dd-item" onclick="goToOrderDetails('${rowId}')">View order details</div>
-          ${cancelable ? '<div class="dd-item">Track shipment</div><div class="dd-sep"></div><div class="dd-item danger" onclick="cancelOrder(\''+rowId+'\')">Cancel order</div>' : ''}
+          <div class="dd-item bold" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate Cards</div>
+          <div class="dd-item" onclick="event.stopPropagation();goToOrderDetails('${rowId}')">View order details</div>
         </div>`;
     } else {
-      const ddItems = [`<div class="dd-item" onclick="goToOrderDetails('${rowId}')">View order details</div>`];
-      if (o.state === 'canceled') ddItems.push(`<div class="dd-item" onclick="openGetMoreCards()">Reorder</div>`);
-      if (o.state === 'draft') ddItems.push(`<div class="dd-item">Edit draft</div><div class="dd-sep"></div><div class="dd-item danger">Delete draft</div>`);
-      if (o.state === 'scheduled' || o.state === 'ineligible') ddItems.push(`<div class="dd-sep"></div><div class="dd-item danger" onclick="cancelOrder('${rowId}')">Cancel order</div>`);
+      const ddItems = [`<div class="dd-item" onclick="event.stopPropagation();goToOrderDetails('${rowId}')">View order details</div>`];
+      if (o.state === 'canceled') ddItems.push(`<div class="dd-item" onclick="event.stopPropagation();openGetMoreCards()">Reorder</div>`);
+      if (o.state === 'draft') ddItems.push(`<div class="dd-item" onclick="event.stopPropagation();">Edit draft</div>`);
       actionHtml = `
         <div class="ibtn-wrap">
-          <div class="ibtn" onclick="toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="13" cy="8" r="1.3"/></svg></div>
+          <div class="ibtn" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="13" cy="8" r="1.3"/></svg></div>
           <div class="dd" id="dd${rowId}">${ddItems.join('')}</div>
         </div>`;
     }
 
     return `
-    <div class="tr" id="${rowId}" data-id="${m.id}" data-status="${m.status}" data-type="${m.type}">
+    <div class="tr" id="${rowId}" data-id="${m.id}" data-status="${m.status}" data-type="${m.type}" onclick="goToOrderDetails('${rowId}')">
       <div class="td c-id first"><span class="td-main">${m.id}</span></div>
       <div class="td c-date"><span class="td-main">${m.date}</span></div>
       <div class="td c-by"><span class="td-main">${m.by}</span></div>
@@ -655,35 +651,31 @@ function renderOrdersTable() {
       <div class="td c-details"><span class="td-main">${m.detailsMain}</span><span class="td-sub">${m.detailsSub}</span></div>
       <div class="td c-status">${statusHtml}</div>
       <div class="td c-space"></div>
-      <div class="td c-action">${actionHtml}</div>
+      <div class="td c-action" onclick="event.stopPropagation()">${actionHtml}</div>
     </div>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  NAVIGATION
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 function setView(viewId) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(viewId).classList.add('active');
   closeAllMenus();
 }
-
 function goToOrders() {
   setView('viewOrders');
   _currentOrderId = null;
   _selectedCardIds.clear();
   renderOrdersTable();
 }
-
 function goToOrderDetails(rowId) {
   _currentOrderId = rowId;
-  const o = ORDERS[rowId];
-  document.getElementById('odBcId').textContent = o.id;
+  document.getElementById('odBcId').textContent = ORDERS[rowId].id;
   renderOrderDetailsContent(rowId);
   setView('viewOrderDetails');
 }
-
 function goToActivateCards(rowId) {
   _currentOrderId = rowId;
   _selectedCardIds.clear();
@@ -694,18 +686,29 @@ function goToActivateCards(rowId) {
   setView('viewActivateCards');
 }
 
-// ═══════════════════════════════════════════════════
-//  ORDER DETAILS VIEW
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  ORDER DETAILS — grouped-by-driver cards
+// ═══════════════════════════════════════════════════════════
+function initials(name) {
+  return name.split(' ').filter(Boolean).slice(0,2).map(s => s[0]).join('').toUpperCase();
+}
+
+function groupCardsByDriver(cards) {
+  const groups = {};
+  cards.forEach(c => {
+    const key = c.assignedTo;
+    if (!groups[key]) groups[key] = { driver:key, profile:c.spendProfile, cards:[] };
+    groups[key].cards.push(c);
+  });
+  return Object.values(groups);
+}
+
 function renderOrderDetailsContent(rowId) {
   const o = ORDERS[rowId];
-  const m = ROW_META[rowId];
 
-  // status card
   const statusTitle = {
-    eligible: `Order #${o.id} has been completed.`,
-    preconfigured: `Order #${o.id} cards have been pre-configured.`,
-    activated: `Order #${o.id} — cards activated.`,
+    eligible: o.orderType === 'Replacement' ? `Order #${o.id} has been completed.` : `Order #${o.id} has been completed.`,
+    activated: `Order #${o.id} — all cards activated.`,
     scheduled: `Order #${o.id} is scheduled.`,
     ineligible: `Order #${o.id} is being processed.`,
     canceled: `Order #${o.id} was canceled.`,
@@ -713,74 +716,77 @@ function renderOrderDetailsContent(rowId) {
   }[o.state] || `Order #${o.id}`;
 
   const statusSub = {
-    eligible: o.orderType === 'Replacement' ? 'Your replacement cards have been delivered and are ready to be activated.' : 'Your cards have been delivered and are ready to be activated.',
-    preconfigured: 'Cards have been pre-configured. They will activate automatically on delivery.',
-    activated: 'All cards in this order are now active.',
+    eligible: o.orderType === 'Replacement'
+      ? 'Your replacement cards have been delivered and are ready to be activated.'
+      : (o.mode === 'preconfig' || o.mode === 'replacement-preconfig')
+        ? 'Cards are in transit. You can pre-configure activation now — they\'ll be ready to use once delivered.'
+        : 'Your cards have been delivered and are ready to be activated.',
+    activated: 'All cards in this order are active.',
     scheduled: `This order is scheduled for ${o.date}.`,
-    ineligible: 'Cards are in production. Once shipped you can pre-configure activation.',
-    canceled: 'This order was canceled. Contact support if you need assistance.',
+    ineligible: 'Cards are in production. Once shipped you\'ll be able to pre-configure activation here.',
+    canceled: 'This order was canceled. Contact Motive support if you need assistance.',
     draft: 'This order has not been submitted yet.',
   }[o.state] || '';
 
-  // timeline
   const tlSteps = o.timeline || [];
   const tlHtml = tlSteps.length ? `
     <div class="timeline">
-      ${tlSteps.map((step, i) => {
+      ${tlSteps.map(step => {
         const [label, date] = step.split(':');
         const done = date !== '—';
         return `<div class="tl-step ${done ? '' : 'pending'}">
           <div class="tl-dot">${done ? '<svg viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}</div>
-          <div class="tl-label">${label}</div>
-          <div class="tl-date">${date === '—' ? '—' : date}</div>
+          <div class="tl-label">${label}</div><div class="tl-date">${date}</div>
         </div>`;
       }).join('')}
     </div>` : '';
 
-  // shipping
-  const shipping = o.cardType === 'physical' ? `
-    <div class="od-row">
-      <div class="od-row-label">Shipping information</div>
-      <div class="od-row-val">${o.shippingAddr || '—'}</div>
-    </div>
-    <div class="od-row">
-      <div class="od-row-label">Shipping method</div>
-      <div class="od-row-val">Standard shipping (7-10 business days)</div>
-    </div>` : `
-    <div class="od-row">
-      <div class="od-row-label">Card type</div>
-      <div class="od-row-val">Virtual Motive Card${o.rewardIssued ? ' · <span style="color:var(--text-subdued);font-size:12px">Reward-issued card</span>' : ''}</div>
-    </div>`;
+  const shippingSection = o.cardType === 'physical' ? `
+    <div class="od-row"><div class="od-row-label">Shipping information</div><div class="od-row-val">${o.shippingAddr || '—'}</div></div>
+    <div class="od-row"><div class="od-row-label">Shipping method</div><div class="od-row-val">Standard shipping (7-10 business days)</div></div>` : `
+    <div class="od-row"><div class="od-row-label">Card type</div><div class="od-row-val">Virtual Motive Card${o.rewardIssued ? ' · <span style="color:var(--text-subdued);font-size:12px">Reward-issued</span>' : ''}</div></div>`;
 
-  // replacement / order cards table
+  // Grouped cards
   const hasCards = o.cards && o.cards.length > 0;
-  const showActivate = o.state === 'eligible' || o.state === 'preconfigured';
+  const showActivate = o.state === 'eligible';
   const unactivatedCount = hasCards ? o.cards.filter(c => !c.activated).length : 0;
+  const groups = hasCards ? groupCardsByDriver(o.cards) : [];
 
-  const cardsTableHtml = hasCards ? `
-    <div class="rc-head">
-      <div class="rc-title">${o.orderType === 'Replacement' ? 'Replacement cards' : 'Cards in this order'}</div>
-      ${showActivate && unactivatedCount > 0 ? `<button class="btn-primary" id="odActivateBtn" onclick="activateFromOrderDetails()" disabled>Activate cards</button>` : ''}
-    </div>
-    <div class="rc-table">
-      <div class="rc-thead">
-        <div class="rc-cb"></div>
-        <div class="rc-idx">#</div>
-        <div class="rc-num">Card number / ID</div>
-        <div class="rc-assignee">Assignee</div>
-        <div class="rc-status"></div>
+  const groupsHtml = groups.map(g => {
+    const allActivated = g.cards.every(c => c.activated);
+    const allUnactivatedSelected = g.cards.filter(c => !c.activated).every(c => _selectedCardIds.has(c.id)) && g.cards.some(c => !c.activated);
+    return `
+    <div class="dg">
+      <div class="dg-header">
+        ${showActivate && !allActivated ? `<div class="dg-cb"><input type="checkbox" ${allUnactivatedSelected ? 'checked' : ''} onclick="toggleDriverGroup('${g.driver.replace(/'/g, "\\'")}')"/></div>` : '<div class="dg-cb"></div>'}
+        <div class="dg-avatar">${initials(g.driver)}</div>
+        <div class="dg-info">
+          <div class="dg-name">${g.driver}</div>
+          <div class="dg-meta">${g.profile}</div>
+        </div>
+        <div class="dg-count">${g.cards.length} card${g.cards.length!==1?'s':''}</div>
       </div>
-      ${o.cards.map((c, i) => {
-        const isActivated = c.activated;
-        const disabled = isActivated || !showActivate;
-        return `<div class="rc-trow ${isActivated ? 'activated' : ''}">
-          <div class="rc-cb">${disabled ? '' : `<input type="checkbox" data-card-id="${c.id}" onclick="toggleOdCardSelect('${c.id}')"/>`}</div>
-          <div class="rc-idx">${i+1}</div>
-          <div class="rc-num">•••• ${c.cardLast4}<span class="rc-num-sub">${c.assignedTo}</span></div>
-          <div class="rc-assignee">${c.assignedTo}</div>
-          <div class="rc-status ${isActivated ? 'done' : 'pending'}">${isActivated ? 'Activated' : (showActivate ? 'Inactive' : '—')}</div>
-        </div>`;
-      }).join('')}
+      <div class="dg-cards">
+        ${g.cards.map(c => `
+          <div class="dg-card-row ${c.activated ? 'activated' : ''}">
+            <div class="dg-card-cb">${showActivate && !c.activated ? `<input type="checkbox" ${_selectedCardIds.has(c.id) ? 'checked' : ''} onclick="toggleOdCardSelect('${c.id}')"/>` : ''}</div>
+            <div class="dg-card-num">•••• ${c.cardLast4}</div>
+            <div class="dg-card-status ${c.activated ? 'done' : 'pending'}">${c.activated ? '● Active' : 'Inactive'}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  const cardsSection = hasCards ? `
+    <div class="od-card">
+      <div class="rc-head">
+        <div>
+          <div class="rc-title">${o.orderType === 'Replacement' ? 'Replacement cards' : 'Cards in this order'}</div>
+          <div class="rc-sub">${unactivatedCount} of ${o.cards.length} ready to activate · grouped by assignee</div>
+        </div>
+        ${showActivate && unactivatedCount > 0 ? `<button class="btn-primary" id="odActivateBtn" onclick="activateFromOrderDetails()" disabled>Activate cards</button>` : ''}
+      </div>
+      ${groupsHtml}
     </div>` : '';
 
   document.getElementById('odContent').innerHTML = `
@@ -794,38 +800,48 @@ function renderOrderDetailsContent(rowId) {
       <div class="od-section-title">Card order details</div>
       <div class="od-row"><div class="od-row-label">Order ID</div><div class="od-row-val">${o.id}</div></div>
       <div class="od-row"><div class="od-row-label">Order type</div><div class="od-row-val">${o.orderType}</div></div>
-      <div class="od-row"><div class="od-row-label">Created by</div><div class="od-row-val">${o.createdBy} · ${o.date} 1:27 PM EDT</div></div>
-      ${shipping}
+      <div class="od-row"><div class="od-row-label">Created by</div><div class="od-row-val">${o.createdBy} · ${o.date} · 1:27 PM EDT</div></div>
+      ${shippingSection}
     </div>
-    ${cardsTableHtml ? `<div class="od-card">${cardsTableHtml}</div>` : ''}`;
-
-  _selectedCardIds.clear();
+    ${cardsSection}`;
 }
 
 function toggleOdCardSelect(cardId) {
   if (_selectedCardIds.has(cardId)) _selectedCardIds.delete(cardId);
   else _selectedCardIds.add(cardId);
+  // Re-render only the cards section to update parent group checkbox state
+  renderOrderDetailsContent(_currentOrderId);
+  const btn = document.getElementById('odActivateBtn');
+  if (btn) btn.disabled = _selectedCardIds.size === 0;
+}
+
+function toggleDriverGroup(driverName) {
+  const o = ORDERS[_currentOrderId];
+  const driverCards = o.cards.filter(c => c.assignedTo === driverName && !c.activated);
+  const allSelected = driverCards.every(c => _selectedCardIds.has(c.id));
+  if (allSelected) driverCards.forEach(c => _selectedCardIds.delete(c.id));
+  else driverCards.forEach(c => _selectedCardIds.add(c.id));
+  renderOrderDetailsContent(_currentOrderId);
   const btn = document.getElementById('odActivateBtn');
   if (btn) btn.disabled = _selectedCardIds.size === 0;
 }
 
 function activateFromOrderDetails() {
   if (!_selectedCardIds.size) return;
-  _pendingActivation = { orderId: _currentOrderId, cardIds: Array.from(_selectedCardIds), source: 'order-details' };
+  _pendingActivation = { orderId:_currentOrderId, cardIds:Array.from(_selectedCardIds), source:'order-details' };
   showActivateModal(_selectedCardIds.size);
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  ACTIVATE CARDS PAGE
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 function renderAcTable() {
   const o = ORDERS[_currentOrderId];
-  const tbody = document.getElementById('acTbody');
-  tbody.innerHTML = o.cards.map(c => {
+  document.getElementById('acTbody').innerHTML = o.cards.map(c => {
     const isActivated = c.activated;
     const selected = _selectedCardIds.has(c.id);
     return `<div class="ac-row ${isActivated ? 'activated' : ''} ${selected ? 'selected' : ''}" onclick="${isActivated ? '' : `toggleAcRowSelect('${c.id}')`}" data-card-id="${c.id}" data-driver="${c.assignedTo.toLowerCase()}">
-      <div class="ac-cb">${isActivated ? '' : `<input type="checkbox" ${selected ? 'checked' : ''} onclick="event.stopPropagation(); toggleAcRowSelect('${c.id}')"/>`}</div>
+      <div class="ac-cb">${isActivated ? '' : `<input type="checkbox" ${selected ? 'checked' : ''} onclick="event.stopPropagation();toggleAcRowSelect('${c.id}')"/>`}</div>
       <div class="ac-num"><span class="ac-num-val">•••• ${c.cardLast4}</span>${isActivated ? '<span class="ac-activated-tag">Activated</span>' : ''}</div>
       <div class="ac-driver"><span class="ac-driver-val">${c.assignedTo}</span></div>
       <div class="ac-profile"><span class="ac-profile-val">${c.spendProfile}</span></div>
@@ -861,7 +877,7 @@ function updateAcActionBar() {
   const n = _selectedCardIds.size;
   document.getElementById('acFilterRow').style.display = n > 0 ? 'none' : 'flex';
   document.getElementById('acActionBar').classList.toggle('visible', n > 0);
-  document.querySelector('.ab-left strong').textContent = `${n} card${n!==1?'s':''} selected`;
+  document.getElementById('acSelText').textContent = `${n} card${n!==1?'s':''} selected`;
   const total = ORDERS[_currentOrderId].cards.filter(c => !c.activated).length;
   document.getElementById('acSelectAll').checked = n > 0 && n === total;
 }
@@ -872,28 +888,14 @@ function clearAcSelection() {
   updateAcActionBar();
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  ACTIVATE MODAL
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 function openActivateModal(source) {
-  // source: 'selected' (from action bar) | 'all' (from row dropdown)
   const cardIds = Array.from(_selectedCardIds);
   if (!cardIds.length) return;
-  _pendingActivation = { orderId: _currentOrderId, cardIds, source };
+  _pendingActivation = { orderId:_currentOrderId, cardIds, source };
   showActivateModal(cardIds.length);
-}
-
-function activateAllInOrder(rowId) {
-  closeAllMenus();
-  const o = ORDERS[rowId];
-  const unactivatedIds = o.cards.filter(c => !c.activated).map(c => c.id);
-  if (!unactivatedIds.length) {
-    showToast('All cards in this order are already activated');
-    return;
-  }
-  _currentOrderId = rowId;
-  _pendingActivation = { orderId: rowId, cardIds: unactivatedIds, source: 'row-direct' };
-  showActivateModal(unactivatedIds.length);
 }
 
 function showActivateModal(count) {
@@ -912,65 +914,34 @@ function confirmActivation() {
   const { orderId, cardIds, source } = _pendingActivation;
   const o = ORDERS[orderId];
   const isPreconfig = o.mode === 'preconfig' || o.mode === 'replacement-preconfig';
+
   cardIds.forEach(cId => {
     const card = o.cards.find(c => c.id === cId);
     if (card) card.activated = true;
   });
-  // If all cards in the order are now activated, update order state
   const allActivated = o.cards.every(c => c.activated);
-  if (allActivated) o.state = isPreconfig ? 'preconfigured' : 'activated';
+  if (allActivated) o.state = 'activated';
+
   closeActivateModal();
   _selectedCardIds.clear();
 
-  // Behavior post-confirm depends on source
+  const verbing = isPreconfig ? 'pre-configured' : 'activated';
+  const toastMsg = isPreconfig
+    ? `${cardIds.length} card${cardIds.length!==1?'s':''} pre-configured — will activate on delivery`
+    : `${cardIds.length} card${cardIds.length!==1?'s':''} activated`;
+
   if (source === 'order-details') {
-    renderOrderDetailsContent(orderId); // re-render in place
-    showToast(`${cardIds.length} card${cardIds.length!==1?'s':''} ${isPreconfig?'pre-configured':'activated'}`, isPreconfig?'warn':null);
+    renderOrderDetailsContent(orderId);
+    showToast(toastMsg, isPreconfig ? 'warn' : null);
   } else {
     goToOrders();
-    showToast(`${cardIds.length} card${cardIds.length!==1?'s':''} ${isPreconfig?'pre-configured — will activate on delivery':'activated'}`, isPreconfig?'warn':null);
+    showToast(toastMsg, isPreconfig ? 'warn' : null);
   }
 }
 
-// ═══════════════════════════════════════════════════
-//  CANCEL ORDER
-// ═══════════════════════════════════════════════════
-function cancelOrder(rowId) {
-  closeAllMenus();
-  ORDERS[rowId].state = 'canceled';
-  ROW_META[rowId].status = 'Canceled';
-  ROW_META[rowId].statusTag = 'negative';
-  renderOrdersTable();
-  updateStatusBar();
-  showToast('Order canceled');
-}
-
-// ═══════════════════════════════════════════════════
-//  STATUS BAR
-// ═══════════════════════════════════════════════════
-function updateStatusBar() {
-  const n = Object.values(ORDERS).filter(o => o.state === 'eligible').length;
-  const sb = document.getElementById('statusBar');
-  if (!sb) return;
-  if (n === 0) { sb.style.display = 'none'; return; }
-  sb.style.display = 'flex';
-  document.getElementById('statusBarMsg').innerHTML =
-    `<strong>${n} order${n!==1?'s have':' has'} cards ready to activate</strong> — assign drivers now so they're ready on arrival.`;
-}
-function dismissStatusBar() { document.getElementById('statusBar').style.display = 'none'; }
-function filterToActivatable() {
-  const eligible = new Set(Object.entries(ORDERS).filter(([k,o]) => o.state === 'eligible').map(([k]) => k));
-  document.querySelectorAll('#viewOrders .tr').forEach(r => { r.style.display = eligible.has(r.id) ? 'flex' : 'none'; });
-  document.getElementById('searchInput').value = '';
-  document.getElementById('tableFooter').textContent = `Showing ${eligible.size} results — cards ready to activate`;
-  document.getElementById('statusBar').style.display = 'none';
-  FILTERS.type = null; FILTERS.status = null;
-  ['filtType','filtStatus'].forEach(id => { const b = document.getElementById(id); if(b) b.classList.remove('active'); });
-}
-
-// ═══════════════════════════════════════════════════
-//  DROPDOWN + FILTER DD + SEARCH (unchanged from prior)
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  DROPDOWN + FILTER + SEARCH
+// ═══════════════════════════════════════════════════════════
 function toggleDD(e, id) {
   e.stopPropagation();
   const dd = document.getElementById(id);
@@ -1021,6 +992,7 @@ function updateFilterBtn(field, btn) {
 function applyFilters() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   let visible = 0;
+  const total = Object.keys(ROW_META).length;
   document.querySelectorAll('#viewOrders .tr').forEach(row => {
     const s = row.getAttribute('data-status'), t = row.getAttribute('data-type'), id = row.getAttribute('data-id');
     const by = (row.querySelector('.c-by .td-main')?.textContent || '').toLowerCase();
@@ -1033,14 +1005,12 @@ function applyFilters() {
   });
   const parts = []; if (FILTERS.type) parts.push(FILTERS.type); if (FILTERS.status) parts.push(FILTERS.status); if (q) parts.push(`"${document.getElementById('searchInput').value.trim()}"`);
   document.getElementById('tableFooter').textContent =
-    visible === 9 && !parts.length ? `Showing 9 results` : `Showing ${visible} result${visible!==1?'s':''}${parts.length?' · '+parts.join(' · '):''}`;
+    visible === total && !parts.length ? `Showing ${total} results` : `Showing ${visible} result${visible!==1?'s':''}${parts.length?' · '+parts.join(' · '):''}`;
 }
 
 function handleSearch(val) {
   applyFilters();
   if (val.trim()) showTypeahead(val); else closeTaDD();
-  const sb = document.getElementById('statusBar');
-  if (sb && !val.trim() && !FILTERS.type && !FILTERS.status) sb.style.display = 'flex';
 }
 function handleSearchKey(e) { if (e.key === 'Escape' || e.key === 'Enter') closeTaDD(); }
 function showTypeahead(val) {
@@ -1048,7 +1018,7 @@ function showTypeahead(val) {
   if (!q) { closeTaDD(); return; }
   const dd = document.getElementById('taDropdown');
   const rows = Object.entries(ROW_META).map(([rId, m]) => ({ rId, ...m }));
-  const matches = rows.filter(r => r.id.includes(q) || r.by.toLowerCase().includes(q) || r.type.toLowerCase().includes(q) || r.status.toLowerCase().includes(q)).slice(0, 7);
+  const matches = rows.filter(r => r.id.includes(q) || r.by.toLowerCase().includes(q) || r.type.toLowerCase().includes(q) || r.status.toLowerCase().includes(q)).slice(0, 8);
   const hl = (t, qq) => { const i = t.toLowerCase().indexOf(qq); if (i<0) return esc(t); return esc(t.slice(0,i))+`<span class="ta-hl">${esc(t.slice(i,i+qq.length))}</span>`+esc(t.slice(i+qq.length)); };
   if (!matches.length) dd.innerHTML = '<div class="ta-empty">No matching orders</div>';
   else dd.innerHTML = '<div class="ta-section">Orders</div>' + matches.map(m => `<div class="ta-item" onclick="selectSuggestion('${m.id}')"><span class="ta-id">#${hl(m.id, q)}</span><span class="ta-meta">${hl(m.by, q)} · <span style="color:var(--text-standard)">${hl(m.status, q)}</span></span></div>`).join('');
@@ -1070,9 +1040,9 @@ function closeAllMenus() {
 }
 document.addEventListener('click', closeAllMenus);
 
-// ═══════════════════════════════════════════════════
-//  GET MORE CARDS MODAL / RADIOS / TOOLTIP / TOAST
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  MISC
+// ═══════════════════════════════════════════════════════════
 function openGetMoreCards() { closeAllMenus(); document.getElementById('modalOverlay').classList.add('open'); }
 function closeGetMoreCards() { document.getElementById('modalOverlay').classList.remove('open'); }
 function selectRadio(el) {
@@ -1091,9 +1061,6 @@ function showToast(msg, type) {
   t.style.display = 'block'; clearTimeout(t._t); t._t = setTimeout(() => t.style.display = 'none', 3000);
 }
 
-// ═══════════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════════
 renderOrdersTable();
 </script>
 </body>
