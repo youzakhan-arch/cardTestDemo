@@ -27,8 +27,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 /* SIDEBAR */
 .sb{width:184px;flex-shrink:0;background:#fff;border-right:1px solid var(--stroke-inactive);display:flex;flex-direction:column;overflow:hidden}
 .sb-logo{padding:18px 16px 14px;border-bottom:1px solid var(--stroke-inactive);flex-shrink:0;display:flex;align-items:center}
-.sb-logo .logo-img{height:22px;display:block}
-.sb-logo .logo-svg{display:none}
+.sb-logo svg{height:24px;width:auto}
 .sb-scroll{flex:1;overflow-y:auto;padding:8px 0}
 .sb-section{padding:8px 16px 2px;font:600 10px/12px 'Inter',system-ui,sans-serif;letter-spacing:.8px;text-transform:uppercase;color:var(--text-subdued);display:flex;align-items:center;justify-content:space-between}
 .sb-section svg{width:14px;height:14px;opacity:.6}
@@ -95,20 +94,18 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 
 /* TABLE */
 .ta{flex:1;overflow:auto;position:relative}
-.tw{min-width:960px;width:100%}
-.thead{display:flex;position:sticky;top:0;z-index:20;background:var(--bg-primary);box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.18);height:36px}
-.th{display:flex;align-items:center;padding:0 12px;font:600 10px/12px 'Inter',system-ui,sans-serif;letter-spacing:.8px;text-transform:uppercase;color:var(--text-subdued);white-space:nowrap;flex-shrink:0}
-.th.first{padding-left:24px}
-.tr{display:flex;align-items:stretch;border-bottom:1px solid var(--stroke-inactive);min-height:64px;position:relative;background:var(--bg-primary);cursor:pointer}
+.tw{width:100%;display:flex;flex-direction:column}
+.thead{display:grid;grid-template-columns:120px 120px 180px 110px 1fr 120px 172px;position:sticky;top:0;z-index:20;background:var(--bg-primary);box-shadow:0 0 0 1px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.18);height:36px}
+.th{display:flex;align-items:center;padding:0 12px;font:600 10px/12px 'Inter',system-ui,sans-serif;letter-spacing:.8px;text-transform:uppercase;color:var(--text-subdued);white-space:nowrap;overflow:hidden}
+.th:first-child{padding-left:24px}
+.th:last-child{padding:0 12px 0 12px;justify-content:flex-end}
+.tr{display:grid;grid-template-columns:120px 120px 180px 110px 1fr 120px 172px;align-items:stretch;border-bottom:1px solid var(--stroke-inactive);min-height:64px;background:var(--bg-primary);cursor:pointer}
 .tr:hover{background:var(--bg-secondary)}
-.td{display:flex;flex-direction:column;justify-content:center;padding:12px 12px;flex-shrink:0;overflow:hidden}
-.td.first{padding-left:24px}
-.td-main{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard)}
-.td-sub{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px}
-.c-id{width:120px}.c-date{width:120px}.c-by{width:180px}.c-type{width:110px}
-.c-details{flex:1;min-width:260px}.c-status{width:120px;padding:12px}
-.c-action{width:172px;padding:12px 24px 12px 12px;align-items:flex-end;justify-content:center;flex-shrink:0;overflow:visible;cursor:default;border-left:1px solid var(--stroke-inactive)}
-.thead .c-action{border-left:1px solid var(--stroke-inactive)}
+.td{display:flex;flex-direction:column;justify-content:center;padding:12px 12px;overflow:hidden}
+.td:first-child{padding-left:24px}
+.td:last-child{padding:12px;border-left:1px solid var(--stroke-inactive);justify-content:flex-end}
+.td-main{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.td-sub{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* TAGS */
 .tag{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:var(--r-xs);font:400 13px/18px 'Inter',system-ui,sans-serif;white-space:nowrap}
@@ -184,7 +181,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .tl-label{font:600 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-positive);text-align:center;margin-bottom:2px}
 .tl-date{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);text-align:center}
 
-/* GROUPED CARDS (in Order Details) */
+/* GROUPED CARDS */
 .rc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .rc-title{font:600 16px/22px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
 .rc-sub{font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-bottom:18px}
@@ -195,15 +192,17 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .btn-secondary:hover{background:var(--bg-secondary)}
 
 .dg{border:1px solid var(--stroke-inactive);border-radius:var(--r-sm);margin-bottom:12px;overflow:hidden;background:var(--bg-primary)}
-.dg-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg-tertiary);border-bottom:1px solid var(--stroke-inactive)}
-.dg-cb{display:flex;align-items:center;justify-content:center;width:18px;height:18px;flex-shrink:0}
+.dg-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg-tertiary);border-bottom:1px solid var(--stroke-inactive);cursor:pointer;user-select:none;transition:background .15s}
+.dg-header:hover{background:rgba(0,115,231,.05)}
+.dg-cb{display:flex;align-items:center;justify-content:center;width:18px;height:18px;flex-shrink:0;opacity:0;transition:opacity .15s}
+.dg.edit-mode .dg-cb{opacity:1}
 .dg-cb input{width:16px;height:16px;accent-color:var(--blue-60);cursor:pointer}
-.dg-avatar{width:32px;height:32px;border-radius:50%;background:var(--bg-accent);color:var(--text-accent);font:600 12px/32px 'Inter',system-ui,sans-serif;text-align:center;flex-shrink:0}
 .dg-info{flex:1;min-width:0}
 .dg-name{font:600 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
 .dg-meta{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px}
 .dg-count{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);background:var(--bg-primary);border:1px solid var(--stroke-inactive);padding:2px 10px;border-radius:99px;flex-shrink:0}
-.dg-cards{padding:0}
+.dg-cards{padding:0;display:none}
+.dg.edit-mode .dg-cards{display:block}
 .dg-card-row{display:flex;align-items:center;gap:12px;padding:11px 18px 11px 56px;border-top:1px solid var(--stroke-inactive)}
 .dg-card-row:first-child{border-top:none}
 .dg-card-row:hover{background:var(--bg-secondary)}
@@ -228,12 +227,10 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .ac-row:hover{background:var(--bg-secondary)}
 .ac-row.selected{background:#f0f7ff}
 .ac-row.selected:hover{background:#e8f3ff}
-.ac-row.activated{opacity:.55;cursor:default;background:var(--bg-tertiary)}
 .ac-num-val{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard)}
 .ac-driver-val{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-accent);cursor:pointer}
 .ac-driver-val:hover{text-decoration:underline}
 .ac-profile-val{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard)}
-.ac-activated-tag{display:inline-block;padding:2px 8px;background:var(--bg-positive);color:var(--text-positive);font:600 11px/16px 'Inter',system-ui,sans-serif;border-radius:var(--r-xs);margin-left:8px}
 
 /* ACTION BAR */
 .action-bar{display:none;align-items:center;justify-content:space-between;padding:10px 24px;background:var(--blue-60);color:#fff;border-bottom:1px solid var(--blue-70);flex-shrink:0;height:42px}
@@ -281,16 +278,8 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .m-radio-option input{margin-top:3px;flex-shrink:0;accent-color:var(--blue-60)}
 .m-radio-option .ro-title{font:600 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
 .m-radio-option .ro-sub{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:2px}
-.m-select{width:100%;border:1px solid var(--stroke-standard);border-radius:var(--r-xs);padding:8px 12px;font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-subdued);background:var(--bg-primary);appearance:none;cursor:pointer}
-.m-select-wrap{position:relative}
-.m-select-wrap svg{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-subdued);pointer-events:none}
 .m-footer{background:var(--bg-secondary);border-top:1px solid var(--stroke-inactive);padding:14px 24px;flex-shrink:0;text-align:center;font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-subdued)}
 .m-footer a{color:var(--text-accent);text-decoration:none}
-.m-personalization{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid var(--stroke-standard);border-radius:var(--r-xs)}
-.m-personalization-info .title{font:600 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
-.m-personalization-info .sub{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:2px}
-.m-change-btn{border:1px solid var(--stroke-standard);border-radius:var(--r-xs);padding:5px 14px;font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-standard);cursor:pointer;background:var(--bg-primary);flex-shrink:0}
-.m-change-btn:hover{background:var(--bg-secondary)}
 </style>
 </head>
 <body>
@@ -307,8 +296,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 <!-- SIDEBAR -->
 <nav class="sb">
   <div class="sb-logo">
-    <img class="logo-img" src="motive-logo.png" alt="motive" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
-    <svg class="logo-svg" width="90" height="22" viewBox="0 0 90 22" xmlns="http://www.w3.org/2000/svg"><text x="0" y="19" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="22" font-weight="900" fill="#000" letter-spacing="-1.2">motive</text></svg>
+    <svg width="135" height="40" viewBox="0 0 162 48" xmlns="http://www.w3.org/2000/svg" style="height:24px;width:auto"><path d="M88.7122 16.3163V31.636L94.9807 31.6232V37.9936H81.5799V16.3112H77.5258V10.1039H81.5774V0.899902H88.7122V10.109H94.9807V16.3163H88.7122Z" fill="black"/><path d="M105.133 0.899902V7.24995H105.13V7.25505H98.0129V0.899902H105.133Z" fill="black"/><path d="M27.5024 10.1013H18.9788L6.23792 31.6359H0V38.0064H9.96081L20.3854 20.3705V37.9936H28.7943L39.1705 20.3195V37.9936H46.3054V10.1013H37.7435L27.5024 27.3983V10.1013Z" fill="black"/><path d="M98.0054 10.1013H105.14V37.9936H98.0054V10.1013Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M62.9984 9.77772H63.0519C70.7271 9.77772 76.8325 16.2093 76.8325 24.0475C76.8325 31.8857 70.7271 38.3172 63.0519 38.3172H62.9984C55.3259 38.3172 49.1644 31.9468 49.1644 24.0475C49.1644 16.1481 55.3259 9.77772 62.9984 9.77772ZM62.9984 31.1824H63.0519V31.1773C66.7825 31.1773 69.7001 27.9895 69.7052 24.0475C69.7052 20.1539 66.7264 16.9126 63.0519 16.9126H62.9984C59.2169 16.9126 56.2993 20.1004 56.2993 24.0475C56.2993 27.9946 59.2169 31.1824 62.9984 31.1824Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M149.229 31.98C152.095 31.98 153.882 30.3058 154.368 28.8432H161.503C161.233 31.1696 158.15 38.3122 149.223 38.3122C141.164 38.3122 135.209 32.2526 135.209 24.0271C135.209 15.9672 141.324 9.7446 149.004 9.7446C156.307 9.7446 162 16.1278 162 23.9201C162 24.7304 161.946 25.4897 161.893 26.03H142.527C143.008 29.4394 145.065 31.98 149.229 31.98ZM142.754 20.9438H154.977C154.213 18.1408 152.327 16.0743 149.027 16.0743C145.569 16.0743 143.556 18.0771 142.754 20.9438Z" fill="black"/><path d="M122.139 28.3513L128.938 10.1064V10.1217H136.539L125.684 37.9936H118.503L107.711 10.1064H115.341L122.139 28.3513Z" fill="black"/></svg>
   </div>
   <div class="sb-scroll">
     <div class="sb-section">Organization <svg viewBox="0 0 14 14" fill="none"><path d="M9 5L7 3 5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -363,13 +351,13 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
   <div class="ta">
     <div class="tw">
       <div class="thead">
-        <div class="th c-id first">Order ID</div>
-        <div class="th c-date">Date Created</div>
-        <div class="th c-by">Created By</div>
-        <div class="th c-type">Type</div>
-        <div class="th c-details">Order Details</div>
-        <div class="th c-status">Status</div>
-        <div class="th c-action"></div>
+        <div class="th">Order ID</div>
+        <div class="th">Date Created</div>
+        <div class="th">Created By</div>
+        <div class="th">Type</div>
+        <div class="th">Order Details</div>
+        <div class="th">Status</div>
+        <div class="th"></div>
       </div>
       <div id="ordersTbody"></div>
     </div>
@@ -466,7 +454,6 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
           <div class="m-radio-option" onclick="selectRadio(this)"><input type="radio" name="fuel" value="none"/><div><div class="ro-title">None</div><div class="ro-sub">No information required at point of sale.</div></div></div>
           <div class="m-radio-option" onclick="selectRadio(this)"><input type="radio" name="fuel" value="driver"/><div><div class="ro-title">Driver Code + odometer</div><div class="ro-sub">Required at point of sale to purchase fuel.</div></div></div>
         </div>
-        <div class="m-field"><div class="m-label">Personalization <span class="req">*</span></div><div class="m-personalization"><div class="m-personalization-info"><div class="title">Standard Card ID</div><div class="sub">Auto-generated, allows easy reassignment.</div></div><button class="m-change-btn">Change</button></div></div>
       </div>
       <div class="m-section">
         <div class="m-section-title">Shipping details</div>
@@ -481,603 +468,427 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 </div>
 
 <script>
-const TYPE_OPTIONS   = ['New', 'Replacement'];
+const TYPE_OPTIONS = ['New', 'Replacement'];
 const STATUS_OPTIONS = ['Draft', 'Scheduled', 'Processing', 'Shipped', 'Completed', 'Canceled'];
 
 // ═══════════════════════════════════════════════════════════
 //  ORDERS — realistic fleet data
 // ═══════════════════════════════════════════════════════════
 const ORDERS = {
-  tr1: {
-    id:'77340102', mode:'virtual', state:'eligible', cardType:'virtual', orderType:'New',
-    createdBy:'Priya Sharma', date:'05/01/2026', rewardIssued:true,
-    timeline:['Scheduled:Apr 28','Order placed:Apr 30','Processed:Apr 30','Shipped:—','Completed:May 01'],
-    cards:[ {id:'c1',cardLast4:'4521',assignedTo:'Priya Sharma',spendProfile:'Drivers'} ],
-  },
-  tr2: {
-    id:'19824719', mode:'standard', state:'eligible', cardType:'physical', orderType:'New',
-    createdBy:'Sarah Mitchell', date:'04/28/2026', shippingAddr:'Motive Internal Testing · 4500 N Oak Trafficway, Kansas City, MO',
-    timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:Apr 28'],
-    cards:[
-      {id:'c1',cardLast4:'9723',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},
-      {id:'c2',cardLast4:'8104',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},
-      {id:'c3',cardLast4:'2298',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},
-      {id:'c4',cardLast4:'7456',assignedTo:'Diego Sanches',  spendProfile:'Drivers'},
-      {id:'c5',cardLast4:'3911',assignedTo:'Marcus Webb',    spendProfile:'Maintenance'},
-    ],
-  },
-  tr3: {
-    id:'23094050', mode:'preconfig', state:'eligible', cardType:'physical', orderType:'New',
-    createdBy:'James Ortega', date:'04/25/2026', eta:'Arriving in 3 days', shippingAddr:'100 Main St, Austin, TX 78701',
-    timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:—'],
-    cards:[
-      {id:'c1',cardLast4:'6612',assignedTo:'James Ortega',  spendProfile:'Drivers'},
-      {id:'c2',cardLast4:'0048',assignedTo:'James Ortega',  spendProfile:'Drivers'},
-      {id:'c3',cardLast4:'8842',assignedTo:'Diego Sanches', spendProfile:'Drivers'},
-    ],
-  },
-  tr4: {
-    id:'11420833', mode:'replacement-preconfig', state:'eligible', cardType:'physical', orderType:'Replacement',
-    createdBy:'Marcus Webb', date:'04/27/2026', eta:'Arriving in 5 days', shippingAddr:'Motive Internal Testing · 10799 Wheeler Trace, Hampton, GA 30228',
-    timeline:['Scheduled:Apr 04','Order placed:Apr 26','Processed:Apr 27','Shipped:Apr 28','Completed:—'],
-    cards:[
-      {id:'c1',cardLast4:'2284',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},
-      {id:'c2',cardLast4:'5519',assignedTo:'Marcus Webb',   spendProfile:'Drivers'},
-    ],
-  },
-  tr5: {
-    id:'87341022', mode:'standard', state:'eligible', cardType:'physical', orderType:'New',
-    createdBy:'Pradeep Kumar', date:'04/29/2026', shippingAddr:'Motive HQ · 333 W San Carlos St, San Jose, CA 95110',
-    timeline:['Scheduled:Apr 18','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 26','Completed:Apr 29'],
-    cards:[
-      {id:'c1',cardLast4:'1287',assignedTo:'Carlos Mendez',          spendProfile:'Drivers'},
-      {id:'c2',cardLast4:'6629',assignedTo:'Carlos Mendez',          spendProfile:'Drivers'},
-      {id:'c3',cardLast4:'3344',assignedTo:'Lisa Chen',              spendProfile:'Drivers'},
-      {id:'c4',cardLast4:'9088',assignedTo:'Lisa Chen',              spendProfile:'Drivers'},
-      {id:'c5',cardLast4:'5511',assignedTo:'Robert Johnson',         spendProfile:'Maintenance'},
-      {id:'c6',cardLast4:'2901',assignedTo:'Habibah Shahid Naeem',   spendProfile:'Drivers'},
-      {id:'c7',cardLast4:'7842',assignedTo:'Maria Garcia',           spendProfile:'Drivers'},
-      {id:'c8',cardLast4:'4400',assignedTo:'Maria Garcia',           spendProfile:'Fleet ops'},
-    ],
-  },
-  tr6: {
-    id:'55903128', mode:'preconfig', state:'eligible', cardType:'physical', orderType:'New',
-    createdBy:'David Park', date:'04/26/2026', eta:'Arriving in 1 day', shippingAddr:'8910 Commerce Ave, Dallas, TX 75201',
-    timeline:['Scheduled:Apr 22','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 26','Completed:—'],
-    cards:[ {id:'c1',cardLast4:'2200',assignedTo:'David Park',spendProfile:'Drivers'} ],
-  },
-  tr_diego: {
-    id:'60042851', mode:'standard', state:'eligible', cardType:'physical', orderType:'New',
-    createdBy:'Diego Sanches', date:'04/30/2026', shippingAddr:'Motive Internal Testing · 2200 Pine Ave, Sacramento, CA 95825',
-    timeline:['Scheduled:Apr 21','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 27','Completed:Apr 30'],
-    cards:[
-      {id:'c1',cardLast4:'3471',assignedTo:'Diego Sanches',spendProfile:'Drivers'},
-      {id:'c2',cardLast4:'9024',assignedTo:'Diego Sanches',spendProfile:'Drivers'},
-      {id:'c3',cardLast4:'1198',assignedTo:'Diego Sanches',spendProfile:'Drivers'},
-      {id:'c4',cardLast4:'6655',assignedTo:'Diego Sanches',spendProfile:'Maintenance'},
-    ],
-  },
-  tr7: { id:'67204819', mode:null, state:'scheduled',  cardType:'physical', orderType:'New',
-    createdBy:'Habibah Shahid Naeem', date:'05/05/2026', cards:[] },
-  tr8: { id:'23056022', mode:null, state:'ineligible', cardType:'physical', orderType:'New',
-    createdBy:'Varun M', date:'04/29/2026', cards:[] },
-  tr9: { id:'45821703', mode:null, state:'ineligible', cardType:'physical', orderType:'New',
-    createdBy:'Lisa Chen', date:'04/24/2026', cards:[] },
-  tr10: { id:'32180129', mode:null, state:'activated', cardType:'virtual', orderType:'New',
-    createdBy:'Alejandro Gonzalez', date:'04/30/2026',
-    timeline:['Scheduled:Apr 28','Order placed:Apr 29','Processed:Apr 29','Shipped:—','Completed:Apr 30'],
-    cards:[ {id:'c1',cardLast4:'7204',assignedTo:'Diego Sanches',spendProfile:'Drivers',activated:true} ],
-  },
-  tr11: { id:'66510924', mode:null, state:'activated', cardType:'physical', orderType:'New',
-    createdBy:'Robert Johnson', date:'04/20/2026', shippingAddr:'5500 Cypress Creek Pkwy, Houston, TX',
-    timeline:['Scheduled:Apr 12','Order placed:Apr 14','Processed:Apr 15','Shipped:Apr 18','Completed:Apr 22'],
-    cards:[
-      {id:'c1',cardLast4:'1080',assignedTo:'Robert Johnson',spendProfile:'Maintenance',activated:true},
-      {id:'c2',cardLast4:'4423',assignedTo:'Robert Johnson',spendProfile:'Maintenance',activated:true},
-      {id:'c3',cardLast4:'7791',assignedTo:'Maria Garcia', spendProfile:'Drivers',activated:true},
-    ],
-  },
-  tr12: { id:'90761634', mode:null, state:'canceled',  cardType:'physical', orderType:'New',
-    createdBy:'Varun M', date:'04/29/2026', cards:[] },
-  tr13: { id:'11829304', mode:null, state:'canceled',  cardType:'physical', orderType:'New',
-    createdBy:'Maria Garcia', date:'04/15/2026', cards:[] },
-  tr14: { id:'43930757', mode:null, state:'draft',     cardType:'physical', orderType:'New',
-    createdBy:'Nadir Ali', date:'04/20/2026', cards:[] },
-  tr15: { id:'78201845', mode:null, state:'draft',     cardType:'physical', orderType:'New',
-    createdBy:"Erin O'Brien", date:'05/02/2026', cards:[] },
+  tr1: {id:'77340102',mode:'virtual',state:'eligible',cardType:'virtual',orderType:'New',createdBy:'Priya Sharma',date:'05/01/2026',rewardIssued:!0,timeline:['Scheduled:Apr 28','Order placed:Apr 30','Processed:Apr 30','Shipped:—','Completed:May 01'],cards:[{id:'c1',cardLast4:'4521',assignedTo:'Priya Sharma',spendProfile:'Drivers'}]},
+  tr2: {id:'19824719',mode:'standard',state:'eligible',cardType:'physical',orderType:'New',createdBy:'Sarah Mitchell',date:'04/28/2026',shippingAddr:'Motive Internal Testing · 4500 N Oak Trafficway, Kansas City, MO',timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:Apr 28'],cards:[{id:'c1',cardLast4:'9723',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c2',cardLast4:'8104',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c3',cardLast4:'2298',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c4',cardLast4:'7456',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c5',cardLast4:'3911',assignedTo:'Marcus Webb',spendProfile:'Maintenance'}]},
+  tr3: {id:'23094050',mode:'preconfig',state:'eligible',cardType:'physical',orderType:'New',createdBy:'James Ortega',date:'04/25/2026',eta:'Arriving in 3 days',shippingAddr:'100 Main St, Austin, TX 78701',timeline:['Scheduled:Apr 20','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 25','Completed:—'],cards:[{id:'c1',cardLast4:'6612',assignedTo:'James Ortega',spendProfile:'Drivers'},{id:'c2',cardLast4:'0048',assignedTo:'James Ortega',spendProfile:'Drivers'},{id:'c3',cardLast4:'8842',assignedTo:'Diego Sanches',spendProfile:'Drivers'}]},
+  tr4: {id:'11420833',mode:'replacement-preconfig',state:'eligible',cardType:'physical',orderType:'Replacement',createdBy:'Marcus Webb',date:'04/27/2026',eta:'Arriving in 5 days',shippingAddr:'Motive Internal Testing · 10799 Wheeler Trace, Hampton, GA 30228',timeline:['Scheduled:Apr 04','Order placed:Apr 26','Processed:Apr 27','Shipped:Apr 28','Completed:—'],cards:[{id:'c1',cardLast4:'2284',assignedTo:'Tarang Singhal',spendProfile:'Drivers'},{id:'c2',cardLast4:'5519',assignedTo:'Marcus Webb',spendProfile:'Drivers'}]},
+  tr5: {id:'87341022',mode:'standard',state:'eligible',cardType:'physical',orderType:'New',createdBy:'Pradeep Kumar',date:'04/29/2026',shippingAddr:'Motive HQ · 333 W San Carlos St, San Jose, CA 95110',timeline:['Scheduled:Apr 18','Order placed:Apr 22','Processed:Apr 23','Shipped:Apr 26','Completed:Apr 29'],cards:[{id:'c1',cardLast4:'1287',assignedTo:'Carlos Mendez',spendProfile:'Drivers'},{id:'c2',cardLast4:'6629',assignedTo:'Carlos Mendez',spendProfile:'Drivers'},{id:'c3',cardLast4:'3344',assignedTo:'Lisa Chen',spendProfile:'Drivers'},{id:'c4',cardLast4:'9088',assignedTo:'Lisa Chen',spendProfile:'Drivers'},{id:'c5',cardLast4:'5511',assignedTo:'Robert Johnson',spendProfile:'Maintenance'},{id:'c6',cardLast4:'2901',assignedTo:'Habibah Shahid Naeem',spendProfile:'Drivers'},{id:'c7',cardLast4:'7842',assignedTo:'Maria Garcia',spendProfile:'Drivers'},{id:'c8',cardLast4:'4400',assignedTo:'Maria Garcia',spendProfile:'Fleet ops'}]},
+  tr_diego: {id:'60042851',mode:'standard',state:'eligible',cardType:'physical',orderType:'New',createdBy:'Diego Sanches',date:'04/30/2026',shippingAddr:'Motive Internal Testing · 2200 Pine Ave, Sacramento, CA 95825',timeline:['Scheduled:Apr 21','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 27','Completed:Apr 30'],cards:[{id:'c1',cardLast4:'3471',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c2',cardLast4:'9024',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c3',cardLast4:'1198',assignedTo:'Diego Sanches',spendProfile:'Drivers'},{id:'c4',cardLast4:'6655',assignedTo:'Diego Sanches',spendProfile:'Maintenance'}]},
+  tr6: {id:'55903128',mode:'preconfig',state:'eligible',cardType:'physical',orderType:'New',createdBy:'David Park',date:'04/26/2026',eta:'Arriving in 1 day',shippingAddr:'8910 Commerce Ave, Dallas, TX 75201',timeline:['Scheduled:Apr 22','Order placed:Apr 23','Processed:Apr 24','Shipped:Apr 26','Completed:—'],cards:[{id:'c1',cardLast4:'2200',assignedTo:'David Park',spendProfile:'Drivers'}]},
+  tr7: {id:'67204819',mode:null,state:'scheduled',cardType:'physical',orderType:'New',createdBy:'Habibah Shahid Naeem',date:'05/05/2026',cards:[]},
+  tr8: {id:'23056022',mode:null,state:'ineligible',cardType:'physical',orderType:'New',createdBy:'Varun M',date:'04/29/2026',cards:[]},
+  tr9: {id:'45821703',mode:null,state:'ineligible',cardType:'physical',orderType:'New',createdBy:'Lisa Chen',date:'04/24/2026',cards:[]},
+  tr10: {id:'32180129',mode:null,state:'activated',cardType:'virtual',orderType:'New',createdBy:'Alejandro Gonzalez',date:'04/30/2026',timeline:['Scheduled:Apr 28','Order placed:Apr 29','Processed:Apr 29','Shipped:—','Completed:Apr 30'],cards:[{id:'c1',cardLast4:'7204',assignedTo:'Diego Sanches',spendProfile:'Drivers',activated:!0}]},
+  tr11: {id:'66510924',mode:null,state:'activated',cardType:'physical',orderType:'New',createdBy:'Robert Johnson',date:'04/20/2026',shippingAddr:'5500 Cypress Creek Pkwy, Houston, TX',timeline:['Scheduled:Apr 12','Order placed:Apr 14','Processed:Apr 15','Shipped:Apr 18','Completed:Apr 22'],cards:[{id:'c1',cardLast4:'1080',assignedTo:'Robert Johnson',spendProfile:'Maintenance',activated:!0},{id:'c2',cardLast4:'4423',assignedTo:'Robert Johnson',spendProfile:'Maintenance',activated:!0},{id:'c3',cardLast4:'7791',assignedTo:'Maria Garcia',spendProfile:'Drivers',activated:!0}]},
+  tr12: {id:'90761634',mode:null,state:'canceled',cardType:'physical',orderType:'New',createdBy:'Varun M',date:'04/29/2026',cards:[]},
+  tr13: {id:'11829304',mode:null,state:'canceled',cardType:'physical',orderType:'New',createdBy:'Maria Garcia',date:'04/15/2026',cards:[]},
+  tr14: {id:'43930757',mode:null,state:'draft',cardType:'physical',orderType:'New',createdBy:'Nadir Ali',date:'04/20/2026',cards:[]},
+  tr15: {id:'78201845',mode:null,state:'draft',cardType:'physical',orderType:'New',createdBy:"Erin O'Brien",date:'05/02/2026',cards:[]},
 };
 
 const ROW_META = {
-  tr1: { id:'77340102', date:'05/01/2026', by:'Priya Sharma',         type:'New',         detailsMain:'1 virtual Motive Card', detailsSub:'Ready to assign',                              status:'Completed',  statusTag:'positive' },
-  tr2: { id:'19824719', date:'04/28/2026', by:'Sarah Mitchell',       type:'New',         detailsMain:'5 Motive Cards',        detailsSub:'Ready to activate · 3 drivers',                status:'Completed',  statusTag:'positive' },
-  tr3: { id:'23094050', date:'04/25/2026', by:'James Ortega',         type:'New',         detailsMain:'3 Motive Cards',        detailsSub:'Arriving in 3 days',                           status:'Shipped',    statusTag:'accent'   },
-  tr4: { id:'11420833', date:'04/27/2026', by:'Marcus Webb',          type:'Replacement', detailsMain:'2 Motive Cards',        detailsSub:'Lost card replacement · Arriving in 5 days',   status:'Shipped',    statusTag:'accent'   },
-  tr5: { id:'87341022', date:'04/29/2026', by:'Pradeep Kumar',        type:'New',         detailsMain:'8 Motive Cards',        detailsSub:'Ready to activate · 5 drivers',                status:'Completed',  statusTag:'positive' },
-  tr6: { id:'55903128', date:'04/26/2026', by:'David Park',           type:'New',         detailsMain:'1 Motive Card',         detailsSub:'Arriving in 1 day',                            status:'Shipped',    statusTag:'accent'   },
-  tr_diego: { id:'60042851', date:'04/30/2026', by:'Diego Sanches',  type:'New',         detailsMain:'4 Motive Cards',        detailsSub:'All assigned to Diego Sanches',                status:'Completed',  statusTag:'positive' },
-  tr7: { id:'67204819', date:'05/05/2026', by:'Habibah Shahid Naeem', type:'New',         detailsMain:'2 Motive Cards',        detailsSub:'Scheduled for 05/05/2026',                     status:'Scheduled',  statusTag:'warning'  },
-  tr8: { id:'23056022', date:'04/29/2026', by:'Varun M',              type:'New',         detailsMain:'1 Motive Card',         detailsSub:'3201, Long Beach, CA',                          status:'Processing', statusTag:'neutral'  },
-  tr9: { id:'45821703', date:'04/24/2026', by:'Lisa Chen',            type:'New',         detailsMain:'4 Motive Cards',        detailsSub:'1500 Tech Park Dr, Austin, TX',                 status:'Processing', statusTag:'neutral'  },
-  tr10:{ id:'32180129', date:'04/30/2026', by:'Alejandro Gonzalez',   type:'New',         detailsMain:'1 virtual Motive Card', detailsSub:'Activated 04/30/2026',                          status:'Completed',  statusTag:'positive' },
-  tr11:{ id:'66510924', date:'04/20/2026', by:'Robert Johnson',       type:'New',         detailsMain:'3 Motive Cards',        detailsSub:'Activated 04/22/2026',                          status:'Completed',  statusTag:'positive' },
-  tr12:{ id:'90761634', date:'04/29/2026', by:'Varun M',              type:'New',         detailsMain:'1 Motive Card',         detailsSub:'Canceled by support',                           status:'Canceled',   statusTag:'negative' },
-  tr13:{ id:'11829304', date:'04/15/2026', by:'Maria Garcia',         type:'New',         detailsMain:'2 Motive Cards',        detailsSub:'Canceled 04/16/2026',                           status:'Canceled',   statusTag:'negative' },
-  tr14:{ id:'43930757', date:'04/20/2026', by:'Nadir Ali',            type:'New',         detailsMain:'1 Motive Card',         detailsSub:'9414 Blackjack Ridge Trail, AR',                status:'Draft',      statusTag:null       },
-  tr15:{ id:'78201845', date:'05/02/2026', by:"Erin O'Brien",         type:'New',         detailsMain:'3 Motive Cards',        detailsSub:'Draft saved 05/02/2026',                        status:'Draft',      statusTag:null       },
+  tr1: {id:'77340102',date:'05/01/2026',by:'Priya Sharma',type:'New',detailsMain:'1 virtual Motive Card',detailsSub:'Ready to assign',status:'Completed',statusTag:'positive'},
+  tr2: {id:'19824719',date:'04/28/2026',by:'Sarah Mitchell',type:'New',detailsMain:'5 Motive Cards',detailsSub:'Ready to activate · 3 drivers',status:'Completed',statusTag:'positive'},
+  tr3: {id:'23094050',date:'04/25/2026',by:'James Ortega',type:'New',detailsMain:'3 Motive Cards',detailsSub:'Arriving in 3 days',status:'Shipped',statusTag:'accent'},
+  tr4: {id:'11420833',date:'04/27/2026',by:'Marcus Webb',type:'Replacement',detailsMain:'2 Motive Cards',detailsSub:'Lost card replacement · Arriving in 5 days',status:'Shipped',statusTag:'accent'},
+  tr5: {id:'87341022',date:'04/29/2026',by:'Pradeep Kumar',type:'New',detailsMain:'8 Motive Cards',detailsSub:'Ready to activate · 5 drivers',status:'Completed',statusTag:'positive'},
+  tr_diego: {id:'60042851',date:'04/30/2026',by:'Diego Sanches',type:'New',detailsMain:'4 Motive Cards',detailsSub:'All assigned to Diego Sanches',status:'Completed',statusTag:'positive'},
+  tr6: {id:'55903128',date:'04/26/2026',by:'David Park',type:'New',detailsMain:'1 Motive Card',detailsSub:'Arriving in 1 day',status:'Shipped',statusTag:'accent'},
+  tr7: {id:'67204819',date:'05/05/2026',by:'Habibah Shahid Naeem',type:'New',detailsMain:'2 Motive Cards',detailsSub:'Scheduled for 05/05/2026',status:'Scheduled',statusTag:'warning'},
+  tr8: {id:'23056022',date:'04/29/2026',by:'Varun M',type:'New',detailsMain:'1 Motive Card',detailsSub:'3201, Long Beach, CA',status:'Processing',statusTag:'neutral'},
+  tr9: {id:'45821703',date:'04/24/2026',by:'Lisa Chen',type:'New',detailsMain:'4 Motive Cards',detailsSub:'1500 Tech Park Dr, Austin, TX',status:'Processing',statusTag:'neutral'},
+  tr10: {id:'32180129',date:'04/30/2026',by:'Alejandro Gonzalez',type:'New',detailsMain:'1 virtual Motive Card',detailsSub:'Activated 04/30/2026',status:'Completed',statusTag:'positive'},
+  tr11: {id:'66510924',date:'04/20/2026',by:'Robert Johnson',type:'New',detailsMain:'3 Motive Cards',detailsSub:'Activated 04/22/2026',status:'Completed',statusTag:'positive'},
+  tr12: {id:'90761634',date:'04/29/2026',by:'Varun M',type:'New',detailsMain:'1 Motive Card',detailsSub:'Canceled by support',status:'Canceled',statusTag:'negative'},
+  tr13: {id:'11829304',date:'04/15/2026',by:'Maria Garcia',type:'New',detailsMain:'2 Motive Cards',detailsSub:'Canceled 04/16/2026',status:'Canceled',statusTag:'negative'},
+  tr14: {id:'43930757',date:'04/20/2026',by:'Nadir Ali',type:'New',detailsMain:'1 Motive Card',detailsSub:'9414 Blackjack Ridge Trail, AR',status:'Draft',statusTag:null},
+  tr15: {id:'78201845',date:'05/02/2026',by:"Erin O'Brien",type:'New',detailsMain:'3 Motive Cards',detailsSub:'Draft saved 05/02/2026',status:'Draft',statusTag:null},
 };
 
-const FILTERS = { type:null, status:null };
-let _currentOrderId = null;
-let _selectedCardIds = new Set();
-let _pendingActivation = null;
-let _openFilterBtn = null;
+const FILTERS = {type:null,status:null};
+let _currentOrderId = null, _selectedCardIds = new Set(), _pendingActivation = null, _openFilterBtn = null, _odEditMode = !1;
 
-// ═══════════════════════════════════════════════════════════
-//  RENDER ORDERS TABLE
-// ═══════════════════════════════════════════════════════════
 function renderOrdersTable() {
   document.getElementById('ordersTbody').innerHTML = Object.entries(ROW_META).map(([rowId, m]) => {
     const o = ORDERS[rowId];
     const showSplit = o.state === 'eligible';
-    const statusHtml = m.statusTag
-      ? `<span class="tag tag-${m.statusTag}">${m.status}</span>`
-      : `<span class="td-main" style="color:var(--text-subdued)">${m.status}</span>`;
-
+    const statusHtml = m.statusTag ? `<span class="tag tag-${m.statusTag}">${m.status}</span>` : `<span class="td-main" style="color:var(--text-subdued)">${m.status}</span>`;
     let actionHtml = '';
     if (showSplit) {
-      const tipTxt = {
-        virtual: 'Virtual card is ready to assign to a driver.',
-        standard: 'Cards delivered. Activate to assign them to drivers.',
-        preconfig: 'Cards in transit. Pre-configure now — ready once delivered.',
-        'replacement-preconfig': 'Replacement cards in transit. Activating replaces the lost cards.',
-      }[o.mode] || 'Activate cards';
-      actionHtml = `
-        <div class="tip-wrap" onmouseenter="positionTip(this)">
-          <div class="tip">${tipTxt}</div>
-          <div class="split">
-            <span class="s-lbl" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate</span>
-            <span class="s-chev" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </div>
-        </div>
-        <div class="dd" id="dd${rowId}">
-          <div class="dd-item bold" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate Cards</div>
-          <div class="dd-item" onclick="event.stopPropagation();goToOrderDetails('${rowId}')">View order details</div>
-        </div>`;
+      const tipTxt = {virtual: 'Virtual card is ready to assign to a driver.', standard: 'Cards delivered. Activate to assign them to drivers.', preconfig: 'Cards in transit. Pre-configure now — ready once delivered.', 'replacement-preconfig': 'Replacement cards in transit. Activating replaces the lost cards.'}[o.mode] || 'Activate cards';
+      actionHtml = `<div class="tip-wrap" onmouseenter="positionTip(this)"><div class="tip">${tipTxt}</div><div class="split"><span class="s-lbl" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate</span><span class="s-chev" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div><div class="dd" id="dd${rowId}"><div class="dd-item bold" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate Cards</div><div class="dd-item" onclick="event.stopPropagation();goToOrderDetails('${rowId}')">View order details</div></div>`;
     } else {
       const ddItems = [`<div class="dd-item" onclick="event.stopPropagation();goToOrderDetails('${rowId}')">View order details</div>`];
       if (o.state === 'canceled') ddItems.push(`<div class="dd-item" onclick="event.stopPropagation();openGetMoreCards()">Reorder</div>`);
-      if (o.state === 'draft') ddItems.push(`<div class="dd-item" onclick="event.stopPropagation();">Edit draft</div>`);
-      actionHtml = `
-        <div class="ibtn-wrap">
-          <div class="ibtn" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="13" cy="8" r="1.3"/></svg></div>
-          <div class="dd" id="dd${rowId}">${ddItems.join('')}</div>
-        </div>`;
+      if (o.state === 'draft' || o.state === 'ineligible') ddItems.push(`<div class="dd-item" onclick="event.stopPropagation();openGetMoreCards()">Re-order</div>`);
+      actionHtml = ddItems.join('') ? `<div class="ibtn-wrap"><button class="ibtn" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button></div><div class="dd" id="dd${rowId}">${ddItems.join('')}</div>` : '';
     }
-
-    return `
-    <div class="tr" id="${rowId}" data-id="${m.id}" data-status="${m.status}" data-type="${m.type}" onclick="goToOrderDetails('${rowId}')">
-      <div class="td c-id first"><span class="td-main">${m.id}</span></div>
-      <div class="td c-date"><span class="td-main">${m.date}</span></div>
-      <div class="td c-by"><span class="td-main">${m.by}</span></div>
-      <div class="td c-type"><span class="td-main">${m.type}</span></div>
-      <div class="td c-details"><span class="td-main">${m.detailsMain}</span><span class="td-sub">${m.detailsSub}</span></div>
-      <div class="td c-status">${statusHtml}</div>
-      <div class="td c-action" onclick="event.stopPropagation()">${actionHtml}</div>
-    </div>`;
+    return `<div class="tr" onclick="goToOrderDetails('${rowId}')"><div class="td"><div class="td-main">#${m.id}</div></div><div class="td"><div class="td-main">${m.date}</div></div><div class="td"><div class="td-main">${m.by}</div></div><div class="td"><div class="td-main">${m.type}</div></div><div class="td"><div class="td-main">${m.detailsMain}</div><div class="td-sub">${m.detailsSub}</div></div><div class="td">${statusHtml}</div><div class="td">${actionHtml}</div></div>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════════════════════════
-function setView(viewId) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById(viewId).classList.add('active');
-  closeAllMenus();
-}
 function goToOrders() {
-  setView('viewOrders');
   _currentOrderId = null;
-  _selectedCardIds.clear();
-  renderOrdersTable();
+  document.getElementById('viewOrders').classList.add('active');
+  document.getElementById('viewOrderDetails').classList.remove('active');
+  document.getElementById('viewActivateCards').classList.remove('active');
+  closeAllDDs();
 }
+
 function goToOrderDetails(rowId) {
   _currentOrderId = rowId;
-  document.getElementById('odBcId').textContent = ORDERS[rowId].id;
   renderOrderDetailsContent(rowId);
-  setView('viewOrderDetails');
-}
-function goToActivateCards(rowId) {
-  _currentOrderId = rowId;
-  _selectedCardIds.clear();
-  document.getElementById('acBcOrderId').textContent = ORDERS[rowId].id;
-  document.getElementById('acSearchInput').value = '';
-  renderAcTable();
-  updateAcActionBar();
-  setView('viewActivateCards');
-}
-
-// ═══════════════════════════════════════════════════════════
-//  ORDER DETAILS — grouped-by-driver cards
-// ═══════════════════════════════════════════════════════════
-function initials(name) {
-  return name.split(' ').filter(Boolean).slice(0,2).map(s => s[0]).join('').toUpperCase();
-}
-
-function groupCardsByDriver(cards) {
-  const groups = {};
-  cards.forEach(c => {
-    const key = c.assignedTo;
-    if (!groups[key]) groups[key] = { driver:key, profile:c.spendProfile, cards:[] };
-    groups[key].cards.push(c);
-  });
-  return Object.values(groups);
+  document.getElementById('viewOrders').classList.remove('active');
+  document.getElementById('viewOrderDetails').classList.add('active');
+  document.getElementById('viewActivateCards').classList.remove('active');
 }
 
 function renderOrderDetailsContent(rowId) {
   const o = ORDERS[rowId];
-
-  const statusTitle = {
-    eligible: o.orderType === 'Replacement' ? `Order #${o.id} has been completed.` : `Order #${o.id} has been completed.`,
-    activated: `Order #${o.id} — all cards activated.`,
-    scheduled: `Order #${o.id} is scheduled.`,
-    ineligible: `Order #${o.id} is being processed.`,
-    canceled: `Order #${o.id} was canceled.`,
-    draft: `Order #${o.id} is a draft.`,
-  }[o.state] || `Order #${o.id}`;
-
-  const statusSub = {
-    eligible: o.orderType === 'Replacement'
-      ? 'Your replacement cards have been delivered and are ready to be activated.'
-      : (o.mode === 'preconfig' || o.mode === 'replacement-preconfig')
-        ? 'Cards are in transit. You can pre-configure activation now — they\'ll be ready to use once delivered.'
-        : 'Your cards have been delivered and are ready to be activated.',
-    activated: 'All cards in this order are active.',
-    scheduled: `This order is scheduled for ${o.date}.`,
-    ineligible: 'Cards are in production. Once shipped you\'ll be able to pre-configure activation here.',
-    canceled: 'This order was canceled. Contact Motive support if you need assistance.',
-    draft: 'This order has not been submitted yet.',
-  }[o.state] || '';
-
-  const tlSteps = o.timeline || [];
-  const tlHtml = tlSteps.length ? `
-    <div class="timeline">
-      ${tlSteps.map(step => {
-        const [label, date] = step.split(':');
-        const done = date !== '—';
-        return `<div class="tl-step ${done ? '' : 'pending'}">
-          <div class="tl-dot">${done ? '<svg viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}</div>
-          <div class="tl-label">${label}</div><div class="tl-date">${date}</div>
-        </div>`;
-      }).join('')}
-    </div>` : '';
-
-  const shippingSection = o.cardType === 'physical' ? `
-    <div class="od-row"><div class="od-row-label">Shipping information</div><div class="od-row-val">${o.shippingAddr || '—'}</div></div>
-    <div class="od-row"><div class="od-row-label">Shipping method</div><div class="od-row-val">Standard shipping (7-10 business days)</div></div>` : `
-    <div class="od-row"><div class="od-row-label">Card type</div><div class="od-row-val">Virtual Motive Card${o.rewardIssued ? ' · <span style="color:var(--text-subdued);font-size:12px">Reward-issued</span>' : ''}</div></div>`;
-
-  // Grouped cards
-  const hasCards = o.cards && o.cards.length > 0;
-  const showActivate = o.state === 'eligible';
-  const unactivatedCount = hasCards ? o.cards.filter(c => !c.activated).length : 0;
-  const groups = hasCards ? groupCardsByDriver(o.cards) : [];
-
-  const groupsHtml = groups.map(g => {
-    const allActivated = g.cards.every(c => c.activated);
-    const allUnactivatedSelected = g.cards.filter(c => !c.activated).every(c => _selectedCardIds.has(c.id)) && g.cards.some(c => !c.activated);
-    return `
-    <div class="dg">
-      <div class="dg-header">
-        ${showActivate && !allActivated ? `<div class="dg-cb"><input type="checkbox" ${allUnactivatedSelected ? 'checked' : ''} onclick="toggleDriverGroup('${g.driver.replace(/'/g, "\\'")}')"/></div>` : '<div class="dg-cb"></div>'}
-        <div class="dg-avatar">${initials(g.driver)}</div>
-        <div class="dg-info">
-          <div class="dg-name">${g.driver}</div>
-          <div class="dg-meta">${g.profile}</div>
-        </div>
-        <div class="dg-count">${g.cards.length} card${g.cards.length!==1?'s':''}</div>
-      </div>
-      <div class="dg-cards">
-        ${g.cards.map(c => `
-          <div class="dg-card-row ${c.activated ? 'activated' : ''}">
-            <div class="dg-card-cb">${showActivate && !c.activated ? `<input type="checkbox" ${_selectedCardIds.has(c.id) ? 'checked' : ''} onclick="toggleOdCardSelect('${c.id}')"/>` : ''}</div>
-            <div class="dg-card-num">•••• ${c.cardLast4}</div>
-            <div class="dg-card-status ${c.activated ? 'done' : 'pending'}">${c.activated ? '● Active' : 'Inactive'}</div>
-          </div>`).join('')}
-      </div>
-    </div>`;
+  const m = ROW_META[rowId];
+  document.getElementById('odBcId').textContent = '#' + m.id;
+  
+  const timelineHtml = o.timeline ? o.timeline.map((step, i) => {
+    const [label, date] = step.split(':');
+    const done = date !== '—';
+    return `<div class="tl-step ${done ? '' : 'pending'}"><div class="tl-dot">${done ? '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 11l-2-2 1-1 1 1 3-3 1 1-4 4z"/></svg>' : ''}</div><div class="tl-label">${label}</div><div class="tl-date">${date}</div></div>`;
+  }).join('') : '';
+  
+  const groupedCards = groupCardsByDriver(o.cards);
+  const cardsHtml = Object.keys(groupedCards).length === 0 ? '<div style="padding:16px;color:var(--text-subdued);font:400 14px/20px Inter,system-ui,sans-serif">No cards assigned yet.</div>' : Object.entries(groupedCards).map(([driverName, cardGroup]) => {
+    const groupKey = `dg_${driverName.replace(/[^a-z0-9]/gi, '_')}`;
+    const activatedCount = cardGroup.filter(c => c.activated).length;
+    const unactivatedCount = cardGroup.length - activatedCount;
+    const cardHtml = cardGroup.map((c, idx) => {
+      const isActivated = c.activated;
+      return `<div class="dg-card-row ${isActivated ? 'activated' : ''}"><div class="dg-card-cb"><input type="checkbox" id="cb_${c.id}" ${isActivated ? 'checked disabled' : 'checked'} onchange="toggleCardCheckbox('${c.id}', this.checked)"/></div><div class="dg-card-num">••••${c.cardLast4}</div><div class="dg-card-status ${isActivated ? 'done' : 'pending'}">${isActivated ? 'Activated' : 'Ready'}</div></div>`;
+    }).join('');
+    return `<div class="dg" id="${groupKey}"><div class="dg-header" onclick="toggleGroupEditMode('${groupKey}')"><div class="dg-cb"><input type="checkbox" id="dg_cb_${groupKey}" class="group-cb" onchange="toggleGroupCheckbox('${groupKey}', this.checked)"/></div><div class="dg-info"><div class="dg-name">${driverName}</div></div><div class="dg-count">${unactivatedCount} card${unactivatedCount !== 1 ? 's' : ''}</div></div><div class="dg-cards">${cardHtml}</div></div>`;
   }).join('');
-
-  const cardsSection = hasCards ? `
-    <div class="od-card">
-      <div class="rc-head">
-        <div>
-          <div class="rc-title">${o.orderType === 'Replacement' ? 'Replacement cards' : 'Cards in this order'}</div>
-          <div class="rc-sub">${unactivatedCount} of ${o.cards.length} ready to activate · grouped by assignee</div>
-        </div>
-        ${showActivate && unactivatedCount > 0 ? `<button class="btn-primary" id="odActivateBtn" onclick="activateFromOrderDetails()" disabled>Activate cards</button>` : ''}
-      </div>
-      ${groupsHtml}
-    </div>` : '';
 
   document.getElementById('odContent').innerHTML = `
     <div class="od-card">
-      <div class="od-card-title">${statusTitle}</div>
-      <div class="od-card-sub">${statusSub}</div>
-      ${tlHtml}
-      <div class="od-modified">This order was modified by Motive on ${o.date}.</div>
+      <div class="od-card-title">#${m.id}</div>
+      <div class="od-card-sub">${m.detailsMain} · ${m.detailsSub}</div>
+      ${o.shippingAddr ? `<div class="od-row" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--stroke-inactive)"><div class="od-row-label">Shipping to</div><div class="od-row-val">${o.shippingAddr}</div></div>` : ''}
+      ${timelineHtml ? `<div style="margin-top:16px"><div style="font:600 13px/18px Inter,system-ui,sans-serif;color:var(--text-subdued);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Order timeline</div><div class="timeline">${timelineHtml}</div></div>` : ''}
+      <div class="od-modified">Last modified 05/01/2026 by ${m.by}</div>
     </div>
     <div class="od-card">
-      <div class="od-section-title">Card order details</div>
-      <div class="od-row"><div class="od-row-label">Order ID</div><div class="od-row-val">${o.id}</div></div>
-      <div class="od-row"><div class="od-row-label">Order type</div><div class="od-row-val">${o.orderType}</div></div>
-      <div class="od-row"><div class="od-row-label">Created by</div><div class="od-row-val">${o.createdBy} · ${o.date} · 1:27 PM EDT</div></div>
-      ${shippingSection}
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <div class="od-section-title">Cards in this order</div>
+        ${o.cards.length > 0 && o.cards.some(c => !c.activated) ? `<button class="btn-primary" onclick="activateFromOrderDetails()">Activate cards</button>` : o.cards.length > 0 ? `<button class="btn-secondary" disabled>All activated</button>` : ''}
+      </div>
+      ${cardsHtml}
     </div>
-    ${cardsSection}`;
+  `;
 }
 
-function toggleOdCardSelect(cardId) {
-  if (_selectedCardIds.has(cardId)) _selectedCardIds.delete(cardId);
-  else _selectedCardIds.add(cardId);
-  // Re-render only the cards section to update parent group checkbox state
-  renderOrderDetailsContent(_currentOrderId);
-  const btn = document.getElementById('odActivateBtn');
-  if (btn) btn.disabled = _selectedCardIds.size === 0;
+function groupCardsByDriver(cards) {
+  const grouped = {};
+  cards.forEach(c => {
+    if (!grouped[c.assignedTo]) grouped[c.assignedTo] = [];
+    grouped[c.assignedTo].push(c);
+  });
+  return grouped;
 }
 
-function toggleDriverGroup(driverName) {
-  const o = ORDERS[_currentOrderId];
-  const driverCards = o.cards.filter(c => c.assignedTo === driverName && !c.activated);
-  const allSelected = driverCards.every(c => _selectedCardIds.has(c.id));
-  if (allSelected) driverCards.forEach(c => _selectedCardIds.delete(c.id));
-  else driverCards.forEach(c => _selectedCardIds.add(c.id));
-  renderOrderDetailsContent(_currentOrderId);
-  const btn = document.getElementById('odActivateBtn');
-  if (btn) btn.disabled = _selectedCardIds.size === 0;
+function toggleGroupEditMode(groupKey) {
+  const grp = document.getElementById(groupKey);
+  grp.classList.toggle('edit-mode');
+}
+
+function toggleCardCheckbox(cardId, checked) {
+  if (checked) _selectedCardIds.add(cardId);
+  else _selectedCardIds.delete(cardId);
+}
+
+function toggleGroupCheckbox(groupKey, checked) {
+  const grp = document.getElementById(groupKey);
+  const cbs = grp.querySelectorAll('.dg-card-cb input:not(:disabled)');
+  cbs.forEach(cb => { cb.checked = checked; _selectedCardIds[checked ? 'add' : 'delete'](cb.id.replace('cb_', '')); });
 }
 
 function activateFromOrderDetails() {
-  if (!_selectedCardIds.size) return;
-  _pendingActivation = { orderId:_currentOrderId, cardIds:Array.from(_selectedCardIds), source:'order-details' };
-  showActivateModal(_selectedCardIds.size);
-}
-
-// ═══════════════════════════════════════════════════════════
-//  ACTIVATE CARDS PAGE
-// ═══════════════════════════════════════════════════════════
-function renderAcTable() {
-  const o = ORDERS[_currentOrderId];
-  const inactiveCards = o.cards.filter(c => !c.activated);
-  const tbody = document.getElementById('acTbody');
-  if (!inactiveCards.length) {
-    tbody.innerHTML = '<div style="padding:48px 24px;text-align:center;color:var(--text-subdued);font:400 14px/20px Inter,sans-serif">All cards in this order have been activated.</div>';
+  _pendingActivation = { source: 'details', cardIds: Array.from(_selectedCardIds) };
+  if (_pendingActivation.cardIds.length === 0) {
+    showToast('Select cards to activate');
     return;
   }
-  tbody.innerHTML = inactiveCards.map(c => {
-    const selected = _selectedCardIds.has(c.id);
-    return `<div class="ac-row ${selected ? 'selected' : ''}" onclick="toggleAcRowSelect('${c.id}')" data-card-id="${c.id}" data-driver="${c.assignedTo.toLowerCase()}">
-      <div class="ac-cb"><input type="checkbox" ${selected ? 'checked' : ''} onclick="event.stopPropagation();toggleAcRowSelect('${c.id}')"/></div>
-      <div class="ac-num"><span class="ac-num-val">•••• ${c.cardLast4}</span></div>
-      <div class="ac-driver"><span class="ac-driver-val">${c.assignedTo}</span></div>
-      <div class="ac-profile"><span class="ac-profile-val">${c.spendProfile}</span></div>
-      <div class="ac-actions"><div class="ibtn" onclick="event.stopPropagation()" style="margin-left:auto"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="13" cy="8" r="1.3"/></svg></div></div>
-    </div>`;
-  }).join('');
+  openActivateModal('details');
 }
 
-function filterAcRows(val) {
-  const q = val.trim().toLowerCase();
-  document.querySelectorAll('#acTbody .ac-row').forEach(r => {
-    const driver = r.getAttribute('data-driver') || '';
-    r.style.display = (!q || driver.includes(q)) ? 'flex' : 'none';
-  });
-}
-
-function toggleAcRowSelect(cardId) {
-  if (_selectedCardIds.has(cardId)) _selectedCardIds.delete(cardId);
-  else _selectedCardIds.add(cardId);
+function goToActivateCards(rowId) {
+  _currentOrderId = rowId;
+  _selectedCardIds.clear();
   renderAcTable();
+  document.getElementById('viewOrders').classList.remove('active');
+  document.getElementById('viewOrderDetails').classList.remove('active');
+  document.getElementById('viewActivateCards').classList.add('active');
+  document.getElementById('acBcOrderId').textContent = '#' + ROW_META[rowId].id;
+}
+
+function renderAcTable() {
+  const o = ORDERS[_currentOrderId];
+  const unactivatedCards = o.cards.filter(c => !c.activated);
+  
+  if (unactivatedCards.length === 0) {
+    document.getElementById('acTbody').innerHTML = `<div style="padding:32px 24px;text-align:center;color:var(--text-subdued);font:400 14px/20px Inter,system-ui,sans-serif">All cards in this order have been activated.</div>`;
+    return;
+  }
+
+  document.getElementById('acTbody').innerHTML = unactivatedCards.map((c, idx) => `<div class="ac-row" data-card-id="${c.id}"><div class="ac-cb"><input type="checkbox" class="card-cb" id="ac_${c.id}" onchange="toggleAcCardSelect('${c.id}', this.checked)"/></div><div class="ac-num"><div class="ac-num-val">••••${c.cardLast4}</div></div><div class="ac-driver"><div class="ac-driver-val">${c.assignedTo}</div></div><div class="ac-profile"><div class="ac-profile-val">${c.spendProfile}</div></div><div class="ac-actions"></div></div>`).join('');
+}
+
+function toggleAcCardSelect(cardId, checked) {
+  if (checked) _selectedCardIds.add(cardId);
+  else _selectedCardIds.delete(cardId);
   updateAcActionBar();
 }
 
 function toggleAcSelectAll(checked) {
-  const o = ORDERS[_currentOrderId];
-  if (checked) o.cards.filter(c => !c.activated).forEach(c => _selectedCardIds.add(c.id));
-  else _selectedCardIds.clear();
-  renderAcTable();
+  const cbs = document.querySelectorAll('.ac-row .card-cb');
+  cbs.forEach(cb => {
+    cb.checked = checked;
+    toggleAcCardSelect(cb.id.replace('ac_', ''), checked);
+  });
   updateAcActionBar();
 }
 
 function updateAcActionBar() {
-  const n = _selectedCardIds.size;
-  document.getElementById('acFilterRow').style.display = n > 0 ? 'none' : 'flex';
-  document.getElementById('acActionBar').classList.toggle('visible', n > 0);
-  document.getElementById('acSelText').textContent = `${n} card${n!==1?'s':''} selected`;
-  const total = ORDERS[_currentOrderId].cards.filter(c => !c.activated).length;
-  document.getElementById('acSelectAll').checked = n > 0 && n === total;
+  const count = _selectedCardIds.size;
+  const bar = document.getElementById('acActionBar');
+  const selText = document.getElementById('acSelText');
+  if (count > 0) {
+    bar.classList.add('visible');
+    selText.textContent = count + ' card' + (count !== 1 ? 's' : '') + ' selected';
+  } else {
+    bar.classList.remove('visible');
+  }
 }
 
 function clearAcSelection() {
   _selectedCardIds.clear();
-  renderAcTable();
+  document.querySelectorAll('.card-cb').forEach(cb => cb.checked = false);
+  document.getElementById('acSelectAll').checked = false;
   updateAcActionBar();
 }
 
-// ═══════════════════════════════════════════════════════════
-//  ACTIVATE MODAL
-// ═══════════════════════════════════════════════════════════
-function openActivateModal(source) {
-  const cardIds = Array.from(_selectedCardIds);
-  if (!cardIds.length) return;
-  _pendingActivation = { orderId:_currentOrderId, cardIds, source };
-  showActivateModal(cardIds.length);
+function filterAcRows(searchVal) {
+  const lc = searchVal.toLowerCase();
+  document.querySelectorAll('.ac-row').forEach(row => {
+    const match = row.textContent.toLowerCase().includes(lc);
+    row.style.display = match ? '' : 'none';
+  });
 }
 
-function showActivateModal(count) {
+function openActivateModal(source) {
+  const count = _selectedCardIds.size || 1;
   document.getElementById('actCount').textContent = count;
-  document.getElementById('actCardWord').textContent = count === 1 ? 'card' : 'cards';
+  document.getElementById('actCardWord').textContent = count !== 1 ? 'cards' : 'card';
   document.getElementById('activateModal').classList.add('open');
 }
 
 function closeActivateModal() {
   document.getElementById('activateModal').classList.remove('open');
-  _pendingActivation = null;
 }
 
 function confirmActivation() {
-  if (!_pendingActivation) return;
-  const { orderId, cardIds, source } = _pendingActivation;
-  const o = ORDERS[orderId];
-  const isPreconfig = o.mode === 'preconfig' || o.mode === 'replacement-preconfig';
-
-  cardIds.forEach(cId => {
-    const card = o.cards.find(c => c.id === cId);
-    if (card) card.activated = true;
+  const cardIds = Array.from(_selectedCardIds);
+  cardIds.forEach(cid => {
+    const order = Object.values(ORDERS).find(o => o.cards.some(c => c.id === cid));
+    if (order) {
+      const card = order.cards.find(c => c.id === cid);
+      if (card) card.activated = true;
+    }
   });
-  const allActivated = o.cards.every(c => c.activated);
-  if (allActivated) o.state = 'activated';
-
   closeActivateModal();
   _selectedCardIds.clear();
+  showToast(`${cardIds.length} card${cardIds.length !== 1 ? 's' : ''} activated successfully`);
+  setTimeout(() => {
+    renderOrdersTable();
+    if (_currentOrderId) {
+      renderOrderDetailsContent(_currentOrderId);
+      renderAcTable();
+    } else {
+      goToOrders();
+    }
+  }, 500);
+}
 
-  const verbing = isPreconfig ? 'pre-configured' : 'activated';
-  const toastMsg = isPreconfig
-    ? `${cardIds.length} card${cardIds.length!==1?'s':''} pre-configured — will activate on delivery`
-    : `${cardIds.length} card${cardIds.length!==1?'s':''} activated`;
+function openFilterDD(e, type, opts) {
+  e.stopPropagation();
+  _openFilterBtn = type === 'type' ? document.getElementById('filtType') : document.getElementById('filtStatus');
+  const dd = document.createElement('div');
+  dd.className = 'dd open';
+  dd.onclick = e => e.stopPropagation();
+  dd.innerHTML = opts.map(opt => `<div class="dd-item ${FILTERS[type] === opt ? 'checked' : ''}" onclick="selectFilter('${type}','${opt}')">${opt}</div>`).join('') + `<div class="dd-sep"></div><div class="dd-item" onclick="clearFilter('${type}')">Clear</div>`;
+  document.body.appendChild(dd);
+  const r = _openFilterBtn.getBoundingClientRect();
+  dd.style.position = 'fixed';
+  dd.style.top = (r.bottom + 4) + 'px';
+  dd.style.left = r.left + 'px';
+  document.addEventListener('click', closeAllDDs);
+}
 
-  if (source === 'order-details') {
-    renderOrderDetailsContent(orderId);
-    showToast(toastMsg, isPreconfig ? 'warn' : null);
-  } else {
-    goToOrders();
-    showToast(toastMsg, isPreconfig ? 'warn' : null);
+function selectFilter(type, val) {
+  FILTERS[type] = val;
+  applyFilters();
+  closeAllDDs();
+}
+
+function clearFilter(type) {
+  FILTERS[type] = null;
+  applyFilters();
+  closeAllDDs();
+}
+
+function applyFilters() {
+  document.querySelectorAll('.tr').forEach(tr => {
+    const rowId = Array.from(ORDERS).find(([k,v]) => k === Object.keys(ORDERS).find(k => ORDERS[k].id === tr.querySelector('.td-main').textContent.replace('#', '')))?.[0];
+    if (!rowId) return;
+    const o = ORDERS[rowId];
+    const m = ROW_META[rowId];
+    let show = true;
+    if (FILTERS.type && m.type !== FILTERS.type) show = false;
+    if (FILTERS.status && m.status !== FILTERS.status) show = false;
+    tr.style.display = show ? '' : 'none';
+  });
+  updateFilterButtons();
+}
+
+function updateFilterButtons() {
+  const typeBtn = document.getElementById('filtType');
+  const statusBtn = document.getElementById('filtStatus');
+  if (FILTERS.type) typeBtn.classList.add('active');
+  else typeBtn.classList.remove('active');
+  if (FILTERS.status) statusBtn.classList.add('active');
+  else statusBtn.classList.remove('active');
+}
+
+function handleSearch(val) {
+  if (!val.trim()) {
+    document.querySelectorAll('.tr').forEach(tr => tr.style.display = '');
+    document.getElementById('taDropdown').classList.remove('open');
+    return;
+  }
+  showTypeahead(val);
+}
+
+function handleSearchKey(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('taDropdown').classList.remove('open');
+    document.querySelectorAll('.tr').forEach(tr => tr.style.display = '');
   }
 }
 
-// ═══════════════════════════════════════════════════════════
-//  DROPDOWN + FILTER + SEARCH
-// ═══════════════════════════════════════════════════════════
-function toggleDD(e, id) {
+function showTypeahead(val) {
+  const lc = val.toLowerCase();
+  const matches = Object.entries(ROW_META).filter(([k,m]) => m.id.includes(lc) || m.by.toLowerCase().includes(lc) || m.status.toLowerCase().includes(lc));
+  const dd = document.getElementById('taDropdown');
+  if (matches.length === 0) {
+    dd.innerHTML = '<div class="ta-empty">No matching orders</div>';
+  } else {
+    const byId = matches.filter(([k,m]) => m.id.includes(lc));
+    const byCre = matches.filter(([k,m]) => m.by.toLowerCase().includes(lc) && !byId.find(x => x[0] === k[0]));
+    const byStat = matches.filter(([k,m]) => m.status.toLowerCase().includes(lc) && !byId.find(x => x[0] === k[0]) && !byCre.find(x => x[0] === k[0]));
+    let html = '';
+    if (byId.length > 0) {
+      html += '<div class="ta-section">By Order ID</div>';
+      html += byId.map(([k,m]) => `<div class="ta-item" onclick="selectOrder('${k}')"><div class="ta-id">#${m.id}</div><div class="ta-meta">${m.status}</div></div>`).join('');
+    }
+    if (byCre.length > 0) {
+      html += '<div class="ta-section">By Created By</div>';
+      html += byCre.map(([k,m]) => `<div class="ta-item" onclick="selectOrder('${k}')"><div class="ta-id">#${m.id}</div><div class="ta-meta">${m.by}</div></div>`).join('');
+    }
+    if (byStat.length > 0) {
+      html += '<div class="ta-section">By Status</div>';
+      html += byStat.map(([k,m]) => `<div class="ta-item" onclick="selectOrder('${k}')"><div class="ta-id">#${m.id}</div><div class="ta-meta">${m.status}</div></div>`).join('');
+    }
+    dd.innerHTML = html;
+  }
+  dd.classList.add('open');
+  const si = document.getElementById('searchInput');
+  const r = si.getBoundingClientRect();
+  dd.style.position = 'fixed';
+  dd.style.top = (r.bottom + 6) + 'px';
+  dd.style.left = r.left + 'px';
+  dd.style.width = (r.right - r.left) + 'px';
+  document.querySelectorAll('.tr').forEach(tr => {
+    const tid = tr.querySelector('.td-main').textContent.replace('#', '');
+    tr.style.display = matches.some(([k,m]) => m.id === tid) ? '' : 'none';
+  });
+}
+
+function selectOrder(rowId) {
+  goToOrderDetails(rowId);
+  document.getElementById('searchInput').value = '';
+  document.getElementById('taDropdown').classList.remove('open');
+}
+
+function openGetMoreCards() {
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeGetMoreCards() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function selectRadio(elem) {
+  const grp = elem.parentNode;
+  grp.querySelectorAll('.m-radio-option').forEach(x => x.classList.remove('selected'));
+  elem.classList.add('selected');
+  elem.querySelector('input').checked = true;
+}
+
+function openDD(e, ddId) {
   e.stopPropagation();
-  const dd = document.getElementById(id);
-  if (!dd) return;
-  const wasOpen = dd.classList.contains('open');
-  closeAllMenus();
-  if (!wasOpen) {
-    const container = e.currentTarget.closest('.split') || e.currentTarget.closest('.ibtn-wrap') || e.currentTarget.parentElement;
-    const rect = container.getBoundingClientRect();
-    Object.assign(dd.style, { top: (rect.bottom+2)+'px', right: (window.innerWidth-rect.right)+'px', left:'auto' });
+  const dd = document.getElementById(ddId);
+  if (dd.classList.contains('open')) dd.classList.remove('open');
+  else {
+    closeAllDDs();
     dd.classList.add('open');
   }
 }
 
-function openFilterDD(e, field, options) {
-  e.stopPropagation();
-  const btn = e.currentTarget;
-  const existing = document.getElementById('filterDD');
-  if (existing) { existing.remove(); if (_openFilterBtn === btn) { _openFilterBtn = null; return; } }
-  _openFilterBtn = btn;
-  const rect = btn.getBoundingClientRect();
-  const dd = document.createElement('div');
-  dd.className = 'dd open'; dd.id = 'filterDD';
-  dd.style.cssText = `top:${rect.bottom+2}px;left:${rect.left}px;right:auto;min-width:${Math.max(rect.width,160)}px`;
-  options.forEach(opt => {
-    const item = document.createElement('div');
-    item.className = 'dd-item' + (FILTERS[field] === opt ? ' checked' : '');
-    item.textContent = opt;
-    item.onclick = ev => { ev.stopPropagation(); FILTERS[field] = FILTERS[field] === opt ? null : opt; updateFilterBtn(field, btn); dd.remove(); _openFilterBtn = null; applyFilters(); };
-    dd.appendChild(item);
-  });
-  if (FILTERS[field]) {
-    const sep = document.createElement('div'); sep.className = 'dd-sep'; dd.appendChild(sep);
-    const clr = document.createElement('div'); clr.className = 'dd-item'; clr.style.color = 'var(--text-subdued)'; clr.textContent = 'Clear filter';
-    clr.onclick = ev => { ev.stopPropagation(); FILTERS[field] = null; updateFilterBtn(field, btn); dd.remove(); _openFilterBtn = null; applyFilters(); };
-    dd.appendChild(clr);
-  }
-  document.body.appendChild(dd);
+function toggleDD(e, ddId) {
+  openDD(e, ddId);
 }
 
-function updateFilterBtn(field, btn) {
-  const label = field === 'type' ? 'Type' : 'Status';
-  const chev = `<svg viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  btn.innerHTML = (FILTERS[field] || label) + ' ' + chev;
-  btn.classList.toggle('active', !!FILTERS[field]);
-}
-
-function applyFilters() {
-  const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  let visible = 0;
-  const total = Object.keys(ROW_META).length;
-  document.querySelectorAll('#viewOrders .tr').forEach(row => {
-    const s = row.getAttribute('data-status'), t = row.getAttribute('data-type'), id = row.getAttribute('data-id');
-    const by = (row.querySelector('.c-by .td-main')?.textContent || '').toLowerCase();
-    let show = true;
-    if (FILTERS.type && t !== FILTERS.type) show = false;
-    if (FILTERS.status && s !== FILTERS.status) show = false;
-    if (q && show) show = id.includes(q) || by.includes(q) || t.toLowerCase().includes(q) || s.toLowerCase().includes(q);
-    row.style.display = show ? 'flex' : 'none';
-    if (show) visible++;
-  });
-  const parts = []; if (FILTERS.type) parts.push(FILTERS.type); if (FILTERS.status) parts.push(FILTERS.status); if (q) parts.push(`"${document.getElementById('searchInput').value.trim()}"`);
-  document.getElementById('tableFooter').textContent =
-    visible === total && !parts.length ? `Showing ${total} results` : `Showing ${visible} result${visible!==1?'s':''}${parts.length?' · '+parts.join(' · '):''}`;
-}
-
-function handleSearch(val) {
-  applyFilters();
-  if (val.trim()) showTypeahead(val); else closeTaDD();
-}
-function handleSearchKey(e) { if (e.key === 'Escape' || e.key === 'Enter') closeTaDD(); }
-function showTypeahead(val) {
-  const q = val.trim().toLowerCase();
-  if (!q) { closeTaDD(); return; }
-  const dd = document.getElementById('taDropdown');
-  const rows = Object.entries(ROW_META).map(([rId, m]) => ({ rId, ...m }));
-  const matches = rows.filter(r => r.id.includes(q) || r.by.toLowerCase().includes(q) || r.type.toLowerCase().includes(q) || r.status.toLowerCase().includes(q)).slice(0, 8);
-  const hl = (t, qq) => { const i = t.toLowerCase().indexOf(qq); if (i<0) return esc(t); return esc(t.slice(0,i))+`<span class="ta-hl">${esc(t.slice(i,i+qq.length))}</span>`+esc(t.slice(i+qq.length)); };
-  if (!matches.length) dd.innerHTML = '<div class="ta-empty">No matching orders</div>';
-  else dd.innerHTML = '<div class="ta-section">Orders</div>' + matches.map(m => `<div class="ta-item" onclick="selectSuggestion('${m.id}')"><span class="ta-id">#${hl(m.id, q)}</span><span class="ta-meta">${hl(m.by, q)} · <span style="color:var(--text-standard)">${hl(m.status, q)}</span></span></div>`).join('');
-  const inp = document.getElementById('searchInput'), box = inp.closest('.search'), rect = box.getBoundingClientRect();
-  Object.assign(dd.style, { top: (rect.bottom+2)+'px', left: rect.left+'px', right:'auto', minWidth: rect.width+'px' });
-  dd.classList.add('open');
-}
-function selectSuggestion(orderId) {
-  document.getElementById('searchInput').value = orderId; closeTaDD();
-  document.querySelectorAll('#viewOrders .tr').forEach(r => { r.style.display = r.getAttribute('data-id') === orderId ? 'flex' : 'none'; });
-  document.getElementById('tableFooter').textContent = `Showing 1 result for "${orderId}"`;
-}
-function closeTaDD() { document.getElementById('taDropdown').classList.remove('open'); }
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function closeAllMenus() {
+function closeAllDDs() {
   document.querySelectorAll('.dd').forEach(d => d.classList.remove('open'));
-  closeTaDD();
-  const fdd = document.getElementById('filterDD'); if (fdd) { fdd.remove(); _openFilterBtn = null; }
+  document.querySelectorAll('.ta-dd').forEach(d => d.classList.remove('open'));
 }
-document.addEventListener('click', closeAllMenus);
 
-// ═══════════════════════════════════════════════════════════
-//  MISC
-// ═══════════════════════════════════════════════════════════
-function openGetMoreCards() { closeAllMenus(); document.getElementById('modalOverlay').classList.add('open'); }
-function closeGetMoreCards() { document.getElementById('modalOverlay').classList.remove('open'); }
-function selectRadio(el) {
-  const n = el.querySelector('input').name;
-  document.querySelectorAll(`input[name="${n}"]`).forEach(r => r.closest('.m-radio-option').classList.remove('selected'));
-  el.classList.add('selected'); el.querySelector('input').checked = true;
-}
-function positionTip(wrap) {
-  const tip = wrap.querySelector('.tip'); if (!tip) return;
-  const rect = wrap.getBoundingClientRect();
-  tip.style.top = (rect.top-8)+'px'; tip.style.right = (window.innerWidth-rect.right)+'px'; tip.style.left='auto'; tip.style.transform='translateY(-100%)';
-}
-function showToast(msg, type) {
+function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.style.background = type === 'warn' ? '#92400e' : 'var(--text-positive)';
-  t.style.display = 'block'; clearTimeout(t._t); t._t = setTimeout(() => t.style.display = 'none', 3000);
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3e3);
 }
 
-renderOrdersTable();
+function positionTip(elem) {
+  const tip = elem.querySelector('.tip');
+  if (!tip) return;
+  const r = elem.getBoundingClientRect();
+  const w = tip.offsetWidth;
+  const x = r.left + r.width / 2 - w / 2;
+  const y = r.top - 8;
+  tip.style.position = 'fixed';
+  tip.style.left = (x < 20 ? 20 : x + w > window.innerWidth - 20 ? window.innerWidth - w - 20 : x) + 'px';
+  tip.style.top = y + 'px';
+}
+
+document.addEventListener('click', closeAllDDs);
+window.addEventListener('load', renderOrdersTable);
 </script>
 </body>
 </html>
