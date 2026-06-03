@@ -406,10 +406,11 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
   }
   function openCardDetails(c){
     var grp=cardsForHolder(c.assignedTo);
-    var activated=grp.filter(function(x){return x.cardStatus!=='deactivated';}).length;
-    var moreN=grp.length-1;
-    var more = (c.assignedTo&&moreN>0) ? '<a class="morecards" onclick="_openMulti(\''+esc(c.assignedTo)+'\')">+'+moreN+' more card'+(moreN>1?'s':'')+' for '+esc(c.assignedTo)+'</a>' : '';
-    var caption = (c.assignedTo&&grp.length>1) ? '<div class="meta-note">'+activated+' of '+grp.length+' cards activated for '+esc(c.assignedTo)+'</div>' : '';
+    var others=grp.filter(function(x){return x.cardId!==c.cardId;});                 // the "+N more" set
+    var moreN=others.length;
+    var assignedN=others.filter(function(x){return x.cardStatus==='active'&&x.assignedTo&&!x.inWallet;}).length; // §D.1
+    var activatedN=others.filter(function(x){return x.cardStatus==='active'&&x.inWallet;}).length;               // §D.1
+    var more = (c.assignedTo&&moreN>0) ? '<a class="morecards" onclick="_openMulti(\''+esc(c.assignedTo)+'\')">+'+moreN+' more cards: '+assignedN+' assigned, '+activatedN+' activated</a>' : '';
     openDrawer(
       '<div class="dh"><h2 id="drawerTitle">'+(c.cardType==='virtual'?'Virtual':'Physical')+' Card Details</h2>'
         +'<button class="icon-btn" data-kebab-detail aria-label="More actions"><span class="ico ico-20" data-ico="Ellipses"></span></button>'
@@ -420,7 +421,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
           +'<div class="meta-item"><span class="k">Status</span><span class="v"><span class="tag '+STATUS[c.cardStatus].c+'">'+STATUS[c.cardStatus].l+'</span></span></div>'
         +'</div>'
         +walletIndicator(c)
-        +caption+more
+        +more
         +'<div class="sep"></div>'
         +'<div class="meta-grid">'
           +'<div class="meta-item"><span class="k">Assigned to</span><span class="v">'+esc(c.assignedTo||'[Unassigned]')+'</span></div>'
