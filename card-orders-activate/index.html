@@ -277,14 +277,12 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .cards-card.edit-mode .cards-head .btn-primary:hover{background:rgba(255,255,255,.88);border-color:rgba(255,255,255,.88)}
 .cards-card.edit-mode .cards-head .btn-primary:disabled{background:rgba(255,255,255,.4);border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.7)}
 /* card rows */
-.card-row{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid var(--stroke-inactive)}
+.card-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid var(--stroke-inactive)}
 .card-row:last-child{border-bottom:none}
-.cr-mark{width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.cr-mark svg{width:20px;height:20px;color:var(--text-positive)}
-.cr-cb{display:none}
-.cards-card.edit-mode .card-row:not(.activated) .cr-mark svg{display:none}
+/* checkbox — hidden by default, shown in edit mode for unactivated cards */
+.cr-cb{display:none;margin-bottom:4px}
 .cards-card.edit-mode .card-row:not(.activated) .cr-cb{display:block}
-.cr-cb input{width:18px;height:18px;accent-color:var(--blue-50);cursor:pointer}
+.cr-cb input{width:16px;height:16px;accent-color:var(--blue-50);cursor:pointer}
 .cr-info{min-width:0}
 .cr-driver{font:600 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
 .cr-detail{font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px;letter-spacing:.2px}
@@ -737,11 +735,11 @@ function renderCardsSection(rowId) {
         const isAct = c.activated;
         const checked = _selectedCardIds.has(c.id);
         return `<div class="card-row ${isAct ? 'activated' : ''}">` +
-          `<div class="cr-mark">` +
-            `<svg width="20" height="20" fill="currentColor"><use href="icons.svg#check-circle"/></svg>` +
+          `<div class="cr-info">` +
             `<span class="cr-cb"><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleCardSel('${c.id}',this.checked)"/></span>` +
+            `<div class="cr-driver">${c.assignedTo}</div>` +
+            `<div class="cr-detail">••••${c.cardLast4} · ${c.spendProfile}</div>` +
           `</div>` +
-          `<div class="cr-info"><div class="cr-driver">${c.assignedTo}</div><div class="cr-detail">••••${c.cardLast4} · ${c.spendProfile}</div></div>` +
           `<div class="cr-status ${isAct ? 'done' : 'ready'}">${isAct ? 'Activated' : 'Ready to activate'}</div>` +
         `</div>`;
       }).join('');
