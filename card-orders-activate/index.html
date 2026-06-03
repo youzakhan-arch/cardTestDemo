@@ -164,13 +164,16 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .ibtn svg{width:16px;height:16px}
 
 /* DROPDOWN */
-.dd{display:none;position:fixed;z-index:9000;background:var(--bg-primary);border:1px solid var(--stroke-standard);border-radius:var(--r-sm);box-shadow:0 4px 16px rgba(0,0,0,.14);min-width:190px;overflow:hidden;padding:4px 0}
+.dd{display:none;position:fixed;z-index:9200;background:var(--bg-primary);border:1px solid var(--stroke-standard);border-radius:var(--r-sm);box-shadow:0 4px 16px rgba(0,0,0,.14);min-width:190px;overflow:hidden;padding:4px 0}
 .dd.open{display:block}
 .dd-item{padding:8px 16px;font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard);cursor:pointer;white-space:nowrap}
 .dd-item:hover{background:var(--bg-secondary)}
 .dd-item.bold{font-weight:600}
 .dd-item.checked{color:var(--text-accent);font-weight:600}
 .dd-sep{height:1px;background:var(--stroke-inactive);margin:3px 0}
+/* Clear = blue link-button inside dropdown */
+.dd-clear{color:var(--text-accent) !important;font-weight:400}
+.dd-clear:hover{background:var(--bg-accent)}
 
 /* TYPEAHEAD */
 .ta-dd{display:none;position:fixed;z-index:9100;background:var(--bg-primary);border:1px solid var(--stroke-standard);border-radius:var(--r-sm);box-shadow:0 6px 20px rgba(0,0,0,.14);min-width:320px;overflow:hidden;padding:4px 0}
@@ -185,9 +188,9 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 
 /* TOOLTIP */
 .tip-wrap{position:relative;display:inline-flex;align-items:center}
-.tip{display:none;position:fixed;z-index:9100;background:rgba(0,0,0,.86);color:#fff;font:400 12px/16px 'Inter',system-ui,sans-serif;padding:6px 10px;border-radius:var(--r-sm);pointer-events:none;max-width:240px;white-space:normal;text-align:right}
-.tip::after{content:'';position:absolute;top:100%;right:10px;border:5px solid transparent;border-top-color:rgba(0,0,0,.86)}
-.tip-wrap:hover .tip{display:block}
+/* Tooltip — JS-controlled; sits above trigger, 4px gap, arrow centered at bottom */
+.tip{display:none;position:fixed;z-index:9999;background:rgba(0,0,0,.86);color:#fff;font:400 12px/16px 'Inter',system-ui,sans-serif;padding:6px 10px;border-radius:var(--r-sm);pointer-events:none;max-width:240px;white-space:normal}
+.tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:rgba(0,0,0,.86)}
 
 .tf{padding:12px 24px;border-top:1px solid var(--stroke-inactive);font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-subdued);flex-shrink:0;background:var(--bg-primary)}
 .toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text-positive);color:#fff;padding:10px 20px;border-radius:var(--r-sm);font:600 13px/18px 'Inter',system-ui,sans-serif;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.2);pointer-events:none;white-space:nowrap}
@@ -588,7 +591,7 @@ const ROW_META = {
 };
 
 const FILTERS = {type:null,status:null};
-let _currentOrderId = null, _selectedCardIds = new Set(), _pendingActivation = null, _openFilterBtn = null, _odEditMode = !1;
+let _currentOrderId = null, _selectedCardIds = new Set(), _pendingActivation = null, _openFilterBtn = null, _odEditMode = !1, _openFilterDD = null, _openFilterDDType = null;
 
 function renderOrdersTable() {
   document.getElementById('ordersTbody').innerHTML = Object.entries(ROW_META).map(([rowId, m]) => {
@@ -598,12 +601,12 @@ function renderOrdersTable() {
     let actionHtml = '';
     if (showSplit) {
       const tipTxt = {virtual: 'Virtual card is ready to assign to a driver.', standard: 'Cards delivered. Activate to assign them to drivers.', preconfig: 'Cards in transit. Pre-configure now — ready once delivered.', 'replacement-preconfig': 'Replacement cards in transit. Activating replaces the lost cards.'}[o.mode] || 'Activate cards';
-      actionHtml = `<div class="tip-wrap" onmouseenter="positionTip(this)"><div class="tip">${tipTxt}</div><div class="split"><span class="s-lbl" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate</span><span class="s-chev" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div><div class="dd" id="dd${rowId}"><div class="dd-item bold" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate Cards</div><div class="dd-item" onclick="event.stopPropagation();goToOrderDetails('${rowId}')">View order details</div></div>`;
+      actionHtml = `<div class="tip-wrap" onmouseenter="showTip(this)" onmouseleave="hideTip(this)"><div class="tip">${tipTxt}</div><div class="split"><span class="s-lbl" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate</span><span class="s-chev" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div><div class="dd" id="dd${rowId}"><div class="dd-item bold" onclick="event.stopPropagation();goToActivateCards('${rowId}')">Activate Cards</div><div class="dd-item" onclick="event.stopPropagation();goToOrderDetails('${rowId}')">View order details</div></div>`;
     } else {
       const ddItems = [`<div class="dd-item" onclick="event.stopPropagation();goToOrderDetails('${rowId}')">View order details</div>`];
       if (o.state === 'canceled') ddItems.push(`<div class="dd-item" onclick="event.stopPropagation();openGetMoreCards()">Reorder</div>`);
       if (o.state === 'draft' || o.state === 'ineligible') ddItems.push(`<div class="dd-item" onclick="event.stopPropagation();openGetMoreCards()">Re-order</div>`);
-      actionHtml = ddItems.join('') ? `<div class="ibtn-wrap"><button class="ibtn" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button></div><div class="dd" id="dd${rowId}">${ddItems.join('')}</div>` : '';
+      actionHtml = ddItems.join('') ? `<div class="ibtn-wrap"><button class="ibtn" onclick="event.stopPropagation();toggleDD(event,'dd${rowId}')"><svg viewBox="0 0 16 16" fill="currentColor"><circle cx="3.5" cy="8" r="1.5"/><circle cx="8" cy="8" r="1.5"/><circle cx="12.5" cy="8" r="1.5"/></svg></button></div><div class="dd" id="dd${rowId}">${ddItems.join('')}</div>` : '';
     }
     return `<div class="tr" onclick="goToOrderDetails('${rowId}')"><div class="td"><div class="td-main">#${m.id}</div></div><div class="td"><div class="td-main">${m.date}</div></div><div class="td"><div class="td-main">${m.by}</div></div><div class="td"><div class="td-main">${m.type}</div></div><div class="td"><div class="td-main">${m.detailsMain}</div><div class="td-sub">${m.detailsSub}</div></div><div class="td">${statusHtml}</div><div class="td">${actionHtml}</div></div>`;
   }).join('');
@@ -887,17 +890,33 @@ function confirmActivation() {
 
 function openFilterDD(e, type, opts) {
   e.stopPropagation();
-  _openFilterBtn = type === 'type' ? document.getElementById('filtType') : document.getElementById('filtStatus');
+  // Toggle: same button clicked while already open → close
+  if (_openFilterDDType === type && _openFilterDD) {
+    _openFilterDD.remove(); _openFilterDD = null; _openFilterDDType = null; return;
+  }
+  // Close any existing (different) filter dropdown
+  if (_openFilterDD) { _openFilterDD.remove(); _openFilterDD = null; _openFilterDDType = null; }
+  closeAllDDs();
+
+  const btn = type === 'type' ? document.getElementById('filtType') : document.getElementById('filtStatus');
   const dd = document.createElement('div');
   dd.className = 'dd open';
-  dd.onclick = e => e.stopPropagation();
-  dd.innerHTML = opts.map(opt => `<div class="dd-item ${FILTERS[type] === opt ? 'checked' : ''}" onclick="selectFilter('${type}','${opt}')">${opt}</div>`).join('') + `<div class="dd-sep"></div><div class="dd-item" onclick="clearFilter('${type}')">Clear</div>`;
+  dd.onclick = ev => ev.stopPropagation();
+  dd.innerHTML = opts.map(opt =>
+    `<div class="dd-item ${FILTERS[type] === opt ? 'checked' : ''}" onclick="selectFilter('${type}','${opt}')">${opt}</div>`
+  ).join('') + `<div class="dd-sep"></div><div class="dd-item dd-clear" onclick="clearFilter('${type}')">Clear</div>`;
   document.body.appendChild(dd);
-  const r = _openFilterBtn.getBoundingClientRect();
+  _openFilterDD = dd;
+  _openFilterDDType = type;
+
+  const r = btn.getBoundingClientRect();
+  const ddW = dd.offsetWidth;
+  // right-align to button, drop 4px below
+  let left = r.right - ddW;
+  left = Math.max(8, Math.min(left, window.innerWidth - ddW - 8));
   dd.style.position = 'fixed';
   dd.style.top = (r.bottom + 4) + 'px';
-  dd.style.left = r.left + 'px';
-  document.addEventListener('click', closeAllDDs);
+  dd.style.left = left + 'px';
 }
 
 function selectFilter(type, val) {
@@ -1014,11 +1033,18 @@ function selectRadio(elem) {
 function openDD(e, ddId) {
   e.stopPropagation();
   const dd = document.getElementById(ddId);
-  if (dd.classList.contains('open')) dd.classList.remove('open');
-  else {
-    closeAllDDs();
-    dd.classList.add('open');
-  }
+  // Toggle: if already open, close it
+  if (dd.classList.contains('open')) { dd.classList.remove('open'); return; }
+  closeAllDDs();
+  dd.classList.add('open');
+  // Position: bottom-right of the trigger, 4px gap
+  const anchor = e.target.closest('.ibtn-wrap, .split') || e.currentTarget || e.target;
+  const r = anchor.getBoundingClientRect();
+  const ddW = dd.offsetWidth;
+  let left = r.right - ddW;
+  left = Math.max(8, Math.min(left, window.innerWidth - ddW - 8));
+  dd.style.left = left + 'px';
+  dd.style.top = (r.bottom + 4) + 'px';
 }
 
 function toggleDD(e, ddId) {
@@ -1028,6 +1054,7 @@ function toggleDD(e, ddId) {
 function closeAllDDs() {
   document.querySelectorAll('.dd').forEach(d => d.classList.remove('open'));
   document.querySelectorAll('.ta-dd').forEach(d => d.classList.remove('open'));
+  if (_openFilterDD) { _openFilterDD.remove(); _openFilterDD = null; _openFilterDDType = null; }
 }
 
 function showToast(msg) {
@@ -1037,16 +1064,24 @@ function showToast(msg) {
   setTimeout(() => t.style.display = 'none', 3e3);
 }
 
-function positionTip(elem) {
+function showTip(elem) {
   const tip = elem.querySelector('.tip');
   if (!tip) return;
+  // Show first so we can read real dimensions
+  tip.style.display = 'block';
   const r = elem.getBoundingClientRect();
-  const w = tip.offsetWidth;
-  const x = r.left + r.width / 2 - w / 2;
-  const y = r.top - 8;
-  tip.style.position = 'fixed';
-  tip.style.left = (x < 20 ? 20 : x + w > window.innerWidth - 20 ? window.innerWidth - w - 20 : x) + 'px';
-  tip.style.top = y + 'px';
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  // Center horizontally over trigger; sit 4px above it
+  let left = r.left + r.width / 2 - tw / 2;
+  left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+  const top = r.top - th - 4;
+  tip.style.left = left + 'px';
+  tip.style.top = Math.max(8, top) + 'px';
+}
+
+function hideTip(elem) {
+  const tip = elem.querySelector('.tip');
+  if (tip) tip.style.display = 'none';
 }
 
 document.addEventListener('click', closeAllDDs);
