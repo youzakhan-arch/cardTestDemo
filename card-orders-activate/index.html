@@ -226,28 +226,35 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;background:var(--bg-tertiar
 .btn-secondary{background:var(--bg-primary);color:var(--text-standard);border:1px solid var(--stroke-standard);border-radius:var(--r-sm);padding:6px 16px;font:400 13px/18px 'Inter',system-ui,sans-serif;cursor:pointer}
 .btn-secondary:hover{background:var(--bg-secondary)}
 
-.dg{border:1px solid var(--stroke-inactive);border-radius:var(--r-sm);margin-bottom:12px;overflow:hidden;background:var(--bg-primary)}
-.dg-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg-tertiary);border-bottom:1px solid var(--stroke-inactive);cursor:pointer;user-select:none;transition:background .15s}
-.dg-header:hover{background:rgba(0,115,231,.05)}
-.dg-cb{display:flex;align-items:center;justify-content:center;width:18px;height:18px;flex-shrink:0;opacity:0;transition:opacity .15s}
-.dg.edit-mode .dg-cb{opacity:1}
-.dg-cb input{width:16px;height:16px;accent-color:var(--blue-50);cursor:pointer}
-.dg-info{flex:1;min-width:0}
-.dg-name{font:600 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
-.dg-meta{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px}
-.dg-count{font:400 12px/16px 'Inter',system-ui,sans-serif;color:var(--text-subdued);background:var(--bg-primary);border:1px solid var(--stroke-inactive);padding:2px 10px;border-radius:99px;flex-shrink:0}
-.dg-cards{padding:0;display:none}
-.dg.edit-mode .dg-cards{display:block}
-.dg-card-row{display:flex;align-items:center;gap:12px;padding:11px 18px 11px 56px;border-top:1px solid var(--stroke-inactive)}
-.dg-card-row:first-child{border-top:none}
-.dg-card-row:hover{background:var(--bg-secondary)}
-.dg-card-row.activated{opacity:.55}
-.dg-card-cb{width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.dg-card-cb input{width:16px;height:16px;accent-color:var(--blue-50);cursor:pointer}
-.dg-card-num{font:400 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-standard);flex:1;letter-spacing:.4px}
-.dg-card-status{font:600 12px/16px 'Inter',system-ui,sans-serif;flex:0 0 auto}
-.dg-card-status.done{color:var(--text-positive)}
-.dg-card-status.pending{color:var(--text-subdued);font-weight:400}
+/* ─── CARDS-IN-ORDER SECTION (settings view→edit pattern) ─── */
+.cards-card{background:var(--bg-primary);border:1px solid var(--stroke-inactive);border-radius:var(--r-sm);overflow:hidden}
+.cards-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;background:var(--bg-primary);border-bottom:1px solid var(--stroke-inactive);transition:background .15s}
+.cards-head .ch-title{font:600 16px/22px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
+.cards-head .ch-actions{display:flex;align-items:center;gap:8px}
+/* edit (activate) mode → blue header bar, mirrors settings Save/Cancel */
+.cards-card.edit-mode .cards-head{background:var(--blue-50);border-bottom-color:var(--blue-50)}
+.cards-card.edit-mode .cards-head .ch-title{color:#fff}
+.cards-card.edit-mode .cards-head .btn-secondary{background:transparent;border-color:rgba(255,255,255,.6);color:#fff}
+.cards-card.edit-mode .cards-head .btn-secondary:hover{background:rgba(255,255,255,.12)}
+.cards-card.edit-mode .cards-head .btn-primary{background:#fff;border-color:#fff;color:var(--blue-60)}
+.cards-card.edit-mode .cards-head .btn-primary:hover{background:rgba(255,255,255,.88);border-color:rgba(255,255,255,.88)}
+.cards-card.edit-mode .cards-head .btn-primary:disabled{background:rgba(255,255,255,.4);border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.7)}
+/* card rows */
+.card-row{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid var(--stroke-inactive)}
+.card-row:last-child{border-bottom:none}
+.card-row.activated{opacity:.6}
+.cr-mark{width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cr-mark svg{width:20px;height:20px;color:var(--text-positive)}
+.cr-cb{display:none}
+.cards-card.edit-mode .card-row:not(.activated) .cr-mark svg{display:none}
+.cards-card.edit-mode .card-row:not(.activated) .cr-cb{display:block}
+.cr-cb input{width:18px;height:18px;accent-color:var(--blue-50);cursor:pointer}
+.cr-info{min-width:0}
+.cr-driver{font:600 14px/20px 'Inter',system-ui,sans-serif;color:var(--text-emphasis)}
+.cr-detail{font:400 13px/18px 'Inter',system-ui,sans-serif;color:var(--text-subdued);margin-top:1px;letter-spacing:.2px}
+.cr-status{font:400 13px/18px 'Inter',system-ui,sans-serif;flex-shrink:0;white-space:nowrap}
+.cr-status.ready{color:var(--text-subdued)}
+.cr-status.done{color:var(--text-positive);font-weight:600}
 
 /* ─── ACTIVATE CARDS VIEW ─── */
 .ac-table{flex:1;overflow:auto;background:var(--bg-primary)}
@@ -579,6 +586,8 @@ function goToOrders() {
 
 function goToOrderDetails(rowId) {
   _currentOrderId = rowId;
+  _odEditMode = false;
+  _selectedCardIds.clear();
   renderOrderDetailsContent(rowId);
   document.getElementById('viewOrders').classList.remove('active');
   document.getElementById('viewOrderDetails').classList.add('active');
@@ -596,18 +605,6 @@ function renderOrderDetailsContent(rowId) {
     return `<div class="tl-step ${done ? '' : 'pending'}"><div class="tl-dot">${done ? '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 11l-2-2 1-1 1 1 3-3 1 1-4 4z"/></svg>' : ''}</div><div class="tl-label">${label}</div><div class="tl-date">${date}</div></div>`;
   }).join('') : '';
   
-  const groupedCards = groupCardsByDriver(o.cards);
-  const cardsHtml = Object.keys(groupedCards).length === 0 ? '<div style="padding:16px;color:var(--text-subdued);font:400 14px/20px Inter,system-ui,sans-serif">No cards assigned yet.</div>' : Object.entries(groupedCards).map(([driverName, cardGroup]) => {
-    const groupKey = `dg_${driverName.replace(/[^a-z0-9]/gi, '_')}`;
-    const activatedCount = cardGroup.filter(c => c.activated).length;
-    const unactivatedCount = cardGroup.length - activatedCount;
-    const cardHtml = cardGroup.map((c, idx) => {
-      const isActivated = c.activated;
-      return `<div class="dg-card-row ${isActivated ? 'activated' : ''}"><div class="dg-card-cb"><input type="checkbox" id="cb_${c.id}" ${isActivated ? 'checked disabled' : 'checked'} onchange="toggleCardCheckbox('${c.id}', this.checked)"/></div><div class="dg-card-num">••••${c.cardLast4}</div><div class="dg-card-status ${isActivated ? 'done' : 'pending'}">${isActivated ? 'Activated' : 'Ready'}</div></div>`;
-    }).join('');
-    return `<div class="dg" id="${groupKey}"><div class="dg-header" onclick="toggleGroupEditMode('${groupKey}')"><div class="dg-cb"><input type="checkbox" id="dg_cb_${groupKey}" class="group-cb" onchange="toggleGroupCheckbox('${groupKey}', this.checked)"/></div><div class="dg-info"><div class="dg-name">${driverName}</div></div><div class="dg-count">${unactivatedCount} card${unactivatedCount !== 1 ? 's' : ''}</div></div><div class="dg-cards">${cardHtml}</div></div>`;
-  }).join('');
-
   document.getElementById('odContent').innerHTML = `
     <div class="od-card">
       <div class="od-card-title">#${m.id}</div>
@@ -616,48 +613,88 @@ function renderOrderDetailsContent(rowId) {
       ${timelineHtml ? `<div style="margin-top:16px"><div style="font:600 13px/18px Inter,system-ui,sans-serif;color:var(--text-subdued);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Order timeline</div><div class="timeline">${timelineHtml}</div></div>` : ''}
       <div class="od-modified">Last modified 05/01/2026 by ${m.by}</div>
     </div>
-    <div class="od-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
-        <div class="od-section-title">Cards in this order</div>
-        ${o.cards.length > 0 && o.cards.some(c => !c.activated) ? `<button class="btn-primary" onclick="activateFromOrderDetails()">Activate cards</button>` : o.cards.length > 0 ? `<button class="btn-secondary" disabled>All activated</button>` : ''}
-      </div>
-      ${cardsHtml}
-    </div>
+    ${renderCardsSection(rowId)}
   `;
 }
 
-function groupCardsByDriver(cards) {
-  const grouped = {};
-  cards.forEach(c => {
-    if (!grouped[c.assignedTo]) grouped[c.assignedTo] = [];
-    grouped[c.assignedTo].push(c);
-  });
-  return grouped;
+// Cards-in-order section — settings-page view→edit pattern.
+// View: secondary "Activate" button + status-icon rows (driver = semi-heading, card detail = body, status on the side).
+// Edit: blue header bar, all checkboxes pre-selected, "Confirm activation (N)" + "Cancel".
+function renderCardsSection(rowId) {
+  const o = ORDERS[rowId];
+  const editing = _odEditMode;
+  const hasUnactivated = o.cards.some(c => !c.activated);
+
+  let actions = '';
+  if (o.cards.length === 0) {
+    actions = '';
+  } else if (editing) {
+    const n = _selectedCardIds.size;
+    actions = `<button class="btn-secondary" onclick="cancelActivateMode()">Cancel</button>` +
+              `<button class="btn-primary" id="odConfirmBtn" ${n === 0 ? 'disabled' : ''} onclick="confirmActivateMode()">Confirm activation${n ? ` (${n})` : ''}</button>`;
+  } else if (hasUnactivated) {
+    actions = `<button class="btn-secondary" onclick="enterActivateMode()">Activate</button>`;
+  } else {
+    actions = `<button class="btn-secondary" disabled>All activated</button>`;
+  }
+
+  const rows = o.cards.length === 0
+    ? `<div style="padding:18px 24px;color:var(--text-subdued);font:400 14px/20px Inter,system-ui,sans-serif">No cards assigned yet.</div>`
+    : o.cards.map(c => {
+        const isAct = c.activated;
+        const checked = _selectedCardIds.has(c.id);
+        return `<div class="card-row ${isAct ? 'activated' : ''}">` +
+          `<div class="cr-mark">` +
+            `<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M6.4 10.2l2.2 2.2 4.9-4.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>` +
+            `<span class="cr-cb"><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleCardSel('${c.id}',this.checked)"/></span>` +
+          `</div>` +
+          `<div class="cr-info"><div class="cr-driver">${c.assignedTo}</div><div class="cr-detail">••••${c.cardLast4} · ${c.spendProfile}</div></div>` +
+          `<div class="cr-status ${isAct ? 'done' : 'ready'}">${isAct ? 'Activated' : 'Ready to activate'}</div>` +
+        `</div>`;
+      }).join('');
+
+  return `<div class="cards-card ${editing ? 'edit-mode' : ''}">` +
+    `<div class="cards-head"><div class="ch-title">Cards in this order</div><div class="ch-actions">${actions}</div></div>` +
+    rows +
+  `</div>`;
 }
 
-function toggleGroupEditMode(groupKey) {
-  const grp = document.getElementById(groupKey);
-  grp.classList.toggle('edit-mode');
+function enterActivateMode() {
+  _odEditMode = true;
+  _selectedCardIds.clear();
+  ORDERS[_currentOrderId].cards.forEach(c => { if (!c.activated) _selectedCardIds.add(c.id); });
+  renderOrderDetailsContent(_currentOrderId);
 }
 
-function toggleCardCheckbox(cardId, checked) {
+function cancelActivateMode() {
+  _odEditMode = false;
+  _selectedCardIds.clear();
+  renderOrderDetailsContent(_currentOrderId);
+}
+
+function toggleCardSel(cardId, checked) {
   if (checked) _selectedCardIds.add(cardId);
   else _selectedCardIds.delete(cardId);
+  updateOdConfirmBtn();
 }
 
-function toggleGroupCheckbox(groupKey, checked) {
-  const grp = document.getElementById(groupKey);
-  const cbs = grp.querySelectorAll('.dg-card-cb input:not(:disabled)');
-  cbs.forEach(cb => { cb.checked = checked; _selectedCardIds[checked ? 'add' : 'delete'](cb.id.replace('cb_', '')); });
+function updateOdConfirmBtn() {
+  const btn = document.getElementById('odConfirmBtn');
+  if (!btn) return;
+  const n = _selectedCardIds.size;
+  btn.disabled = n === 0;
+  btn.textContent = 'Confirm activation' + (n ? ` (${n})` : '');
 }
 
-function activateFromOrderDetails() {
-  _pendingActivation = { source: 'details', cardIds: Array.from(_selectedCardIds) };
-  if (_pendingActivation.cardIds.length === 0) {
-    showToast('Select cards to activate');
-    return;
-  }
-  openActivateModal('details');
+function confirmActivateMode() {
+  const ids = Array.from(_selectedCardIds);
+  if (ids.length === 0) return;
+  ids.forEach(cid => { const card = ORDERS[_currentOrderId].cards.find(c => c.id === cid); if (card) card.activated = true; });
+  _odEditMode = false;
+  _selectedCardIds.clear();
+  showToast(`${ids.length} card${ids.length !== 1 ? 's' : ''} activated successfully`);
+  renderOrdersTable();
+  renderOrderDetailsContent(_currentOrderId);
 }
 
 function goToActivateCards(rowId) {
