@@ -55,6 +55,13 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
 .menuwrap{position:relative}
 .act-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--content-emphasis);border:none;border-radius:var(--r-sm);padding:7px 12px;font:600 14px/20px 'Inter',sans-serif;cursor:pointer}
 .act-btn:hover{background:#f0f0f0}
+/* Bulk selection bar — replaces the black banner when rows are checked (Figma 2122:9468) */
+.selbar{display:none;align-items:center;gap:16px;margin:16px 24px 0;padding:0 16px;min-height:48px;background:#0073e7;color:#fff;border-radius:var(--r-sm)}
+.selbar.show{display:flex}
+.sel-msg{flex:1;font:400 14px/20px 'Inter',sans-serif;color:#fff}
+.sel-msg a{color:#fff;text-decoration:underline;cursor:pointer}
+.sel-kebab{width:32px;height:32px;border:none;background:transparent;color:#fff;border-radius:var(--r-sm);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sel-kebab:hover{background:rgba(255,255,255,.16)}
 .menu{display:none;position:absolute;background:#fff;border:1px solid var(--stroke-inactive);border-radius:var(--r-sm);box-shadow:0 4px 8px rgba(0,0,0,.16),0 0 0 1px rgba(0,0,0,.04);padding:4px 0;z-index:720;min-width:220px}
 .menu.open{display:block}
 .menu .mi{padding:9px 16px;font:400 14px/20px 'Inter',sans-serif;color:var(--content-standard);cursor:pointer;white-space:nowrap}
@@ -235,6 +242,19 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
       </div>
     </div>
 
+    <div class="selbar" id="selbar">
+      <div class="sel-msg"><span id="selCount"></span> · <a id="selClear">Clear</a></div>
+      <div class="menuwrap menuwrap-right" id="bulkWrap">
+        <button class="sel-kebab" id="bulkBtn" aria-haspopup="true" aria-label="Bulk actions"><span class="ico ico-16" data-ico="Ellipses"></span></button>
+        <div class="menu" id="bulkMenu" role="menu">
+          <div class="mi" data-bulk="policies">Change policies</div>
+          <div class="mi" data-bulk="security">Edit security settings</div>
+          <div class="mi" data-bulk="freeze">Freeze cards</div>
+          <div class="mi danger" data-bulk="deactivate">Deactivate cards</div>
+        </div>
+      </div>
+    </div>
+
     <div class="fr">
       <div class="search" id="searchBox"><span class="sort" title="Sort"><span class="ico ico-14" data-ico="ArrowsVertical"></span></span><span class="mg"><span class="ico ico-14" data-ico="MagnifyingGlass"></span></span><input id="searchInput" type="text" placeholder="Cardholder, vehicle, asset, card" autocomplete="off"/><span class="clearx" id="clearSearch" title="Clear search"><span class="ico ico-16" data-ico="CrossUIBold"></span></span></div>
       <div class="filt">Group <span class="ico ico-14" data-ico="ChevronDown"></span></div>
@@ -362,9 +382,21 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
       r.addEventListener('keydown',function(e){if(e.key==='Enter'){openCardDetails(cardById(id));}});
     });
     body.querySelectorAll('[data-kebab]').forEach(function(k){k.addEventListener('click',function(e){e.stopPropagation();openRowMenu(cardById(k.getAttribute('data-kebab')),k);});});
-    body.querySelectorAll('.rowchk').forEach(function(ch){ch.addEventListener('click',function(e){e.stopPropagation();ch.classList.toggle('on');});});
+    body.querySelectorAll('.rowchk').forEach(function(ch){ch.addEventListener('click',function(e){e.stopPropagation();ch.classList.toggle('on');updateSelBar();});});
     injectIcons(body);
+    updateSelBar();
   }
+  // Bulk selection bar replaces the black banner when any row is checked.
+  function selectedIds(){return [].map.call(document.querySelectorAll('.rowchk.on'),function(ch){return ch.getAttribute('data-id');});}
+  function updateSelBar(){
+    var sel=document.querySelectorAll('.rowchk.on').length;
+    var total=document.querySelectorAll('.rowchk').length;
+    if($('selCount'))$('selCount').textContent=sel+' item'+(sel!==1?'s':'')+' selected';
+    $('selbar').classList.toggle('show',sel>0);
+    $('actbar').style.display=sel>0?'none':'';
+    $('selectAll').classList.toggle('on',total>0&&sel===total);
+  }
+  function clearSelection(){document.querySelectorAll('.rowchk.on').forEach(function(ch){ch.classList.remove('on');});updateSelBar();}
   function renderBanner(){
     var n=activatableCount();
     var wrap=$('activateWrap');
@@ -523,7 +555,18 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
   aBtn.addEventListener('click',function(e){e.stopPropagation();var o=aMenu.classList.toggle('open');aBtn.setAttribute('aria-expanded',o?'true':'false');});
   document.addEventListener('click',function(e){if(!e.target.closest('#activateWrap'))aMenu.classList.remove('open');});
   aMenu.querySelectorAll('[data-activate]').forEach(function(mi){mi.addEventListener('click',function(){aMenu.classList.remove('open');openActivate(mi.getAttribute('data-activate'));});});
-  $('selectAll').addEventListener('click',function(){var on=!$('selectAll').classList.contains('on');$('selectAll').classList.toggle('on',on);document.querySelectorAll('.rowchk').forEach(function(ch){ch.classList.toggle('on',on);});});
+  $('selectAll').addEventListener('click',function(){var on=!$('selectAll').classList.contains('on');document.querySelectorAll('.rowchk').forEach(function(ch){ch.classList.toggle('on',on);});updateSelBar();});
+  $('selClear').addEventListener('click',clearSelection);
+  var bulkBtn=$('bulkBtn'),bulkMenu=$('bulkMenu');
+  bulkBtn.addEventListener('click',function(e){e.stopPropagation();bulkMenu.classList.toggle('open');});
+  document.addEventListener('click',function(e){if(!e.target.closest('#bulkWrap'))bulkMenu.classList.remove('open');});
+  bulkMenu.querySelectorAll('[data-bulk]').forEach(function(mi){mi.addEventListener('click',function(){
+    bulkMenu.classList.remove('open');
+    var ids=selectedIds(),n=ids.length,act=mi.getAttribute('data-bulk');
+    if(act==='freeze'){ids.forEach(function(id){var c=cardById(id);if(c)c.cardStatus='frozen';});renderTable();toast({msg:'Froze '+n+' card'+(n>1?'s':'')});}
+    else if(act==='deactivate'){ids.forEach(function(id){var c=cardById(id);if(c)c.cardStatus='deactivated';});renderTable();renderBanner();toast({msg:'Deactivated '+n+' card'+(n>1?'s':'')});}
+    else{toast({msg:(act==='policies'?'Updated policies for ':'Updated security for ')+n+' card'+(n>1?'s':'')});clearSelection();}
+  });});
   $('searchInput').addEventListener('input',function(){setSearch(this.value);});
   $('clearSearch').addEventListener('click',function(){setSearch('');$('searchInput').focus();});
 
