@@ -322,7 +322,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
     {cardId:'100132',cardType:'physical',lastFour:'6677',assignedTo:'Van-312',vehicleId:'Van-312',cardStatus:'deactivated',inWallet:false,invoiceSegment:'Other',spendLimit:0,expirationDate:'2026-07-31',security:null}
   ];
   var UNASSIGNED=[ {cardId:'200001',cardType:'physical',lastFour:'5310'},{cardId:'200002',cardType:'physical',lastFour:'7741'},{cardId:'200003',cardType:'virtual',lastFour:'1180'},{cardId:'200004',cardType:'virtual',lastFour:'6093'} ];
-  var DRIVERS=['Sarah Chen','James Rodriguez','Maria Gonzalez','Aisha Khan','Tom Becker'];
+  var DRIVERS=['David Okafor','Sarah Chen','James Rodriguez','Maria Gonzalez','Aisha Khan','Tom Becker'];
 
   var STATUS={active:{l:'Active',c:'tag-positive'},locked:{l:'Locked',c:'tag-caution'},frozen:{l:'Frozen',c:'tag-warning'},deactivated:{l:'Deactivated',c:'tag-neutral'}};
   var state={filter:''};   // table search/filter term
@@ -341,15 +341,17 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
   /* ---------- Toasts (§A.4) ---------- */
   function toast(opts){
     var t=document.createElement('div');t.className='toast '+(opts.type||'success');
+    var actionLabel=opts.actionLabel||(opts.retry?'Retry':null);
+    var onAction=opts.onAction||opts.retry;
     t.innerHTML='<span class="ti ico ico-20" data-ico="'+(opts.type==='error'?'CircleExclamationFilled':'CheckCircleFilled')+'"></span>'
       +'<span class="tmsg">'+esc(opts.msg)+'</span>'
-      +(opts.retry?'<span class="tretry">Retry</span>':'')
+      +(actionLabel?'<span class="tretry">'+esc(actionLabel)+'</span>':'')
       +'<span class="tx ico ico-16" data-ico="CrossUIBold"></span>';
     $('toasts').appendChild(t);injectIcons(t);
     var to=setTimeout(close,opts.type==='error'?6000:4000);
     function close(){clearTimeout(to);t.remove();}
     t.querySelector('.tx').onclick=close;
-    if(opts.retry)t.querySelector('.tretry').onclick=function(){close();opts.retry();};
+    if(actionLabel&&onAction)t.querySelector('.tretry').onclick=function(){close();onAction();};
   }
 
   /* ---------- Render table ---------- */
@@ -482,7 +484,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
       var btn=this;btn.disabled=true;btn.textContent='Activating…';
       api.activate(card,assignee,addWallet).then(function(c){
         closeDrawer();renderBanner();renderTable();
-        toast({type:'success',msg:'Card '+mask(c.lastFour)+' activated for '+assignee});
+        toast({type:'success',msg:'Card '+mask(c.lastFour)+' activated for '+assignee,actionLabel:'Activate again',onAction:function(){openActivate(type);}});
       }).catch(function(){
         btn.disabled=false;btn.textContent='Activate';
         toast({type:'error',msg:'Failed to activate card. Please try again.',retry:function(){$('confirmActivate')&&$('confirmActivate').click();}});
