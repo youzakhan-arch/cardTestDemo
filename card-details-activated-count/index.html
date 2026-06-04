@@ -124,6 +124,15 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
 .fld{margin-bottom:16px}
 .fld label{display:block;font:400 12px/16px 'Inter',sans-serif;color:var(--content-subdued);margin-bottom:6px}
 .fld .req{color:var(--content-negative)}
+.fld label .lbl-i,.section-lbl .lbl-i{color:var(--content-inactive);vertical-align:middle}
+.fld-help{font:400 12px/16px 'Inter',sans-serif;color:var(--content-subdued);margin-top:6px}
+.drawer-sub{font:400 13px/18px 'Inter',sans-serif;color:var(--content-subdued);margin-bottom:18px}
+.autorow{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.autolbl{flex:1;font:400 14px/20px 'Inter',sans-serif;color:var(--content-standard)}
+.autoinput{width:150px;height:36px;border:1px solid var(--stroke-standard);border-radius:var(--r-sm);padding:0 10px;font:400 14px/20px 'Inter',sans-serif;color:var(--content-standard);outline:none}
+.autoinput:focus{border-color:var(--stroke-active);box-shadow:0 0 0 2px rgba(0,115,231,.15)}
+.usd{display:inline-flex;align-items:center;height:36px;padding:0 10px;border:1px solid var(--stroke-standard);border-right:none;border-radius:var(--r-sm) 0 0 var(--r-sm);background:var(--bg-secondary);color:var(--content-subdued);font:400 14px/20px 'Inter',sans-serif}
+.autoinput-money{width:108px;border-radius:0 var(--r-sm) var(--r-sm) 0}
 .fld input,.fld select{width:100%;height:36px;border:1px solid var(--stroke-standard);border-radius:var(--r-sm);padding:0 10px;font:400 14px/20px 'Inter',sans-serif;color:var(--content-standard);background:#fff;outline:none}
 .fld input:focus,.fld select:focus{border-color:var(--stroke-active);box-shadow:0 0 0 2px rgba(0,115,231,.15)}
 .chkrow{display:flex;align-items:flex-start;gap:10px;padding:8px 0;cursor:pointer}
@@ -232,7 +241,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
     </div>
 
     <div class="actbar" id="actbar">
-      <div class="msg"><span class="ico" data-ico="CircleExclamation"></span><span id="actbarMsg"></span></div>
+      <div class="msg"><span class="ico ico-20" data-ico="CircleExclamationFilled"></span><span id="actbarMsg"></span></div>
       <div class="menuwrap menuwrap-right" id="activateWrap">
         <button class="act-btn" id="activateBtn" aria-haspopup="true" aria-expanded="false">Activate <span class="ico ico-14" data-ico="ChevronDown"></span></button>
         <div class="menu" id="activateMenu" role="menu">
@@ -401,7 +410,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
     var n=activatableCount();
     var wrap=$('activateWrap');
     if(n===0){ $('actbarMsg').textContent='No physical or virtual cards available to activate. Contact support.'; wrap.style.display='none'; }
-    else { $('actbarMsg').innerHTML='Your fleet has <b>&nbsp;'+n+' physical cards&nbsp;</b> and <b>&nbsp;unlimited virtual cards&nbsp;</b> ready to be activated.'; wrap.style.display=''; }
+    else { $('actbarMsg').textContent='Your fleet has '+n+' physical cards and unlimited virtual cards ready to be activated.'; wrap.style.display=''; }
   }
 
   /* ---------- Drawer helpers ---------- */
@@ -420,32 +429,56 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
     merchant:['No Restrictions (default)','West Coast Merchant Policy']
   };
   function selOpts(arr){return arr.map(function(o){return '<option>'+esc(o)+'</option>';}).join('');}
+  var LBL_I=' <span class="ico ico-14 lbl-i" data-ico="CircleExclamation"></span>';
   function openActivate(type){
+    var isV=type==='virtual';
+    var title=isV?'Activate Virtual Card':'Activate physical card';
     var driverOpts='<option value="" disabled selected>Select</option>'+DRIVERS.map(function(d){return '<option>'+esc(d)+'</option>';}).join('');
-    var wallet = type==='physical' ? '<label class="chkrow" id="walletChkRow"><span class="chk" id="walletChk"></span><span>Add this card to the driver\'s wallet</span></label>' : '';
+    // virtual policy selects default to "<Default policy> (default)"
+    var defOpt='<option>&lt;Default policy&gt; (default)</option>';
+    function pol(arr){return isV ? defOpt+selOpts(arr) : selOpts(arr);}
+    var subtitle = isV ? '<p class="drawer-sub">We\'ll notify the assigned cardholder about their virtual card.</p>' : '';
+    var idField = isV
+      ? '<div class="fld"><label>Card ID'+LBL_I+'</label><input id="actCardId" maxlength="21" autocomplete="off"/><div class="fld-help">21 characters max. Hyphens (-), periods (.), and commas (,) are allowed.</div></div>'
+      : '<div class="fld"><label>Last 4 digits of card number <span class="req">*</span></label><input id="actLast4" inputmode="numeric" maxlength="4" autocomplete="off"/></div>';
+    var autoDeact = isV
+      ? '<div class="sep"></div><div class="section-lbl">Auto-Deactivation Rules'+LBL_I+'</div>'
+        +'<div class="autorow"><span class="autolbl">Max no. of transactions</span><input class="autoinput" placeholder="Unlimited"/></div>'
+        +'<div class="autorow"><span class="autolbl">Max total spend</span><span class="usd">USD $</span><input class="autoinput autoinput-money" placeholder="Unlimited"/></div>'
+      : '';
     openDrawer(
-      '<div class="dh"><h2 id="drawerTitle">Activate '+type+' card</h2><button class="icon-btn" aria-label="Close" onclick="_closeDrawer()"><span class="ico ico-20" data-ico="CrossUIBold"></span></button></div>'
+      '<div class="dh"><h2 id="drawerTitle">'+title+'</h2><button class="icon-btn" aria-label="Close" onclick="_closeDrawer()"><span class="ico ico-20" data-ico="CrossUIBold"></span></button></div>'
       +'<div class="db">'
+        +subtitle
         +'<div class="fld"><label>Assign card to <span class="req">*</span></label><select id="actAssignee" autocomplete="off">'+driverOpts+'</select></div>'
-        +'<div class="fld"><label>Last 4 digits of card number <span class="req">*</span></label><input id="actLast4" inputmode="numeric" maxlength="4" autocomplete="off"/></div>'
-        +wallet
+        +idField
+        +'<label class="chkrow" id="walletChkRow"><span class="chk" id="walletChk"></span><span>Add this card to the driver\'s wallet'+(isV?'.':'')+'</span></label>'
         +'<div class="sep"></div>'
         +'<div class="section-lbl">Card policies</div>'
-        +'<div class="fld"><label>Spend Limits <span class="req">*</span></label><select>'+selOpts(POLICY.spend)+'</select></div>'
-        +'<div class="fld"><label>Security and Fraud <span class="req">*</span></label><select>'+selOpts(POLICY.security)+'</select></div>'
-        +'<div class="fld"><label>Transaction Requirements <span class="req">*</span></label><select>'+selOpts(POLICY.txn)+'</select></div>'
-        +'<div class="fld"><label>Merchant <span class="req">*</span></label><select>'+selOpts(POLICY.merchant)+'</select></div>'
+        +'<div class="fld"><label>Spend Limits <span class="req">*</span></label><select>'+pol(POLICY.spend)+'</select></div>'
+        +'<div class="fld"><label>Security and Fraud <span class="req">*</span></label><select>'+pol(POLICY.security)+'</select></div>'
+        +'<div class="fld"><label>Transaction Requirements <span class="req">*</span></label><select>'+pol(POLICY.txn)+'</select></div>'
+        +'<div class="fld"><label>Merchant <span class="req">*</span></label><select>'+pol(POLICY.merchant)+'</select></div>'
+        +autoDeact
       +'</div>'
       +'<div class="df"><button class="btn" onclick="_closeDrawer()">Cancel</button><button class="btn btn-primary" id="confirmActivate">Activate</button></div>'
     );
     var wc=$('walletChk'); if(wc){$('walletChkRow').addEventListener('click',function(){wc.classList.toggle('on');});}
     $('confirmActivate').addEventListener('click',function(){
       var assignee=$('actAssignee').value;
-      var last4=($('actLast4').value||'').replace(/\D/g,'').slice(0,4);
       if(!assignee){toast({type:'error',msg:'Select who to assign the card to.'});return;}
-      if(!last4){toast({type:'error',msg:'Enter the last 4 digits of the card.'});return;}
-      var addWallet=type==='physical'&&$('walletChk')&&$('walletChk').classList.contains('on');
-      var card={cardId:String(100200+Math.floor(Math.random()*799)),cardType:type,lastFour:last4,invoiceSegment:'Fuel',spendLimit:5000,expirationDate:'2027-01-31',security:'mobile'};
+      var last4, cardId;
+      if(isV){
+        var id=($('actCardId').value||'').trim();
+        if(!id){toast({type:'error',msg:'Enter a Card ID.'});return;}
+        cardId=id; last4=(id.replace(/[^0-9]/g,'').slice(-4))||id.slice(-4);
+      } else {
+        last4=($('actLast4').value||'').replace(/\D/g,'').slice(0,4);
+        if(!last4){toast({type:'error',msg:'Enter the last 4 digits of the card.'});return;}
+        cardId=String(100200+Math.floor(Math.random()*799));
+      }
+      var addWallet=$('walletChk')&&$('walletChk').classList.contains('on');
+      var card={cardId:cardId,cardType:type,lastFour:last4,invoiceSegment:'Fuel',spendLimit:5000,expirationDate:'2027-01-31',security:'mobile'};
       var btn=this;btn.disabled=true;btn.textContent='Activating…';
       api.activate(card,assignee,addWallet).then(function(c){
         closeDrawer();renderBanner();renderTable();
