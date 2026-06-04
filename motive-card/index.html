@@ -1,57 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Motive Card — Prototypes</title>
-  <style>
-    :root {
-      --summary:#2E2E2E;
-      --accent:#0058C8;
-      --accent-light:#DBEEFF;
-    }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html, body { height:100%; }
-    body { font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif; background:#EDEFF2; display:flex; flex-direction:column; }
-    .tabbar {
-      display:flex; align-items:center; gap:4px;
-      background:var(--summary); padding:0 16px; height:52px; flex-shrink:0;
-      box-shadow:0 1px 0 rgba(0,0,0,0.1);
-    }
-    .brand {
-      color:#fff; font-weight:800; font-size:16px; letter-spacing:-0.3px;
-      margin-right:20px; font-style:italic;
-    }
-    .tab {
-      appearance:none; border:none; background:transparent; cursor:pointer;
-      color:rgba(255,255,255,0.6); font-size:14px; font-weight:600;
-      padding:8px 16px; border-radius:8px; transition:all 150ms ease-in-out;
-    }
-    .tab:hover { color:rgba(255,255,255,0.85); }
-    .tab.active { background:#fff; color:var(--summary); }
-    .frame-wrap { flex:1; position:relative; }
-    iframe { position:absolute; inset:0; width:100%; height:100%; border:none; background:#EDEFF2; }
-  </style>
-</head>
-<body>
-  <nav class="tabbar">
-    <span class="brand">motive</span>
-    <button class="tab active" data-src="MotiveCardPrototype.html">Driver App</button>
-    <button class="tab" data-src="MotiveCardVariations.html">Home Variations</button>
-    <button class="tab" data-src="MotiveCardIterations.html">Mobile Iterations</button>
-    <button class="tab" data-src="card-app/index.html">React App</button>
-  </nav>
-  <div class="frame-wrap">
-    <iframe id="view" src="MotiveCardPrototype.html" title="Prototype"></iframe>
-  </div>
-  <script>
-    const tabs = document.querySelectorAll('.tab');
-    const view = document.getElementById('view');
-    tabs.forEach(t => t.addEventListener('click', () => {
-      tabs.forEach(x => x.classList.remove('active'));
-      t.classList.add('active');
-      view.src = t.dataset.src;
-    }));
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/cardTestDemo/motive-card/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Motive Card — Virtual Cards</title>
+    <script type="module" crossorigin src="/cardTestDemo/motive-card/assets/index-2RflAB1O.js"></script>
+    <link rel="stylesheet" crossorigin href="/cardTestDemo/motive-card/assets/index-DMsPNv_3.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
