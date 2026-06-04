@@ -49,7 +49,7 @@ button{font-family:inherit}
 .icon-square{width:36px;height:36px;border:1px solid var(--stroke-standard);border-radius:var(--r-sm);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--content-standard)}
 .tabs{display:flex;border-bottom:1px solid var(--stroke-inactive)}
 .tab{padding:8px 14px;border:none;background:transparent;font:400 14px/20px 'Inter',sans-serif;color:var(--content-subdued);cursor:pointer;border-bottom:2px solid transparent}
-.tab[aria-selected="true"]{color:var(--content-active);border-bottom-color:var(--content-active);font-weight:600}
+.tab[aria-current="page"]{color:var(--content-active);border-bottom-color:var(--content-active);font-weight:600}
 
 .actbar{display:flex;align-items:center;gap:16px;margin:16px 24px 0;padding:0 16px;min-height:48px;background:var(--content-emphasis);color:#fff;border-radius:var(--r-sm)}
 .actbar .msg{flex:1;display:flex;align-items:center;gap:10px;font:400 14px/20px 'Inter',sans-serif}
@@ -83,6 +83,11 @@ button{font-family:inherit}
 .search.active .clearx{display:flex}
 .filt{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--stroke-standard);border-radius:var(--r-sm);height:36px;padding:0 12px;background:#fff;font:400 14px/20px 'Inter',sans-serif;color:var(--content-standard);cursor:pointer;white-space:nowrap}
 .filt .ico{color:var(--content-subdued)}.filt:hover{background:var(--bg-secondary)}
+.filt.active{background:var(--bg-accent);border-color:var(--stroke-active);color:var(--content-active)}
+.filt.active .ico{color:var(--content-active)}
+.fr .menuwrap{position:relative}
+.fmenu{top:42px;left:0}
+.menu .mi[aria-checked="true"]{font-weight:600;color:var(--content-active)}
 
 .ta{flex:1;overflow:auto}
 .ctable{border-collapse:collapse;min-width:1420px;width:100%}
@@ -214,7 +219,7 @@ button{font-family:inherit}
     <div class="sb-logo"><img class="logo-img" src="logo.svg" alt="Motive"/></div>
     <div class="sb-scroll">
       <button class="sb-item"><span class="ico" data-ico="MagnifyingGlass" aria-hidden="true"></span>Search</button>
-      <h2 class="sb-section" id="org-h">Organization</h2>
+      <div class="sb-section">Organization</div>
       <button class="sb-item"><span class="ico" data-ico="BuildingOffice" aria-hidden="true"></span>Company</button>
       <button class="sb-item"><span class="ico" data-ico="PersonGroup" aria-hidden="true"></span>Fleet Users</button>
       <button class="sb-item"><span class="ico" data-ico="EntityDriver" aria-hidden="true"></span>Drivers</button>
@@ -225,7 +230,7 @@ button{font-family:inherit}
       <button class="sb-item"><span class="ico" data-ico="DocumentDollar" aria-hidden="true"></span>Billing</button>
       <button class="sb-item"><span class="ico" data-ico="PersonFrame" aria-hidden="true"></span>Profiles</button>
       <button class="sb-item"><span class="ico" data-ico="ShoppingBag" aria-hidden="true"></span>Shop</button>
-      <h2 class="sb-section">Products</h2>
+      <div class="sb-section">Products</div>
       <button class="sb-item"><span class="ico" data-ico="MapA" aria-hidden="true"></span>Fleet View</button>
       <button class="sb-item"><span class="ico" data-ico="Shield" aria-hidden="true"></span>Safety</button>
       <button class="sb-item"><span class="ico" data-ico="ClipboardCheck" aria-hidden="true"></span>Compliance</button>
@@ -247,13 +252,13 @@ button{font-family:inherit}
   <main class="main">
     <div class="ph">
       <div class="ph-row"><h1 class="ph-title">Cards</h1><button class="icon-square" aria-label="Scan card"><span class="ico ico-16" data-ico="Scan" aria-hidden="true"></span></button></div>
-      <div class="tabs" role="tablist" aria-label="Cards sections">
-        <button class="tab" role="tab" aria-selected="false">Billing</button>
-        <button class="tab" role="tab" aria-selected="true">Card Management</button>
-        <button class="tab" role="tab" aria-selected="false">Orders</button>
-        <button class="tab" role="tab" aria-selected="false">Policies</button>
-        <button class="tab" role="tab" aria-selected="false">Settings</button>
-      </div>
+      <nav class="tabs" aria-label="Cards sections">
+        <button class="tab">Billing</button>
+        <button class="tab" aria-current="page">Card Management</button>
+        <button class="tab">Orders</button>
+        <button class="tab">Policies</button>
+        <button class="tab">Settings</button>
+      </nav>
     </div>
 
     <div class="actbar" id="actbar">
@@ -290,9 +295,9 @@ button{font-family:inherit}
       </div>
       <button class="filt">Group <span class="ico ico-14" data-ico="ChevronDown" aria-hidden="true"></span></button>
       <button class="filt">Spend profile <span class="ico ico-14" data-ico="ChevronDown" aria-hidden="true"></span></button>
-      <button class="filt">Security <span class="ico ico-14" data-ico="ChevronDown" aria-hidden="true"></span></button>
+      <div class="menuwrap" id="secWrap"><button class="filt" id="secBtn" aria-haspopup="true" aria-expanded="false"><span id="secLbl">Security</span> <span class="ico ico-14" data-ico="ChevronDown" aria-hidden="true"></span></button><div class="menu fmenu" id="secMenu" role="menu" aria-label="Filter by security"></div></div>
       <button class="filt">Txn. requirement <span class="ico ico-14" data-ico="ChevronDown" aria-hidden="true"></span></button>
-      <button class="filt">Status <span class="ico ico-14" data-ico="ChevronDown" aria-hidden="true"></span></button>
+      <div class="menuwrap" id="statusWrap"><button class="filt" id="statusBtn" aria-haspopup="true" aria-expanded="false"><span id="statusLbl">Status</span> <span class="ico ico-14" data-ico="ChevronDown" aria-hidden="true"></span></button><div class="menu fmenu" id="statusMenu" role="menu" aria-label="Filter by status"></div></div>
     </div>
 
     <div class="ta">
@@ -343,7 +348,7 @@ button{font-family:inherit}
   ];
   var DRIVERS=['David Okafor','Sarah Chen','James Rodriguez','Maria Gonzalez','Aisha Khan','Tom Becker'];
   var STATUS={active:{l:'Active',c:'tag-positive'},locked:{l:'Locked',c:'tag-caution'},frozen:{l:'Frozen',c:'tag-warning'},deactivated:{l:'Deactivated',c:'tag-neutral'}};
-  var state={filter:''};
+  var state={filter:'',status:'',security:''};
   function mask(f){f=String(f||'');return (f.length>=4?'•••• ':'•• ')+f;}
   function money(n){return '$'+Number(n).toLocaleString('en-US');}
   function activatableCount(){return CARDS.filter(function(c){return c.cardStatus!=='deactivated'&&c.inWallet===false;}).length;}
@@ -379,10 +384,16 @@ button{font-family:inherit}
     var sub=(c.vehicleId&&c.vehicleId!==c.assignedTo)?c.vehicleId:c.cardId;
     return '<div class="who"><span class="ico ico-16" data-ico="Person" aria-hidden="true"></span><div><button class="nm" data-open="'+esc(c.cardId)+'">'+esc(c.assignedTo)+'</button><div class="td-sub">'+esc(sub)+'</div></div></div>';
   }
+  function anyFilter(){return !!(state.filter||state.status||state.security);}
   function visibleCards(){
     var q=(state.filter||'').trim().toLowerCase();
-    if(!q) return CARDS.slice();
-    return CARDS.filter(function(c){return (c.assignedTo||'').toLowerCase().indexOf(q)>=0||(c.vehicleId||'').toLowerCase().indexOf(q)>=0||(c.lastFour||'').indexOf(q)>=0||(c.cardId||'').indexOf(q)>=0;});
+    return CARDS.filter(function(c){
+      if(q&&!((c.assignedTo||'').toLowerCase().indexOf(q)>=0||(c.vehicleId||'').toLowerCase().indexOf(q)>=0||(c.lastFour||'').indexOf(q)>=0||(c.cardId||'').indexOf(q)>=0))return false;
+      if(state.status&&c.cardStatus!==state.status)return false;
+      if(state.security==='mobile'&&c.security!=='mobile')return false;
+      if(state.security==='none'&&c.security)return false;
+      return true;
+    });
   }
   function renderTable(){
     var list=visibleCards();
@@ -400,8 +411,8 @@ button{font-family:inherit}
         +'<td></td>'
         +'<td class="col-act"><button class="kebab" data-kebab="'+esc(c.cardId)+'" aria-label="Actions for card '+mask(c.lastFour)+'"><span class="ico ico-16" data-ico="Ellipses" aria-hidden="true"></span></button></td>'
         +'</tr>';
-    }).join('') || '<tr><td colspan="9" style="padding:24px;color:var(--content-subdued)">No cards match "'+esc(state.filter)+'".</td></tr>';
-    $('tableFoot').innerHTML = state.filter ? 'Showing <b>'+list.length+'</b> result'+(list.length!==1?'s':'') : 'Showing <b>60</b> results';
+    }).join('') || '<tr><td colspan="9" style="padding:24px;color:var(--content-subdued)">No cards match the current filters.</td></tr>';
+    $('tableFoot').innerHTML = anyFilter() ? 'Showing <b>'+list.length+'</b> result'+(list.length!==1?'s':'') : 'Showing <b>60</b> results';
     var body=$('tableBody');
     body.querySelectorAll('tr[data-id]').forEach(function(r){var id=r.getAttribute('data-id');
       r.addEventListener('click',function(e){ if(e.target.closest('.kebab')||e.target.closest('.cbx')||e.target.closest('.nm'))return; openCardDetails(cardById(id)); });
@@ -627,13 +638,32 @@ button{font-family:inherit}
     if(!e.target.closest('#activateWrap')){aMenu.classList.remove('open');aBtn.setAttribute('aria-expanded','false');}
     if(!e.target.closest('#bulkWrap')){bulkMenu.classList.remove('open');bulkBtn.setAttribute('aria-expanded','false');}
     if(!e.target.closest('#rowMenu')&&!e.target.closest('[data-kebab]')&&!e.target.closest('#detailKebab'))$('rowMenu').classList.remove('open');
+    ['secWrap','statusWrap'].forEach(function(w){if(!e.target.closest('#'+w)){var mn=document.querySelector('#'+w+' .menu');if(mn)mn.classList.remove('open');var b=document.querySelector('#'+w+' .filt');if(b)b.setAttribute('aria-expanded','false');}});
   });
+  // R3: functional Status + Security filter dropdowns
+  function setupFilter(btnId,menuId,lblId,base,key,opts){
+    var btn=$(btnId),menu=$(menuId),lbl=$(lblId);
+    menu.innerHTML=opts.map(function(o){return '<button class="mi" role="menuitemradio" tabindex="-1" aria-checked="'+(o.val===state[key])+'" data-val="'+esc(o.val)+'">'+esc(o.label)+'</button>';}).join('');
+    btn.addEventListener('click',function(e){e.stopPropagation();toggleMenu(btn,menu);});
+    menuKeys(menu,function(){return btn;});
+    menu.querySelectorAll('.mi').forEach(function(mi){mi.addEventListener('click',function(){
+      state[key]=mi.getAttribute('data-val');
+      menu.querySelectorAll('.mi').forEach(function(x){x.setAttribute('aria-checked',x===mi?'true':'false');});
+      menu.classList.remove('open');btn.setAttribute('aria-expanded','false');
+      var sel=opts.filter(function(o){return o.val===state[key];})[0];
+      lbl.textContent=state[key]?base+': '+sel.label:base;
+      btn.classList.toggle('active',!!state[key]);
+      renderTable();btn.focus();
+    });});
+  }
+  setupFilter('statusBtn','statusMenu','statusLbl','Status','status',[{val:'',label:'All'},{val:'active',label:'Active'},{val:'locked',label:'Locked'},{val:'frozen',label:'Frozen'},{val:'deactivated',label:'Deactivated'}]);
+  setupFilter('secBtn','secMenu','secLbl','Security','security',[{val:'',label:'All'},{val:'mobile',label:'Mobile-based unlock'},{val:'none',label:'None'}]);
   $('selectAll').addEventListener('change',function(){var on=$('selectAll').checked;document.querySelectorAll('.rowchk').forEach(function(ch){ch.checked=on;});updateSelBar();});
   $('selClear').addEventListener('click',clearSelection);
   $('searchInput').addEventListener('input',function(){setSearch(this.value);});
   $('clearSearch').addEventListener('click',function(){setSearch('');$('searchInput').focus();});
   // tabs: roving aria-selected
-  document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-selected','false');});t.setAttribute('aria-selected','true');});});
+  document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(function(x){x.removeAttribute('aria-current');});t.setAttribute('aria-current','page');});});
 
   injectIcons(document);renderBanner();renderTable();
 })();
