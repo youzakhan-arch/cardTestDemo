@@ -70,6 +70,9 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
 .search .mg{margin:0 8px;color:var(--content-subdued);display:flex}
 .search input{border:none;outline:none;background:transparent;font:400 14px/20px 'Inter',sans-serif;color:var(--content-standard);flex:1;padding-right:10px}
 .search input::placeholder{color:var(--content-subdued)}
+.search.active{border-color:var(--stroke-active);background:var(--bg-accent)}
+.clearx{display:none;align-items:center;justify-content:center;width:34px;height:100%;cursor:pointer;color:var(--content-subdued);flex-shrink:0}
+.search.active .clearx{display:flex}
 .filt{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--stroke-standard);border-radius:var(--r-sm);height:36px;padding:0 12px;font:400 14px/20px 'Inter',sans-serif;color:var(--content-standard);cursor:pointer;white-space:nowrap}
 .filt .ico{color:var(--content-subdued)}.filt:hover{background:var(--bg-secondary)}
 
@@ -233,7 +236,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
     </div>
 
     <div class="fr">
-      <div class="search"><span class="sort" title="Sort"><span class="ico ico-14" data-ico="ArrowsVertical"></span></span><span class="mg"><span class="ico ico-14" data-ico="MagnifyingGlass"></span></span><input type="text" placeholder="Cardholder, vehicle, asset, card" autocomplete="off"/></div>
+      <div class="search" id="searchBox"><span class="sort" title="Sort"><span class="ico ico-14" data-ico="ArrowsVertical"></span></span><span class="mg"><span class="ico ico-14" data-ico="MagnifyingGlass"></span></span><input id="searchInput" type="text" placeholder="Cardholder, vehicle, asset, card" autocomplete="off"/><span class="clearx" id="clearSearch" title="Clear search"><span class="ico ico-16" data-ico="CrossUIBold"></span></span></div>
       <div class="filt">Group <span class="ico ico-14" data-ico="ChevronDown"></span></div>
       <div class="filt">Spend profile <span class="ico ico-14" data-ico="ChevronDown"></span></div>
       <div class="filt">Security <span class="ico ico-14" data-ico="ChevronDown"></span></div>
@@ -293,6 +296,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
   var DRIVERS=['Sarah Chen','James Rodriguez','Maria Gonzalez','Aisha Khan','Tom Becker'];
 
   var STATUS={active:{l:'Active',c:'tag-positive'},locked:{l:'Locked',c:'tag-caution'},frozen:{l:'Frozen',c:'tag-warning'},deactivated:{l:'Deactivated',c:'tag-neutral'}};
+  var state={filter:''};   // table search/filter term
   function mask(f){f=String(f||'');var d=f.length>=4?'•••• ':'•• ';return d+f;}            // §2.3
   function money(n){return '$'+Number(n).toLocaleString('en-US');}
   function activatableCount(){return CARDS.filter(function(c){return c.cardStatus!=='deactivated'&&c.inWallet===false;}).length;} // §A.1
@@ -325,11 +329,21 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
     var sub=c.vehicleId&&c.vehicleId!==c.assignedTo?('<div class="td-sub">'+esc(c.vehicleId)+'</div>'):'<div class="td-sub">'+esc(c.cardId)+'</div>';
     return '<div class="who"><span class="ico ico-16" data-ico="Person"></span><div><div class="nm">'+esc(c.assignedTo)+'</div>'+sub+'</div></div>';
   }
+  function cardById(id){return CARDS.find(function(c){return c.cardId===id;});}
+  function visibleCards(){
+    var q=(state.filter||'').trim().toLowerCase();
+    if(!q) return CARDS.slice();
+    return CARDS.filter(function(c){
+      return (c.assignedTo||'').toLowerCase().indexOf(q)>=0 || (c.vehicleId||'').toLowerCase().indexOf(q)>=0
+          || (c.lastFour||'').indexOf(q)>=0 || (c.cardId||'').indexOf(q)>=0;
+    });
+  }
   function renderTable(){
-    $('tableBody').innerHTML=CARDS.map(function(c,i){
+    var list=visibleCards();
+    $('tableBody').innerHTML=list.map(function(c){
       var s=STATUS[c.cardStatus];
       var sec=c.security==='mobile'?'<span class="ico ico-16 sec-ico" data-ico="Mobile" title="Mobile-based unlock"></span>':'<span class="dash">—</span>';
-      return '<div class="tr" data-i="'+i+'" role="button" tabindex="0" aria-label="Card details for '+esc(c.assignedTo||'unassigned')+' '+mask(c.lastFour)+'">'
+      return '<div class="tr" data-id="'+c.cardId+'" role="button" tabindex="0" aria-label="Card details for '+esc(c.assignedTo||'unassigned')+' '+mask(c.lastFour)+'">'
         +'<div class="td c-chk"><span class="chk rowchk" data-id="'+c.cardId+'"></span></div>'
         +'<div class="td c-holder">'+holderCell(c)+'</div>'
         +'<div class="td c-num"><span class="td-main">'+mask(c.lastFour)+'</span><span class="td-sub">'+c.cardId+' · '+(c.cardType==='virtual'?'Virtual':'Physical')+'</span></div>'
@@ -338,16 +352,16 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
         +'<div class="td c-sec">'+sec+'</div>'
         +'<div class="td c-status"><span class="tag '+s.c+'">'+s.l+'</span></div>'
         +'<div class="td c-space"></div>'
-        +'<div class="td c-act"><button class="kebab" data-kebab="'+i+'" aria-label="More actions"><span class="ico ico-16" data-ico="Ellipses"></span></button></div>'
+        +'<div class="td c-act"><button class="kebab" data-kebab="'+c.cardId+'" aria-label="More actions"><span class="ico ico-16" data-ico="Ellipses"></span></button></div>'
         +'</div>';
-    }).join('');
-    $('tableFoot').innerHTML='Showing <b>'+CARDS.length+'</b> of 60 results';
+    }).join('') || '<div class="tf" style="padding:24px">No cards match "'+esc(state.filter)+'".</div>';
+    $('tableFoot').innerHTML = state.filter ? 'Showing <b>'+list.length+'</b> result'+(list.length!==1?'s':'') : 'Showing <b>'+CARDS.length+'</b> of 60 results';
     var body=$('tableBody');
-    body.querySelectorAll('.tr').forEach(function(r){var i=+r.getAttribute('data-i');
-      r.addEventListener('click',function(e){ if(e.target.closest('.kebab')||e.target.closest('.chk'))return; openCardDetails(CARDS[i]); });
-      r.addEventListener('keydown',function(e){if(e.key==='Enter'){openCardDetails(CARDS[i]);}});
+    body.querySelectorAll('.tr').forEach(function(r){var id=r.getAttribute('data-id');
+      r.addEventListener('click',function(e){ if(e.target.closest('.kebab')||e.target.closest('.chk'))return; openCardDetails(cardById(id)); });
+      r.addEventListener('keydown',function(e){if(e.key==='Enter'){openCardDetails(cardById(id));}});
     });
-    body.querySelectorAll('[data-kebab]').forEach(function(k){k.addEventListener('click',function(e){e.stopPropagation();openRowMenu(CARDS[+k.getAttribute('data-kebab')],k);});});
+    body.querySelectorAll('[data-kebab]').forEach(function(k){k.addEventListener('click',function(e){e.stopPropagation();openRowMenu(cardById(k.getAttribute('data-kebab')),k);});});
     body.querySelectorAll('.rowchk').forEach(function(ch){ch.addEventListener('click',function(e){e.stopPropagation();ch.classList.toggle('on');});});
     injectIcons(body);
   }
@@ -482,38 +496,17 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
   }
   document.addEventListener('click',function(e){ if(!e.target.closest('#rowMenu')&&!e.target.closest('[data-kebab]')&&!e.target.closest('[data-kebab-detail]'))$('rowMenu').classList.remove('open'); });
 
-  /* ---------- Flow D: multi-card panel ---------- */
+  /* ---------- "+N more cards" → filter the full table by assignee (Figma 2114:11751) ---------- */
   window._openMulti=function(holder){
-    var cards=cardsForHolder(holder);
-    var rows=cards.map(function(c){return '<div class="mc-row"><span class="mc-c1"><span class="chk mc-chk" data-id="'+c.cardId+'"></span></span><div class="mc-c2"><div class="nm">'+esc(holder)+'</div><div class="sub">'+mask(c.lastFour)+' · '+c.cardId+'</div></div><span class="mc-c3"><span class="tag '+STATUS[c.cardStatus].c+'">'+STATUS[c.cardStatus].l+'</span></span></div>';}).join('');
-    openDrawer(
-      '<div class="dh"><span class="back icon-btn" onclick="_backToDetail()"><span class="ico ico-20" data-ico="ChevronLeft"></span></span><h2 id="drawerTitle">Manage '+cards.length+' Cards</h2><button class="icon-btn" aria-label="Close" onclick="_closeDrawer()"><span class="ico ico-20" data-ico="CrossUIBold"></span></button></div>'
-      +'<div class="db">'
-        +'<div class="fld"><label>Assignee</label><input value="'+esc(holder)+'"/></div>'
-        +'<label class="chkrow"><span class="chk" id="mcAll"></span><span>Select all '+cards.length+' cards</span></label>'
-        +'<div class="mc-table"><div class="mc-head"><span class="mc-c1"></span><span class="mc-c2">Assigned to / Card</span><span class="mc-c3">Status</span></div>'+rows+'</div>'
-        +'<div class="actionbar" id="actionbar"><button class="btn" onclick="_bulkModal(\'policies\')">Change policies</button><button class="btn" onclick="_bulkModal(\'security\')">Edit security settings</button></div>'
-      +'</div>'
-    );
-    function sync(){var any=drawer.querySelectorAll('.mc-chk.on').length>0;$('actionbar').classList.toggle('show',any);}
-    drawer.querySelectorAll('.mc-chk').forEach(function(ch){ch.addEventListener('click',function(){ch.classList.toggle('on');sync();});});
-    $('mcAll').addEventListener('click',function(){var on=!$('mcAll').classList.contains('on');$('mcAll').classList.toggle('on',on);drawer.querySelectorAll('.mc-chk').forEach(function(ch){ch.classList.toggle('on',on);});sync();});
-    window._multiHolder=holder;
+    closeDrawer();
+    setSearch(holder);
   };
-  window._backToDetail=function(){var c=cardsForHolder(window._multiHolder)[0];if(c)openCardDetails(c);};
-  window._bulkModal=function(tab){
-    var n=drawer.querySelectorAll('.mc-chk.on').length;
-    openModal(
-      '<div class="modal-h">Update '+n+' Selected Cards</div>'
-      +'<div class="modal-tabs"><div class="modal-tab'+(tab==='policies'?' active':'')+'" data-tab="policies">Policies</div><div class="modal-tab'+(tab==='security'?' active':'')+'" data-tab="security">Security</div></div>'
-      +'<div class="modal-b" id="modalBody"></div>'
-      +'<div class="modal-f"><button class="btn" onclick="_closeModal()">Cancel</button><button class="btn btn-primary" id="modalApply">Apply</button></div>'
-    );
-    function paint(t){$('modalBody').innerHTML = t==='policies' ? 'Choose a spend/merchant policy to apply to all '+n+' selected cards.' : 'Choose security settings (e.g. mobile-based unlock) to apply to all '+n+' selected cards.';}
-    paint(tab);
-    $('modal').querySelectorAll('.modal-tab').forEach(function(mt){mt.addEventListener('click',function(){$('modal').querySelectorAll('.modal-tab').forEach(function(x){x.classList.remove('active');});mt.classList.add('active');paint(mt.getAttribute('data-tab'));});});
-    $('modalApply').addEventListener('click',function(){closeModal();drawer.querySelectorAll('.mc-chk.on').forEach(function(c){c.classList.remove('on');});$('actionbar')&&$('actionbar').classList.remove('show');$('mcAll')&&$('mcAll').classList.remove('on');toast({msg:'Updated '+n+' card'+(n>1?'s':'')});});
-  };
+  function setSearch(value){
+    state.filter=value;
+    var inp=$('searchInput'); if(inp) inp.value=value;
+    $('searchBox').classList.toggle('active',!!value);
+    renderTable();
+  }
 
   /* ---------- Modal + confirm ---------- */
   var modalOv=$('modalOv'),modal=$('modal');
@@ -531,6 +524,8 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
   document.addEventListener('click',function(e){if(!e.target.closest('#activateWrap'))aMenu.classList.remove('open');});
   aMenu.querySelectorAll('[data-activate]').forEach(function(mi){mi.addEventListener('click',function(){aMenu.classList.remove('open');openActivate(mi.getAttribute('data-activate'));});});
   $('selectAll').addEventListener('click',function(){var on=!$('selectAll').classList.contains('on');$('selectAll').classList.toggle('on',on);document.querySelectorAll('.rowchk').forEach(function(ch){ch.classList.toggle('on',on);});});
+  $('searchInput').addEventListener('input',function(){setSearch(this.value);});
+  $('clearSearch').addEventListener('click',function(){setSearch('');$('searchInput').focus();});
 
   injectIcons(document);renderBanner();renderTable();
 })();
