@@ -113,6 +113,7 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
 .df{flex-shrink:0;border-top:1px solid var(--stroke-inactive);padding:16px 24px;display:flex;gap:8px;justify-content:flex-end}
 .fld{margin-bottom:16px}
 .fld label{display:block;font:400 12px/16px 'Inter',sans-serif;color:var(--content-subdued);margin-bottom:6px}
+.fld .req{color:var(--content-negative)}
 .fld input,.fld select{width:100%;height:36px;border:1px solid var(--stroke-standard);border-radius:var(--r-sm);padding:0 10px;font:400 14px/20px 'Inter',sans-serif;color:var(--content-standard);background:#fff;outline:none}
 .fld input:focus,.fld select:focus{border-color:var(--stroke-active);box-shadow:0 0 0 2px rgba(0,115,231,.15)}
 .chkrow{display:flex;align-items:flex-start;gap:10px;padding:8px 0;cursor:pointer}
@@ -365,35 +366,46 @@ body{font:400 14px/20px 'Inter',system-ui,sans-serif;font-feature-settings:"tnum
   ov.addEventListener('click',closeDrawer);
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDrawer();closeModal();$('rowMenu').classList.remove('open');$('activateMenu').classList.remove('open');}});
 
-  /* ---------- Flow A: Activation drawer ---------- */
+  /* ---------- Flow A: Activation drawer (matches Figma node 2122:10342) ---------- */
+  var POLICY={
+    spend:['Southeast Region Asset','West Coast Drivers Spend','Long-Haul Spend','Regional Spend'],
+    security:['Asset Security Policy','Drivers Security Policy'],
+    txn:['Asset Transaction Requirements','Driver Transaction Requirements'],
+    merchant:['No Restrictions (default)','West Coast Merchant Policy']
+  };
+  function selOpts(arr){return arr.map(function(o){return '<option>'+esc(o)+'</option>';}).join('');}
   function openActivate(type){
-    var pool=UNASSIGNED.filter(function(u){return u.cardType===type;});
-    var cardOpts=pool.map(function(u){return '<option value="'+u.cardId+'">'+mask(u.lastFour)+' · '+u.cardId+'</option>';}).join('');
-    var driverOpts='<option value=""></option>'+DRIVERS.map(function(d){return '<option>'+d+'</option>';}).join('');
-    var walletField = type==='physical' ? '<label class="chkrow" id="walletChkRow"><span class="chk" id="walletChk"></span><span>Add this card to driver\'s digital wallet</span></label>' : '';
+    var driverOpts='<option value="" disabled selected>Select</option>'+DRIVERS.map(function(d){return '<option>'+esc(d)+'</option>';}).join('');
+    var wallet = type==='physical' ? '<label class="chkrow" id="walletChkRow"><span class="chk" id="walletChk"></span><span>Add this card to the driver\'s wallet</span></label>' : '';
     openDrawer(
-      '<div class="dh"><h2 id="drawerTitle">Activate '+(type==='physical'?'Physical':'Virtual')+' Card</h2><button class="icon-btn" aria-label="Close" onclick="_closeDrawer()"><span class="ico ico-20" data-ico="CrossUIBold"></span></button></div>'
+      '<div class="dh"><h2 id="drawerTitle">Activate '+type+' card</h2><button class="icon-btn" aria-label="Close" onclick="_closeDrawer()"><span class="ico ico-20" data-ico="CrossUIBold"></span></button></div>'
       +'<div class="db">'
-        +'<div class="section-lbl">Card</div>'
-        +'<div class="fld"><label>Select card</label><select id="actCard">'+(cardOpts||'<option>No unassigned '+type+' cards</option>')+'</select></div>'
-        +'<div class="fld"><label>Assignee</label><input id="actAssignee" list="driverList" placeholder="Search driver…" value="'+(DRIVERS[0]||'')+'"/><datalist id="driverList">'+driverOpts+'</datalist></div>'
-        +'<div class="section-lbl">Configure</div>'
-        +walletField
+        +'<div class="fld"><label>Assign card to <span class="req">*</span></label><select id="actAssignee" autocomplete="off">'+driverOpts+'</select></div>'
+        +'<div class="fld"><label>Last 4 digits of card number <span class="req">*</span></label><input id="actLast4" inputmode="numeric" maxlength="4" autocomplete="off"/></div>'
+        +wallet
+        +'<div class="sep"></div>'
+        +'<div class="section-lbl">Card policies</div>'
+        +'<div class="fld"><label>Spend Limits <span class="req">*</span></label><select>'+selOpts(POLICY.spend)+'</select></div>'
+        +'<div class="fld"><label>Security and Fraud <span class="req">*</span></label><select>'+selOpts(POLICY.security)+'</select></div>'
+        +'<div class="fld"><label>Transaction Requirements <span class="req">*</span></label><select>'+selOpts(POLICY.txn)+'</select></div>'
+        +'<div class="fld"><label>Merchant <span class="req">*</span></label><select>'+selOpts(POLICY.merchant)+'</select></div>'
       +'</div>'
-      +'<div class="df"><button class="btn" onclick="_closeDrawer()">Cancel</button><button class="btn btn-primary" id="confirmActivate">Confirm Activation</button></div>'
+      +'<div class="df"><button class="btn" onclick="_closeDrawer()">Cancel</button><button class="btn btn-primary" id="confirmActivate">Activate</button></div>'
     );
     var wc=$('walletChk'); if(wc){$('walletChkRow').addEventListener('click',function(){wc.classList.toggle('on');});}
     $('confirmActivate').addEventListener('click',function(){
-      var sel=$('actCard'); var card=pool.find(function(u){return u.cardId===(sel&&sel.value);})||pool[0];
-      var assignee=($('actAssignee').value||'').trim()||'Unassigned driver';
-      var addWallet=type==='physical'&&$('walletChk').classList.contains('on');
-      if(!card){toast({type:'error',msg:'No card selected.'});return;}
+      var assignee=$('actAssignee').value;
+      var last4=($('actLast4').value||'').replace(/\D/g,'').slice(0,4);
+      if(!assignee){toast({type:'error',msg:'Select who to assign the card to.'});return;}
+      if(!last4){toast({type:'error',msg:'Enter the last 4 digits of the card.'});return;}
+      var addWallet=type==='physical'&&$('walletChk')&&$('walletChk').classList.contains('on');
+      var card={cardId:String(100200+Math.floor(Math.random()*799)),cardType:type,lastFour:last4,invoiceSegment:'Fuel',spendLimit:5000,expirationDate:'2027-01-31',security:'mobile'};
       var btn=this;btn.disabled=true;btn.textContent='Activating…';
       api.activate(card,assignee,addWallet).then(function(c){
         closeDrawer();renderBanner();renderTable();
         toast({type:'success',msg:'Card '+mask(c.lastFour)+' activated for '+assignee});
       }).catch(function(){
-        btn.disabled=false;btn.textContent='Confirm Activation';
+        btn.disabled=false;btn.textContent='Activate';
         toast({type:'error',msg:'Failed to activate card. Please try again.',retry:function(){$('confirmActivate')&&$('confirmActivate').click();}});
       });
     });
